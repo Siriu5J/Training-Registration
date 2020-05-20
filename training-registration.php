@@ -4,7 +4,7 @@
 Plugin Name: Event Registration
 Plugin URI: https://github.com/Siriu5J/Training-Registration
 Description: This WordPress plugin allows Training coordinators and managers to create training events where schools could register their staffs to events that are available. V2 is re-written from the the original unreleased plugin with some visual update. Version 2.2 is a clean up update that rewrites the code in object oriented manner.
-Version: 2.2.0
+Version: 2.2.5
 Author: Samuel Jiang
 Author URI: https://github.com/Siriu5J/Training-Registration
 License: A "Slug" license name e.g. GPL2
@@ -41,10 +41,5 @@ function run_trianing_registration_main() {
 }
 
 run_trianing_registration_main();
-
-/*
-SOME HELPFUL FUNCTIONS
- */
-// Check to see if this training name / location combination is valid
 
 

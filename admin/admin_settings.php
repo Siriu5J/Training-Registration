@@ -42,12 +42,13 @@ class training_registration_acp {
         if($_POST['create_training']) {
             $event_name     = $_POST['event-name'];
             $location       = $_POST['location'];
+            $start_date     = $_POST['start-date'];
             $limit_max      = (int)$_POST['max-limit'];
             $max            = $_POST['max'];
 
             if($max == 0 && $limit_max == '1') {
                 add_action('admin_notices', $this->admin_notice->createEventNotAllowed());
-            } elseif ($this->tools->isValidEvent($event_name, $location)) { // Check if the training name is valid
+            } elseif ($this->tools->isValidEvent($event_name, $location, $start_date)) { // Check if the training name is valid
                 // If max is unfilled, set as -999
                 if ($max == 0) {
                     $max = -999;
@@ -58,7 +59,7 @@ class training_registration_acp {
                     "max"           =>  $max,
                     "open_time"     =>  $_POST['open-date'],
                     "close_time"    =>  $_POST['close-date'],
-                    "start_time"    =>  $_POST['start-date'],
+                    "start_time"    =>  $start_date,
                     "end_time"      =>  $_POST['end-date'],
                     "location"      =>  $_POST['location'],
                     "limit_max"     =>  $limit_max,
@@ -75,6 +76,72 @@ class training_registration_acp {
         }
 
         $this->content->new_event();
+    }
+
+    /**
+     * VIEW TRAINING PAGE
+     */
+    public function erViewEvent() {
+        global $wpdb;
+
+        // Second Confirmation. Remove the training and its registration records
+        if ($_POST['remove-2']) {
+            $wpdb->delete(ER_EVENT_LIST, array(
+                'id'    => $_POST['removal_id']
+            ));
+            $wpdb->delete(ER_REGISTRATION_LIST, array(
+                'event_id'  => $_POST['removal_id']
+            ));
+        }
+
+        // Flip activation stat using CURRENT_STAT XOR 1
+        if ($_POST['confirm-activation']) {
+            $event_table = ER_EVENT_LIST;
+            $id = $_POST['select'];
+            $wpdb->update($event_table, array(
+                'activated' => (int)$wpdb->get_var("SELECT `activated` FROM $event_table WHERE `id` = $id") ^ 1
+            ), array(
+                'id' => $id
+            ));
+        }
+
+        // Update training after edit
+        if ($_POST['confirm-update']) {
+
+            $event_name     = $_POST['event-name'];
+            $location       = $_POST['location'];
+            $start_date     = $_POST['start-date'];
+            $limit_max      = (int)$_POST['max-limit'];
+            $max            = $_POST['max'];
+
+            if($max == 0 && $limit_max == '1') {
+                add_action('admin_notices', $this->admin_notice->createEventNotAllowed());
+            } elseif ($this->tools->isValidEvent($event_name, $location, $start_date)) { // Check if the training name is valid
+                // If max is unfilled, set as -999
+                if ($max == 0) {
+                    $max = -999;
+                }
+
+                $wpdb->update(ER_EVENT_LIST, array(
+                    "event_name"    =>  $_POST['update-event-name'],
+                    "max"           =>  $max,
+                    "open_time"     =>  $_POST['update-open-date'],
+                    "close_time"    =>  $_POST['update-close-date'],
+                    "start_time"    =>  $_POST['update-start-date'],
+                    "end_time"      =>  $_POST['update-end-date'],
+                    "location"      =>  $location,
+                    "limit_max"     =>  $limit_max,
+                    "comment"       =>  $_POST['update-comment'],
+                ), array(
+                    "id"            =>  $_POST['update-event_id'],
+                ));
+                add_action('admin_notices', $this->admin_notice->tableSuccessUpdate());
+            } else {
+                add_action('admin_notices', $this->admin_notice->tableFailedUpdate());
+            }
+        }
+
+        $this->content->view_event($this->tools);
     }
 }
 

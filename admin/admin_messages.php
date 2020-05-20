@@ -31,6 +31,15 @@ class admin_messages {
         </div>
         <?php
     }
+
+    public function tableFailedUpdate() {
+        ?>
+        <div class="notice notice-error is-dismissible">
+            <p>Failed to update training!</p>
+        </div>
+        <?php
+    }
+
     public function tableAlreadyExist() {
         ?>
         <div class="notice notice-error is-dismissible">
