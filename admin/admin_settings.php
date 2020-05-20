@@ -151,8 +151,8 @@ class training_registration_acp {
         global $wpdb;
 
         // Download Excel form
-// Generate XLS
-// Excel export code by Oliver Schwarz <oliver.schwarz@gmail.com>
+        // Generates xlsx
+        // Library from PHPExcel
         if ($_POST['download-xls']) {
             $data_array = array(
                 array(
@@ -224,11 +224,32 @@ class training_registration_acp {
             // Fix the issue of Excel not being able to generate excel when there's only one registration by pushing an empty row to the array
             array_push($data_array, array(""));
 
+            require_once(ER_PLUGIN_DIR . '/lib/PHPExcel.php');
+            $objPHPExcel = new PHPExcel();
+            // Set Properties
+            $objPHPExcel->getProperties()->setCreator("Training Registration Plugin")
+                                         ->setTitle('Training_Registration_' . $event_info->location . '_' . date("Y-m-d", strtotime($event_info->start_time)));
 
-            require_once(ER_PLUGIN_DIR . '/admin/to-excel.php');
-            $excel = new Excel_XML;
-            $excel->addWorksheet($worksheet_name, $data_array);
-            $excel->sendWorkbook('Training_Registration_' . $event_info->location . '_' . date("Y-m-d", strtotime($event_info->start_time)) . '.xls');
+            // Write data
+            $objPHPExcel->setActiveSheetIndex(0);
+            $objPHPExcel->getActiveSheet()->setTitle($worksheet_name);
+            $objPHPExcel->getActiveSheet()->fromArray($data_array, null, 'A1');
+
+            // Redirect output to a client’s web browser (Excel2007)
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="01simple.xlsx"');
+            header('Cache-Control: max-age=0');
+            // If you're serving to IE 9, then the following may be needed
+            header('Cache-Control: max-age=1');
+
+            // If you're serving to IE over SSL, then the following may be needed
+            header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+            header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+            header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+            header ('Pragma: public'); // HTTP/1.0
+
+            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+            $objWriter->save('php://output');
         }
 
         $this->content->manage_reg($this->tools);

@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="REMOTE_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="GROUP_NODE:origin" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="3d0ac7a8-841e-49be-910c-086a858c82b6" name="Default Changelist" comment="Update File">
+      <change beforePath="$PROJECT_DIR$/admin/admin_settings.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/admin_settings.php" afterDir="false" />
+    </list>
+    <list id="8c76e95e-b6fb-45e4-b02e-81869b9033e2" name="Revert &quot;Update File&quot;" comment="Revert &quot;Update File&quot;&#10;&#10;This reverts commit 17f032c5" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ComposerSettings">
+    <execution />
+  </component>
+  <component name="DrupalConfiguration">
+    <drupalPath />
+  </component>
+  <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="Samuel Jiang &lt;samueljiang@outlook.com&gt;" />
+      </list>
+    </option>
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="4c1b86e741cb8422787228b760ba0069a754f7c6" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="JoomlaConfiguration">
+    <joomlaConfigPath />
+    <joomlaPath />
+  </component>
+  <component name="PhpWorkspaceProjectConfiguration">
+    <include_path>
+      <path value="/var/www/html/wordpress" />
+    </include_path>
+  </component>
+  <component name="ProjectId" id="1c8tERabij2gl1B8nHm4ibI6ri8" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DatabaseDriversLRU" value="mysql" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/run.sh" />
+    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Confirmation" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/admin" />
+      <recent name="$PROJECT_DIR$/ui" />
+      <recent name="$PROJECT_DIR$/includes" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="Copy work" type="ShConfigurationType">
+      <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+      <option name="SCRIPT_PATH" value="$PROJECT_DIR$/run.sh" />
+      <option name="SCRIPT_OPTIONS" value="" />
+      <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+      <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+      <option name="INTERPRETER_PATH" value="/bin/bash" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="ShConfigurationType">
+      <option name="INDEPENDENT_SCRIPT_PATH" value="true" />
+      <option name="SCRIPT_PATH" value="$PROJECT_DIR$/run.sh" />
+      <option name="SCRIPT_OPTIONS" value="" />
+      <option name="INDEPENDENT_SCRIPT_WORKING_DIRECTORY" value="true" />
+      <option name="SCRIPT_WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="INDEPENDENT_INTERPRETER_PATH" value="true" />
+      <option name="INTERPRETER_PATH" value="/bin/bash" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="3d0ac7a8-841e-49be-910c-086a858c82b6" name="Default Changelist" comment="" />
+      <created>1589921935241</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1589921935241</updated>
+      <workItem from="1589921936684" duration="1366000" />
+      <workItem from="1589923304464" duration="3676000" />
+      <workItem from="1589929900563" duration="20001000" />
+    </task>
+    <task id="LOCAL-00001" summary="Renamed Files and started the changes">
+      <created>1589922250539</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1589922250539</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Renamed Files and started the changes. Try Again">
+      <created>1589922480957</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1589922480957</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Updated Discription">
+      <created>1589922782611</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1589922782611</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Update File">
+      <created>1589923010603</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1589923010603</updated>
+    </task>
+    <task id="LOCAL-00005" summary="Cancel">
+      <created>1589923357620</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1589923357620</updated>
+    </task>
+    <task id="LOCAL-00006" summary="First step towards object-oriented programming">
+      <created>1589926251588</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1589926251588</updated>
+    </task>
+    <task id="LOCAL-00007" summary="Another step towards object oriented design">
+      <created>1589940775814</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1589940775814</updated>
+    </task>
+    <task id="LOCAL-00008" summary="Changed the wpdb setup to fix the fatal error in mysql">
+      <created>1589941017397</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1589941017398</updated>
+    </task>
+    <task id="LOCAL-00009" summary="Added the admin messages for creating a new training">
+      <created>1589942452993</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1589942452993</updated>
+    </task>
+    <task id="LOCAL-00010" summary="Added view trainings and fixed up a few small issues">
+      <created>1589949162395</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1589949162395</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Got everything to work except for export to excel">
+      <created>1589951743877</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1589951743877</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="2" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+    <MESSAGE value="Renamed Files and started the changes" />
+    <MESSAGE value="Renamed Files and started the changes. Try Again" />
+    <MESSAGE value="Updated Discription" />
+    <MESSAGE value="Update File" />
+    <MESSAGE value="Revert &quot;Update File&quot;&#10;&#10;This reverts commit 17f032c5" />
+    <MESSAGE value="Cancel" />
+    <MESSAGE value="First step towards object-oriented programming" />
+    <MESSAGE value="Another step towards object oriented design" />
+    <MESSAGE value="Changed the wpdb setup to fix the fatal error in mysql" />
+    <MESSAGE value="Added the admin messages for creating a new training" />
+    <MESSAGE value="Added view trainings and fixed up a few small issues" />
+    <MESSAGE value="Got everything to work except for export to excel" />
+    <option name="LAST_COMMIT_MESSAGE" value="Got everything to work except for export to excel" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="657" y="190" width="596" height="727" key="#PHP" timestamp="1589922317422">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="657" y="190" width="596" height="727" key="#PHP/0.30.1920.1050@0.30.1920.1050" timestamp="1589922317422" />
+    <state x="797" y="482" width="316" height="144" key="#WordPress" timestamp="1589922979522">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="797" y="482" width="316" height="144" key="#WordPress/0.30.1920.1050@0.30.1920.1050" timestamp="1589922979522" />
+    <state x="2338" y="188" width="852" height="695" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1589941572925">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="418" y="213" width="800" height="675" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.30.1920.1050@0.30.1920.1050" timestamp="1589924870810" />
+    <state x="2338" y="188" width="852" height="695" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1589941572925" />
+    <state x="3051" y="30" width="636" height="1050" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1589930337856">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="3051" y="30" width="636" height="1050" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1589930337856" />
+    <state x="547" y="113" width="815" height="881" key="CommitChangelistDialog2" timestamp="1589923147759">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="547" y="113" width="815" height="881" key="CommitChangelistDialog2/0.30.1920.1050@0.30.1920.1050" timestamp="1589923147759" />
+    <state x="2230" y="295" width="424" height="510" key="FileChooserDialogImpl" timestamp="1589941535752">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="310" y="317" width="424" height="510" key="FileChooserDialogImpl/0.30.1920.1050@0.30.1920.1050" timestamp="1589923301334" />
+    <state x="2230" y="295" key="FileChooserDialogImpl/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1589941535752" />
+    <state x="2566" y="282" width="618" height="543" key="NewPhpClassDialog" timestamp="1589949218859">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2566" y="282" width="618" height="543" key="NewPhpClassDialog/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1589949218859" />
+    <state x="2700" y="464" width="349" height="144" key="NewPhpFileDialog" timestamp="1589937849166">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="780" y="481" width="349" height="146" key="NewPhpFileDialog/0.30.1920.1050@0.30.1920.1050" timestamp="1589921970432" />
+    <state x="2700" y="464" width="349" height="144" key="NewPhpFileDialog/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1589937849166" />
+    <state x="2624" y="279" width="502" height="550" key="RollbackChangesDialog" timestamp="1589939217696">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2624" y="279" width="502" height="550" key="RollbackChangesDialog/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1589939217696" />
+    <state x="2384" y="165" key="SettingsEditor" timestamp="1589954154789">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="464" y="190" key="SettingsEditor/0.30.1920.1050@0.30.1920.1050" timestamp="1589922304371" />
+    <state x="2384" y="165" key="SettingsEditor/1920.0.1920.1080/0.0.1920.1080@1920.0.1920.1080" timestamp="1589954154789" />
+    <state x="2475" y="268" width="800" height="526" key="Vcs.Push.Dialog.v2" timestamp="1589951745167">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="555" y="291" width="800" height="526" key="Vcs.Push.Dialog.v2/0.30.1920.1050@0.30.1920.1050" timestamp="1589926253122" />
+    <state x="2475" y="268" key="Vcs.Push.Dialog.v2/1920.0.1920.1080/0.0.1920.1080@1920.0.1920.1080" timestamp="1589951745167" />
+    <state x="2475" y="268" width="800" height="526" key="Vcs.Push.Dialog.v2/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1589941020624" />
+    <state x="765" y="471" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1589922641360">
+      <screen x="0" y="30" width="1920" height="1050" />
+    </state>
+    <state x="765" y="471" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.30.1920.1050@0.30.1920.1050" timestamp="1589922641360" />
+  </component>
+  <component name="WordPressConfiguration" enabled="true">
+    <wordpressPath>/var/www/html/wordpress</wordpressPath>
+  </component>
+</project>
