@@ -212,4 +212,100 @@ class settings_page_content {
             }
         }
     }
+
+    public function manage_reg($tools) {
+
+        global $wpdb;
+        $event_table = ER_EVENT_LIST;
+        require_once(ER_PLUGIN_DIR . '/admin/staff_reg_table.php');
+
+        $time_now = current_time('mysql');
+
+        // Only show information if there are upcoming and activated trainings
+        if ($wpdb->get_var("SELECT COUNT(*) FROM $event_table WHERE `activated` = 1 AND `start_time` > '$time_now'") != 0) {
+            ?>
+            <h1>Manage Registrations</h1>
+            <p>All the registrations of <b>upcoming AND activated trainings</b> can be seen here. To see the registration list of a particular training, click on the name of the training. You can use the bulk action to remove trainee(s) from a training. You can also choose to download the registration list as Excel Spreadsheet (.xls) by clicking on the "Download Training Registration as Excel Spreadsheet" button under each training.</p>
+            <table style="width:100%; border-collapse: collapse">
+                <tr style="outline: thin solid; text-align: left;">
+                    <th style="width: 30%">Training Name</th>
+                    <th style="width: 15%">Location</th>
+                    <th style="width: 10%">Training Start Time</th>
+                    <th style="width: 10%">Training End Time</th>
+                    <th style="width: 13%">Available Slots</th>
+                    <th style="width: 13%">Registration Stat</th>
+
+                </tr>
+                <?php
+
+                // Only show trainings that are upcoming and activated
+                $trainings = $wpdb->get_results("SELECT * FROM $event_table WHERE `activated` = 1 AND `start_time` > '$time_now' ORDER BY `start_time` DESC");
+                $trainingNumber = 0;    // This will keep track of the number of row the foreach loop is on to set the background of every other row
+
+                foreach ($trainings as $training) {
+                    $trainingNumber++;
+                    ?>
+                    <tr <?php if ($trainingNumber % 2 == 0) {
+                        echo "bgcolor=\"#A9A9A9\"";
+                    } ?> style="height: 25pt; ">
+                        <td><a href="#<?php echo $training->id; ?>"><?php echo $training->event_name ?></a></td>
+                        <td><?php echo $training->location ?></td>
+                        <td><?php echo date("Y-m-d", strtotime($training->start_time)) ?></td>
+                        <td><?php echo date("Y-m-d", strtotime($training->end_time)) ?></td>
+                        <td><?php echo $tools->spotsOpen($training->max, $training->num_reg) ?></td>
+                        <td><?php echo $tools->availability($training) ?></td>
+                    </tr>
+                    <?php
+                }
+                ?>
+            </table>
+            <br>
+            <br><br>
+            <hr/>
+            <?php
+
+            // Take care of the view registration form
+            foreach ($trainings as $training) {
+                // Create a new WP List Table for each training
+                $reg_table = new StaffRegTable($tools);
+                $reg_table->set_event_id($training->id);
+                $reg_table->prepare_items();
+
+                // Due to WP's restrictions on using certain functions in global scope, I had to pre-fetch the school nicknames and send them through the form
+                // This will be a two dimensional array which contains all
+
+                ?>
+                <div class="wrap" id="<?php echo $training->id; ?>">
+                    <h3>Registrations for <?php echo $training->event_name; ?></h3>
+                    <form id="staff-reg" method="GET" action="<?php echo $_SERVER['REQUEST_URI'] ?>">
+                        <!-- For plugins, we also need to ensure that the form posts back to our current page -->
+                        <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
+                        <!-- Now we can render the completed list table -->
+                        <?php $reg_table->display() ?>
+                    </form>
+                </div>
+                <br>
+                <form id="manage-events" name="manage-events" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                    <input type="hidden" name="event-id" value="<?php echo $training->id; ?>">
+                    <input style="float: left; background-image: linear-gradient(#387039, #387039); border-color: #2a5936; color: white"
+                           type="submit" name="download-xls" id="download-xls" value="Download This Training Registration as Excel Spreadsheet"/>
+                </form>
+                <br/><br/><br>
+                <hr/>
+                <?php
+
+            }
+
+
+
+        } else {    // No trainings? Show the way to create event
+            ?>
+            <h1>Manage Registrations</h1>
+            <div style="display: contents; justify-content: center;">
+                <h3 align="center">No Activated and Upcoming Trainings Found!<br>
+                    <p align="center">This page will only allow you to manage registrations of activated and upcoming (start date set to time in the future) trainings.<br>Make sure trainings you want to manage fulfill both requirements.</p>
+            </div>
+            <?php
+        }
+    }
 }
