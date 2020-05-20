@@ -20,7 +20,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3d0ac7a8-841e-49be-910c-086a858c82b6" name="Default Changelist" comment="Update File">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/admin_settings.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/admin_settings.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/settings_page_content.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/settings_page_content.php" afterDir="false" />
     </list>
     <list id="8c76e95e-b6fb-45e4-b02e-81869b9033e2" name="Revert &quot;Update File&quot;" comment="Revert &quot;Update File&quot;&#10;&#10;This reverts commit 17f032c5" />
     <option name="SHOW_DIALOG" value="false" />
@@ -117,7 +119,7 @@
       <updated>1589921935241</updated>
       <workItem from="1589921936684" duration="1366000" />
       <workItem from="1589923304464" duration="3676000" />
-      <workItem from="1589929900563" duration="20001000" />
+      <workItem from="1589929900563" duration="26488000" />
     </task>
     <task id="LOCAL-00001" summary="Renamed Files and started the changes">
       <created>1589922250539</created>
@@ -196,7 +198,14 @@
       <option name="project" value="LOCAL" />
       <updated>1589951743877</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="Moving on to PHPExcel">
+      <created>1589954337438</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1589954337438</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -228,7 +237,8 @@
     <MESSAGE value="Added the admin messages for creating a new training" />
     <MESSAGE value="Added view trainings and fixed up a few small issues" />
     <MESSAGE value="Got everything to work except for export to excel" />
-    <option name="LAST_COMMIT_MESSAGE" value="Got everything to work except for export to excel" />
+    <MESSAGE value="Moving on to PHPExcel" />
+    <option name="LAST_COMMIT_MESSAGE" value="Moving on to PHPExcel" />
   </component>
   <component name="WindowStateProjectService">
     <state x="657" y="190" width="596" height="727" key="#PHP" timestamp="1589922317422">
@@ -257,10 +267,10 @@
     </state>
     <state x="310" y="317" width="424" height="510" key="FileChooserDialogImpl/0.30.1920.1050@0.30.1920.1050" timestamp="1589923301334" />
     <state x="2230" y="295" key="FileChooserDialogImpl/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1589941535752" />
-    <state x="2566" y="282" width="618" height="543" key="NewPhpClassDialog" timestamp="1589949218859">
+    <state x="2566" y="282" width="618" height="543" key="NewPhpClassDialog" timestamp="1589956821136">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="2566" y="282" width="618" height="543" key="NewPhpClassDialog/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1589949218859" />
+    <state x="2566" y="282" width="618" height="543" key="NewPhpClassDialog/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1589956821136" />
     <state x="2700" y="464" width="349" height="144" key="NewPhpFileDialog" timestamp="1589937849166">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
@@ -275,11 +285,11 @@
     </state>
     <state x="464" y="190" key="SettingsEditor/0.30.1920.1050@0.30.1920.1050" timestamp="1589922304371" />
     <state x="2384" y="165" key="SettingsEditor/1920.0.1920.1080/0.0.1920.1080@1920.0.1920.1080" timestamp="1589954154789" />
-    <state x="2475" y="268" width="800" height="526" key="Vcs.Push.Dialog.v2" timestamp="1589951745167">
+    <state x="2475" y="268" width="800" height="526" key="Vcs.Push.Dialog.v2" timestamp="1589954340480">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="555" y="291" width="800" height="526" key="Vcs.Push.Dialog.v2/0.30.1920.1050@0.30.1920.1050" timestamp="1589926253122" />
-    <state x="2475" y="268" key="Vcs.Push.Dialog.v2/1920.0.1920.1080/0.0.1920.1080@1920.0.1920.1080" timestamp="1589951745167" />
+    <state x="2475" y="268" width="800" height="526" key="Vcs.Push.Dialog.v2/1920.0.1920.1080/0.0.1920.1080@1920.0.1920.1080" timestamp="1589954340480" />
     <state x="2475" y="268" width="800" height="526" key="Vcs.Push.Dialog.v2/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1589941020624" />
     <state x="765" y="471" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1589922641360">
       <screen x="0" y="30" width="1920" height="1050" />

@@ -285,7 +285,7 @@ class settings_page_content {
                     </form>
                 </div>
                 <br>
-                <form id="manage-events" name="manage-events" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                <form id="manage-events" name="manage-events" method="POST" action="<?php echo $_SERVER['REQUEST_URI'] ?>">
                     <input type="hidden" name="event-id" value="<?php echo $training->id; ?>">
                     <input style="float: left; background-image: linear-gradient(#387039, #387039); border-color: #2a5936; color: white"
                            type="submit" name="download-xls" id="download-xls" value="Download This Training Registration as Excel Spreadsheet"/>

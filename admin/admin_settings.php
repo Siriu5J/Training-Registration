@@ -150,109 +150,107 @@ class training_registration_acp {
     public function erViewEventReg() {
         global $wpdb;
 
-        // Download Excel form
-        // Generates xlsx
-        // Library from PHPExcel
-        if ($_POST['download-xls']) {
-            $data_array = array(
-                array(
-                    'Registration Time',
-                    'First Name',
-                    'Last Name',
-                    'Name in Native Language',
-                    'Sex/Gender',
-                    'Age',
-                    'School',
-                    'School Username',
-                    'Email',
-                    'Phone',
-                    'Position in LC',
-                    'LC',
-                    '# of trainings attended',
-                    '# of CEC attended',
-                    'Highest Degree',
-                    'Year of Graduation',
-                    'Major',
-                    'Minor',
-                    'Institution',
-                    'Comment'
-                )
-            );
-
-            $registration_list = ER_REGISTRATION_LIST;
-            $event_list        = ER_EVENT_LIST;
-            $staff_profile     = ER_STAFF_PROFILE;
-            $event_id          = $_POST['event-id'];
-            $registrations     = $wpdb->get_results("SELECT * FROM $registration_list WHERE `event_id` = $event_id");
-            $event_info        = $wpdb->get_row("SELECT * FROM $event_list WHERE id = $event_id");
-            $worksheet_name    = $event_info->event_name . ' at ' . $event_info->location . ' ' . date("Y", strtotime($event_info->start_time));
-
-            foreach($registrations as $trainee) {
-                $trainee_id     = $trainee->staff;
-                $reg_time       = date("F j", strtotime($trainee->reg_time));
-                $trainee_data   = $wpdb->get_row("SELECT * FROM $staff_profile WHERE id = $trainee_id");
-
-                // Get school nickname
-                $school_id		= $wpdb->get_var("SELECT `ID` FROM $wpdb->users WHERE `user_login` = '$trainee_data->school'");
-                $school_nick	= $wpdb->get_var("SELECT `meta_value` FROM $wpdb->usermeta WHERE `user_id` = $school_id AND `meta_key` = 'nickname'");
-
-                array_push($data_array, array(
-                    $reg_time,
-                    $trainee_data->first_name,
-                    $trainee_data->last_name,
-                    $trainee_data->cn_name,
-                    $trainee_data->sex,
-                    $trainee_data->age,
-                    $school_nick,
-                    $trainee_data->school,
-                    $trainee_data->email,
-                    $trainee_data->phone,
-                    $trainee_data->pos,
-                    $trainee_data->lc,
-                    $trainee_data->training_exp,
-                    $trainee_data->cec_exp,
-                    $trainee_data->degree,
-                    $trainee_data->grad_year,
-                    $trainee_data->major,
-                    $trainee_data->minor,
-                    $trainee_data->institution,
-                    $trainee_data->comment
-
-                ));
-            }
-
-            // Fix the issue of Excel not being able to generate excel when there's only one registration by pushing an empty row to the array
-            array_push($data_array, array(""));
-
-            require_once(ER_PLUGIN_DIR . '/lib/PHPExcel.php');
-            $objPHPExcel = new PHPExcel();
-            // Set Properties
-            $objPHPExcel->getProperties()->setCreator("Training Registration Plugin")
-                                         ->setTitle('Training_Registration_' . $event_info->location . '_' . date("Y-m-d", strtotime($event_info->start_time)));
-
-            // Write data
-            $objPHPExcel->setActiveSheetIndex(0);
-            $objPHPExcel->getActiveSheet()->setTitle($worksheet_name);
-            $objPHPExcel->getActiveSheet()->fromArray($data_array, null, 'A1');
-
-            // Redirect output to a client’s web browser (Excel2007)
-            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-            header('Content-Disposition: attachment;filename="01simple.xlsx"');
-            header('Cache-Control: max-age=0');
-            // If you're serving to IE 9, then the following may be needed
-            header('Cache-Control: max-age=1');
-
-            // If you're serving to IE over SSL, then the following may be needed
-            header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-            header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-            header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-            header ('Pragma: public'); // HTTP/1.0
-
-            $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
-            $objWriter->save('php://output');
-        }
-
         $this->content->manage_reg($this->tools);
     }
 }
+global $wpdb;
 
+// Download Excel form
+// Generates xlsx
+// Library from PHPExcel
+if (isset($_POST['download-xls'])) {
+    $data_array = array(
+        array(
+            'Registration Time',
+            'First Name',
+            'Last Name',
+            'Name in Native Language',
+            'Sex/Gender',
+            'Age',
+            'School',
+            'School Username',
+            'Email',
+            'Phone',
+            'Position in LC',
+            'LC',
+            '# of trainings attended',
+            '# of CEC attended',
+            'Highest Degree',
+            'Year of Graduation',
+            'Major',
+            'Minor',
+            'Institution',
+            'Comment'
+        )
+    );
+
+    $registration_list = ER_REGISTRATION_LIST;
+    $event_list        = ER_EVENT_LIST;
+    $staff_profile     = ER_STAFF_PROFILE;
+    $event_id          = $_POST['event-id'];
+    $registrations     = $wpdb->get_results("SELECT * FROM $registration_list WHERE `event_id` = $event_id");
+    $event_info        = $wpdb->get_row("SELECT * FROM $event_list WHERE id = $event_id");
+    $worksheet_name    = $event_info->event_name . ' at ' . $event_info->location . ' ' . date("Y", strtotime($event_info->start_time));
+
+    foreach($registrations as $trainee) {
+        $trainee_id     = $trainee->staff;
+        $reg_time       = date("F j", strtotime($trainee->reg_time));
+        $trainee_data   = $wpdb->get_row("SELECT * FROM $staff_profile WHERE id = $trainee_id");
+
+        // Get school nickname
+        $school_id		= $wpdb->get_var("SELECT `ID` FROM $wpdb->users WHERE `user_login` = '$trainee_data->school'");
+        $school_nick	= $wpdb->get_var("SELECT `meta_value` FROM $wpdb->usermeta WHERE `user_id` = $school_id AND `meta_key` = 'nickname'");
+
+        array_push($data_array, array(
+            $reg_time,
+            $trainee_data->first_name,
+            $trainee_data->last_name,
+            $trainee_data->cn_name,
+            $trainee_data->sex,
+            $trainee_data->age,
+            $school_nick,
+            $trainee_data->school,
+            $trainee_data->email,
+            $trainee_data->phone,
+            $trainee_data->pos,
+            $trainee_data->lc,
+            $trainee_data->training_exp,
+            $trainee_data->cec_exp,
+            $trainee_data->degree,
+            $trainee_data->grad_year,
+            $trainee_data->major,
+            $trainee_data->minor,
+            $trainee_data->institution,
+            $trainee_data->comment
+
+        ));
+    }
+
+    // Fix the issue of Excel not being able to generate excel when there's only one registration by pushing an empty row to the array
+    array_push($data_array, array(""));
+
+    $filename = 'Training_Registration_' . $event_info->location . '_' . date("Y-m-d", strtotime($event_info->start_time)) . 'xls';
+
+    require_once(ER_PLUGIN_DIR . '/lib/PHPExcel.php');
+    $objPHPExcel = new PHPExcel();
+    // Set Properties
+    $objPHPExcel->getProperties()->setCreator("Training Registration Plugin")
+        ->setTitle($filename);
+
+    // Write data
+    $objPHPExcel->setActiveSheetIndex(0);
+    $objPHPExcel->getActiveSheet()->setTitle($worksheet_name);
+    $objPHPExcel->getActiveSheet()->fromArray($data_array, null, 'A1');
+
+    header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    header("Cache-Control: no-store, no-cache");
+    header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+    header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+    header('Content-Disposition: attachment;filename="'. $filename .'"');
+    header ('Pragma: public'); // HTTP/1.0
+    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+
+    $objWriter->save('php://output');
+
+    exit();
+}
