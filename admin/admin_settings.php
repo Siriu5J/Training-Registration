@@ -156,8 +156,6 @@ class training_registration_acp {
      * VIEW SETTINGS PAGE
      */
     public function erSettings() {
-        $this->content->view_settings();
-
         if ($_POST['save-settings']) {
             if ($_POST['show-available'] == 1) {
                 update_option( 'show_availability', 1);
@@ -167,6 +165,8 @@ class training_registration_acp {
 
             add_action('admin_notices', 'settingsUpdated');
         }
+
+        $this->content->view_settings();
     }
 }
 global $wpdb;
