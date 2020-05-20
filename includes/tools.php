@@ -1,5 +1,14 @@
 <?php
-
+/**
+ * Class training_registration_tools
+ *
+ * This is the tools library that I built with various functions for the plugin
+ *
+ * @since 2020-5-19
+ * @version 1.0
+ *
+ * @package Training-Registration
+ */
 
 class training_registration_tools {
     public function isValidEvent($name, $location, $start_date) {

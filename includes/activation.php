@@ -1,7 +1,14 @@
 <?php
-// Version: 1.0
-// Date:    2020/5/19
-// This php handles the activation actions of the plugin. It currently only creates the tables within the database on demand.
+/**
+ * Class activation
+ *
+ * This class handles all the activation actions of the plugin
+ *
+ * @since 2020-5-19
+ * @version 1.0
+ *
+ * @package Training-Registration
+ */
 
 class activation {
     function activate_plugin() {

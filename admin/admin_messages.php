@@ -1,6 +1,17 @@
 <?php
 
 
+/**
+ * Class admin_messages
+ *
+ * This class contains all the callback functions for the admin messages. training_registration_acp uses this class exclusively to send admin messages.
+ *
+ * @since 2020-5-19
+ * @version 1.0
+ *
+ * @package Training-Registration
+ */
+
 class admin_messages {
     // Admin Message Boxes
     public function createEventNotAllowed() {

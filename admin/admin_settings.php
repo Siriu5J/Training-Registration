@@ -1,4 +1,17 @@
 <?php
+
+/**
+ * Class training_registration_acp
+ *
+ * This class contains all the callback functions for the admin menu settings page. However, the HTML contents are not stored here.
+ * This class uses the tools library as well
+ *
+ * @since 2020-5-19
+ * @version 1.2
+ *
+ * @package Training-Registration
+ */
+
 class training_registration_acp {
     // Objects
     protected $tools;           // Some helpful tools
@@ -148,8 +161,10 @@ class training_registration_acp {
      * MANAGE REGISTRATION PAGE
      */
     public function erViewEventReg() {
+        global $wpdb;
 
         $this->content->manage_reg($this->tools);
+
     }
 
     /**
@@ -169,12 +184,15 @@ class training_registration_acp {
         $this->content->view_settings();
     }
 }
-global $wpdb;
 
-// Download Excel form
-// Generates xlsx
-// Library from PHPExcel
+/**
+ * Download to Excel
+ * I couldn't find another place tp store this because of the header issues.
+ * This function created with PHPExcel
+ */
+global $wpdb;
 if (isset($_POST['download-xls'])) {
+
     $data_array = array(
         array(
             'Registration Time',
@@ -257,9 +275,9 @@ if (isset($_POST['download-xls'])) {
 
     // Set Properties
     $objPHPExcel->getProperties()->setCreator("Training Registration Plugin")
-                                 ->setLastModifiedBy("Training Registration Plugin")
-                                 ->setTitle($filename)
-                                 ->setSubject("Training Registration");
+        ->setLastModifiedBy("Training Registration Plugin")
+        ->setTitle($filename)
+        ->setSubject("Training Registration");
 
     // Write data
     $objPHPExcel->setActiveSheetIndex(0);
@@ -279,10 +297,10 @@ if (isset($_POST['download-xls'])) {
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
     header('Content-Disposition: attachment;filename="'. $filename.'"');
     header('Cache-Control: max-age=0');
-// If you're serving to IE 9, then the following may be needed
+    // If you're serving to IE 9, then the following may be needed
     header('Cache-Control: max-age=1');
 
-// If you're serving to IE over SSL, then the following may be needed
+    // If you're serving to IE over SSL, then the following may be needed
     header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
     header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
     header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1

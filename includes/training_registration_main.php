@@ -1,4 +1,14 @@
 <?php
+/**
+ * Class training_registration_main
+ *
+ * This is the main class of the plugin. It requires all the necessary php classes and registers all the actions and shortcodes.
+ *
+ * @since 2020-5-19
+ * @version 1.0
+ *
+ * @package Training-Registration
+ */
 
 
 class training_registration_main {

@@ -1,7 +1,14 @@
 <?php
-// Version: 1.0
-// Date:    2020/5/19
-// This class handles all the necessary hooks to WordPress
+/**
+ * Class training_registration_loader
+ *
+ * This class handles all the shortcode and action hooks. Add those actions in the main php
+ *
+ * @since 2020-5-19
+ * @version 1.0
+ *
+ * @package Training-Registration
+ */
 
 class training_registration_loader {
     // Two arrays to store all actions and shortcodes

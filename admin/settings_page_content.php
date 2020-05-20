@@ -1,4 +1,14 @@
 <?php
+/**
+ * Class settings_page_content
+ *
+ * This class contains all the HTML/PHP hybrid content for the admin settings pages.
+ *
+ * @since 2020-5-19
+ * @version 1.1
+ *
+ * @package Training-Registration
+ */
 
 class settings_page_content {
     public function overview() {

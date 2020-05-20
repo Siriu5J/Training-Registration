@@ -1,5 +1,15 @@
 <?php
-
+/**
+ * class StaffRegTable
+ *
+ * This class extends the WP_List_Table to show custom training registrations. This is called by admin settings.
+ * This is derived from a GitHub project that I lost
+ *
+ * @since 2019-12
+ * @version 2.0
+ *
+ * @package Training-Registration
+ */
 
 if(!class_exists('WP_List_Table')){
     require_once(ABSPATH . 'wp-admin/includes/class-wp-list-table.php');
