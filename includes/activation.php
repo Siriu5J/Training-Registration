@@ -1,25 +1,15 @@
 <?php
+// Version: 1.0
+// Date:    2020/5/19
+// This php handles the activation actions of the plugin. It currently only creates the tables within the database on demand.
 
-
-class Forms {
-
-    // private variables for all the table names
-    static private $staff_profile = "";
-    static private $event_list = "";
-    static private $reg_list = "";
-
-    // Constructor
-    function __construct($prefix) {
-        self::$staff_profile = $prefix . 'er_staff_profile';
-        self::$event_list    = $prefix . 'er_event_list';
-        self::$reg_list      = $prefix . 'er_event_reg';
-    }
-
+class activation {
     function activate_plugin() {
         global $wpdb;
-        $staff = $this->staff_profile;
-        $event = $this->event_list;
-        $registration = $this->reg_list;
+
+        $staff = ER_STAFF_PROFILE;
+        $event = ER_EVENT_LIST;
+        $registration = ER_REGISTRATION_LIST;
 
         $charset_collate = $wpdb->get_charset_collate();
 
@@ -73,7 +63,7 @@ class Forms {
             PRIMARY KEY (id)
         )$charset_collate";
 
-            require_once( ABSPATH . 'wp-admin/includes/upgrade.php');
+            require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
             dbDelta($sql);
         }
 
