@@ -49,30 +49,22 @@ class training_registration_acp {
             if($max == 0 && $limit_max == '1') {
                 add_action('admin_notices', array($this->admin_notice, 'createEventNotAllowed'));
             } elseif ($this->tools->isValidEvent($event_name, $location)) { // Check if the training name is valid
-                $open_time  =   $_POST['open-date'];
-                $close_time =   $_POST['close-date'];
-                $start_time =   $_POST['start-date'];
-                $end_time   =   $_POST['end-date'];
-                $activated  =   (int)$_POST['activated'];
-
-                $comment    =   $_POST['comment'];
-
                 // If max is unfilled, set as -999
                 if ($max == 0) {
                     $max = -999;
                 }
 
                 $success = $wpdb->insert(ER_EVENT_LIST, array(
-                    "event_name"    =>  $event_name,
+                    "event_name"    =>  $_POST['event-name'],
                     "max"           =>  $max,
-                    "open_time"     =>  $open_time,
-                    "close_time"    =>  $close_time,
-                    "start_time"    =>  $start_time,
-                    "end_time"      =>  $end_time,
-                    "location"      =>  $location,
+                    "open_time"     =>  $_POST['open-date'],
+                    "close_time"    =>  $_POST['close-date'],
+                    "start_time"    =>  $_POST['start-date'],
+                    "end_time"      =>  $_POST['end-date'],
+                    "location"      =>  $_POST['location'],
                     "limit_max"     =>  $limit_max,
-                    "comment"       =>  $comment,
-                    "activated"     =>  $activated,
+                    "comment"       =>  $_POST['comment'],
+                    "activated"     =>  (int)$_POST['activated'],
                     "num_reg"       =>  0,
                 ));
 
