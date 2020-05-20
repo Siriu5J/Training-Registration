@@ -38,7 +38,6 @@ class training_registration_acp {
      */
     public function erNewEvent() {
         global $wpdb;
-        $this->content->new_event();
         // Create new table for the new event and fill first data
         if($_POST['create_training']) {
             $event_name     = $_POST['event-name'];
@@ -47,7 +46,7 @@ class training_registration_acp {
             $max            = $_POST['max'];
 
             if($max == 0 && $limit_max == '1') {
-                add_action('admin_notices', array($this->admin_notice, 'createEventNotAllowed'));
+                add_action('admin_notices', $this->admin_notice->createEventNotAllowed());
             } elseif ($this->tools->isValidEvent($event_name, $location)) { // Check if the training name is valid
                 // If max is unfilled, set as -999
                 if ($max == 0) {
@@ -68,12 +67,14 @@ class training_registration_acp {
                     "num_reg"       =>  0,
                 ));
 
-                if ($success) {add_action('admin_notices', array($this->admin_notice, 'tableSuccessCreation'));}
-                else {add_action('admin_notices', array($this->admin_notice, 'tableFailedCreation'));}
+                if ($success) {add_action('admin_notices', $this->admin_notice->tableSuccessCreation());}
+                else {add_action('admin_notices', $this->admin_notice->tableFailedCreation());}
             } else {
-                add_action('admin_notices', array($this->admin_notice, 'tableAlreadyExist'));
+                add_action('admin_notices', $this->admin_notice->tableAlreadyExist());
             }
         }
+
+        $this->content->new_event();
     }
 }
 

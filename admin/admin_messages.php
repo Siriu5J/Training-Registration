@@ -1,8 +1,7 @@
 <?php
 
 
-class admin_messages
-{
+class admin_messages {
     // Admin Message Boxes
     public function createEventNotAllowed() {
         ?>
