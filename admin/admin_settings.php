@@ -245,28 +245,50 @@ if (isset($_POST['download-xls'])) {
     // Fix the issue of Excel not being able to generate excel when there's only one registration by pushing an empty row to the array
     array_push($data_array, array(""));
 
-    $filename = 'Training_Registration_' . $event_info->location . '_' . date("Y-m-d", strtotime($event_info->start_time)) . 'xls';
+    $filename = 'Training_Registration_' . $event_info->location . '_' . date("Y-m-d", strtotime($event_info->start_time)) . 'xlsx';
+
+    // Enable error reporting
+    error_reporting(E_ALL);
+    ini_set('display_errors', TRUE);
+    ini_set('display_startup_errors', TRUE);
 
     require_once(ER_PLUGIN_DIR . '/lib/PHPExcel.php');
     $objPHPExcel = new PHPExcel();
+
     // Set Properties
     $objPHPExcel->getProperties()->setCreator("Training Registration Plugin")
-        ->setTitle($filename);
+                                 ->setLastModifiedBy("Training Registration Plugin")
+                                 ->setTitle($filename)
+                                 ->setSubject("Training Registration");
 
     // Write data
     $objPHPExcel->setActiveSheetIndex(0);
     $objPHPExcel->getActiveSheet()->setTitle($worksheet_name);
     $objPHPExcel->getActiveSheet()->fromArray($data_array, null, 'A1');
 
+    // Make a more formatted Excel form
+    $objPHPExcel->getActiveSheet()->getStyle("A1:T1")->getFont()->setBold(true);
+    foreach(range('A', 'T') as $columnID) { // Autosize column
+        $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
+    }
+
+    // Set active sheet
+    $objPHPExcel->setActiveSheetIndex(0);
+
+    // Redirect output to a client’s web browser (Excel2007)
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    header("Cache-Control: no-store, no-cache");
+    header('Content-Disposition: attachment;filename="'. $filename.'"');
+    header('Cache-Control: max-age=0');
+// If you're serving to IE 9, then the following may be needed
+    header('Cache-Control: max-age=1');
+
+// If you're serving to IE over SSL, then the following may be needed
     header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
     header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-    header('Content-Disposition: attachment;filename="'. $filename .'"');
+    header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
     header ('Pragma: public'); // HTTP/1.0
-    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
 
+    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
     $objWriter->save('php://output');
-
     exit();
 }
