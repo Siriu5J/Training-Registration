@@ -308,4 +308,29 @@ class settings_page_content {
             <?php
         }
     }
+
+    public function view_settings() {
+        $show_available = (int)get_option( 'show_availability', 0 );
+
+        ?>
+        <h1>Settings</h1>
+        <form id="update-settings" name="update-settings" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+            <table class="form-table">
+                <tbody>
+                <tr>
+                    <th>Show Available Seats</th>
+                    <td>
+                        <fieldset>
+                            <label for="show-available"><input type="checkbox" name="show-available" value="1" <?php if ($show_available == 1) {echo 'checked';} ?>> Disabling this option will hide the number of seats remaining in a training to schools.</label>
+                        </fieldset>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <p class="submit">
+                <input type="submit" class="button button-primary" name="save-settings" id="save-settings" value="Save Settings">
+            </p>
+        </form>
+        <?php
+    }
 }

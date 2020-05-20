@@ -148,9 +148,25 @@ class training_registration_acp {
      * MANAGE REGISTRATION PAGE
      */
     public function erViewEventReg() {
-        global $wpdb;
 
         $this->content->manage_reg($this->tools);
+    }
+
+    /**
+     * VIEW SETTINGS PAGE
+     */
+    public function erSettings() {
+        $this->content->view_settings();
+
+        if ($_POST['save-settings']) {
+            if ($_POST['show-available'] == 1) {
+                update_option( 'show_availability', 1);
+            } else {
+                update_option( 'show_availability', 0);
+            }
+
+            add_action('admin_notices', 'settingsUpdated');
+        }
     }
 }
 global $wpdb;
