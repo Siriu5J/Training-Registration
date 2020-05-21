@@ -6,7 +6,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3d0ac7a8-841e-49be-910c-086a858c82b6" name="Default Changelist" comment="Update File">
-      <change beforePath="$PROJECT_DIR$/training-registration.php" beforeDir="false" afterPath="$PROJECT_DIR$/Training-registration.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/training-registration.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/admin_settings.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/admin_settings.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/create_page.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/create_page.php" afterDir="false" />
     </list>
     <list id="8c76e95e-b6fb-45e4-b02e-81869b9033e2" name="Revert &quot;Update File&quot;" comment="Revert &quot;Update File&quot;&#10;&#10;This reverts commit 17f032c5" />
     <option name="SHOW_DIALOG" value="false" />
@@ -58,7 +61,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/run.sh" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Confirmation" />
   </component>
   <component name="RecentsManager">
@@ -108,6 +111,7 @@
       <workItem from="1590003043131" duration="222000" />
       <workItem from="1590003985258" duration="10352000" />
       <workItem from="1590021769002" duration="9192000" />
+      <workItem from="1590031271298" duration="2223000" />
     </task>
     <task id="LOCAL-00001" summary="Renamed Files and started the changes">
       <created>1589922250539</created>
@@ -242,7 +246,14 @@
       <option name="project" value="LOCAL" />
       <updated>1590030904887</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary="Ready for 2.7.0 release">
+      <created>1590031307752</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1590031307752</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -283,7 +294,8 @@
     <MESSAGE value="Now the pages sets the twenty-twenty template &quot;full-width template&quot;" />
     <MESSAGE value="Plugin shows a notification when the pages cannot be created and instructs the user." />
     <MESSAGE value="Renamed file for backwards support" />
-    <option name="LAST_COMMIT_MESSAGE" value="Renamed file for backwards support" />
+    <MESSAGE value="Ready for 2.7.0 release" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ready for 2.7.0 release" />
   </component>
   <component name="WindowStateProjectService">
     <state x="657" y="190" width="596" height="727" key="#PHP" timestamp="1589922317422">
@@ -330,12 +342,12 @@
     </state>
     <state x="464" y="190" key="SettingsEditor/0.30.1920.1050@0.30.1920.1050" timestamp="1589922304371" />
     <state x="2384" y="165" key="SettingsEditor/1920.0.1920.1080/0.0.1920.1080@1920.0.1920.1080" timestamp="1589954154789" />
-    <state x="2475" y="268" width="800" height="526" key="Vcs.Push.Dialog.v2" timestamp="1590008103709">
+    <state x="2475" y="268" width="800" height="526" key="Vcs.Push.Dialog.v2" timestamp="1590031313848">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="555" y="291" width="800" height="526" key="Vcs.Push.Dialog.v2/0.30.1920.1050@0.30.1920.1050" timestamp="1589926253122" />
     <state x="2475" y="268" width="800" height="526" key="Vcs.Push.Dialog.v2/1920.0.1920.1080/0.0.1920.1080@1920.0.1920.1080" timestamp="1589954340480" />
-    <state x="2475" y="268" width="800" height="526" key="Vcs.Push.Dialog.v2/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1590008103709" />
+    <state x="2475" y="268" width="800" height="526" key="Vcs.Push.Dialog.v2/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1590031313848" />
     <state x="765" y="471" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1589922641360">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>

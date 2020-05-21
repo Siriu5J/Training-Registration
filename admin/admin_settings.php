@@ -121,11 +121,11 @@ class training_registration_acp {
         // Update training after edit
         if ($_POST['confirm-update']) {
 
-            $event_name     = $_POST['event-name'];
-            $location       = $_POST['location'];
-            $start_date     = $_POST['start-date'];
-            $limit_max      = (int)$_POST['max-limit'];
-            $max            = $_POST['max'];
+            $event_name     = $_POST['update-event-name'];
+            $location       = $_POST['update-location'];
+            $start_date     = $_POST['update-start-date'];
+            $limit_max      = (int)$_POST['update-max-limit'];
+            $max            = $_POST['update-max'];
 
             if($max == 0 && $limit_max == '1') {
                 add_action('admin_notices', $this->admin_notice->createEventNotAllowed());
@@ -268,7 +268,7 @@ if (isset($_POST['download-xls'])) {
     // Fix the issue of Excel not being able to generate excel when there's only one registration by pushing an empty row to the array
     array_push($data_array, array(""));
 
-    $filename = 'Training_Registration_' . $event_info->location . '_' . date("Y-m-d", strtotime($event_info->start_time)) . 'xlsx';
+    $filename = 'Training_Registration_' . $event_info->location . '_' . date("Y-m-d", strtotime($event_info->start_time)) . '.xlsx';
 
     // Enable error reporting
     error_reporting(E_ALL);
@@ -300,7 +300,7 @@ if (isset($_POST['download-xls'])) {
 
     // Redirect output to a client’s web browser (Excel2007)
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    header('Content-Disposition: attachment;filename="'. $filename.'"');
+    header('Content-Disposition: attachment;filename="'. $filename .'"');
     header('Cache-Control: max-age=0');
     // If you're serving to IE 9, then the following may be needed
     header('Cache-Control: max-age=1');

@@ -46,7 +46,7 @@ class create_page {
     private function create_register_to_training() {
         $content = '<!-- wp:shortcode -->[register_training]<!-- /wp:shortcode -->';
         $create_register_content = array(
-            'post_title'    =>  "Register to Training",
+            'post_title'    =>  "Register for Training",
             'post_type'     =>  'page',
             'page_template' =>  'templates/template-full-width.php',
             'post_content'  =>  $content,
@@ -60,15 +60,15 @@ class create_page {
         $site_home = (string)get_option('home');
         $content = '
         <!-- wp:button {"className":"aligncenter"} -->
-        <div class="wp-block-button aligncenter"><a class="wp-block-button__link" href="'.$site_home.'/index.php/create-staff-profile/">Create Staff Profile</a></div>
+        <div class="wp-block-button aligncenter"><a class="wp-block-button__link" href="'.$site_home.'/create-staff-profile/">Create Staff Profile</a></div>
         <!-- /wp:button -->
 
         <!-- wp:button {"className":"aligncenter"} -->
-        <div class="wp-block-button aligncenter"><a class="wp-block-button__link" href="'.$site_home.'/index.php/register-to-training/">Register to Training</a></div>
+        <div class="wp-block-button aligncenter"><a class="wp-block-button__link" href="'.$site_home.'/register-for-training/">Register for Training</a></div>
         <!-- /wp:button -->
 
         <!-- wp:button {"className":"aligncenter"} -->
-        <div class="wp-block-button aligncenter"><a class="wp-block-button__link" href="'.$site_home.'/index.php/manage-my-staff/">Manage my Staff</a></div>
+        <div class="wp-block-button aligncenter"><a class="wp-block-button__link" href="'.$site_home.'/manage-my-staff/">Manage my Staff</a></div>
         <!-- /wp:button -->
         ';
         $create_home = array(
