@@ -91,8 +91,11 @@ class activation {
             dbDelta($sql);
         }
 
+        // Create full width template
+
+
         // Add the pages if necessary
-        require_once (ER_PLUGIN_DIR . '/ui/create_page.php');
+        require_once(ER_PLUGIN_DIR . '/includes/create_page.php');
         $creator = new create_page();
         if (post_exists('Create Staff Profile', '', '', 'page') == 0) {
             $creator->create_staff_profile();

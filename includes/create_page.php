@@ -7,7 +7,7 @@ class create_page {
         $staff_profile_content = array(
             'post_title'    =>  "Create Staff Profile",
             'post_type'     =>  'page',
-            'page_template' =>  'Default Template',
+            'page_template' =>  'templates/template-full-width.php',
             'post_content'  =>  $content,
             'post_status'   =>  'publish'
         );
@@ -20,7 +20,7 @@ class create_page {
         $manage_staff_content = array(
             'post_title'    =>  "Manage My Staff",
             'post_type'     =>  'page',
-            'page_template' =>  'Default Template',
+            'page_template' =>  'templates/template-full-width.php',
             'post_content'  =>  $content,
             'post_status'   =>  'publish'
         );
@@ -33,7 +33,7 @@ class create_page {
         $create_register_content = array(
             'post_title'    =>  "Register to Training",
             'post_type'     =>  'page',
-            'page_template' =>  'Default Template',
+            'page_template' =>  'templates/template-full-width.php',
             'post_content'  =>  $content,
             'post_status'   =>  'publish'
         );

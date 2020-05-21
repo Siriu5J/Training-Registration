@@ -20,12 +20,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3d0ac7a8-841e-49be-910c-086a858c82b6" name="Default Changelist" comment="Update File">
-      <change afterPath="$PROJECT_DIR$/ui/create_page.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/admin_settings.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/admin_settings.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/includes/activation.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/activation.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/ui.php" beforeDir="false" afterPath="$PROJECT_DIR$/ui/ui.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/ui_content.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/create_page.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/create_page.php" afterDir="false" />
     </list>
     <list id="8c76e95e-b6fb-45e4-b02e-81869b9033e2" name="Revert &quot;Update File&quot;" comment="Revert &quot;Update File&quot;&#10;&#10;This reverts commit 17f032c5" />
     <option name="SHOW_DIALOG" value="false" />
@@ -82,9 +79,9 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/includes" />
       <recent name="$PROJECT_DIR$/admin" />
       <recent name="$PROJECT_DIR$/ui" />
-      <recent name="$PROJECT_DIR$/includes" />
     </key>
   </component>
   <component name="RunManager">
@@ -126,7 +123,7 @@
       <workItem from="1589929900563" duration="26902000" />
       <workItem from="1590003043131" duration="222000" />
       <workItem from="1590003985258" duration="10352000" />
-      <workItem from="1590021769002" duration="2558000" />
+      <workItem from="1590021769002" duration="5123000" />
     </task>
     <task id="LOCAL-00001" summary="Renamed Files and started the changes">
       <created>1589922250539</created>
@@ -240,7 +237,14 @@
       <option name="project" value="LOCAL" />
       <updated>1590008097230</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="The plugin now creates the necessary pages automatically">
+      <created>1590024814882</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1590024814882</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -277,7 +281,8 @@
     <MESSAGE value="Changed the directory of all the code for better debugging" />
     <MESSAGE value="Changed the directory of all the code for better debugging. Also improved the Excel formatting. The Excel form is now &quot;true&quot; xlsx" />
     <MESSAGE value="Added class description" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added class description" />
+    <MESSAGE value="The plugin now creates the necessary pages automatically" />
+    <option name="LAST_COMMIT_MESSAGE" value="The plugin now creates the necessary pages automatically" />
   </component>
   <component name="WindowStateProjectService">
     <state x="657" y="190" width="596" height="727" key="#PHP" timestamp="1589922317422">
