@@ -181,6 +181,9 @@ class training_registration_acp {
             add_action('admin_notices', 'settingsUpdated');
         }
 
+        echo post_exists('Training Registration', '', '', 'page');
+        echo get_option('show_on_front');
+        echo get_option('page_on_front');
         $this->content->view_settings();
     }
 }

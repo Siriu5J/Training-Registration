@@ -90,5 +90,21 @@ class activation {
             require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
             dbDelta($sql);
         }
+
+        // Add the pages if necessary
+        require_once (ER_PLUGIN_DIR . '/ui/create_page.php');
+        $creator = new create_page();
+        if (post_exists('Create Staff Profile', '', '', 'page') == 0) {
+            $creator->create_staff_profile();
+        }
+        if (post_exists('Manage My Staff', '', '', 'page') == 0) {
+            $creator->create_manage_my_staff();
+        }
+        if (post_exists('Register to Training', '', '', 'page') == 0) {
+            $creator->create_register_to_training();
+        }
+        if (post_exists('Training Registration', '', '', 'page') == 0) {
+            $creator->create_home();
+        }
     }
 }

@@ -1,4 +1,15 @@
 <?php
+
+/**
+ * Class training_registration_ui
+ *
+ * This class contains all the fallback functions for the shortcodes.
+ *
+ * @since 2019-12
+ * @version 2.0
+ *
+ * @package Training-Registration
+ */
 class training_registration_ui {
     // Helpful tools
     protected $tools;

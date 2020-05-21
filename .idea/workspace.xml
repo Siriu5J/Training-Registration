@@ -20,15 +20,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3d0ac7a8-841e-49be-910c-086a858c82b6" name="Default Changelist" comment="Update File">
+      <change afterPath="$PROJECT_DIR$/ui/create_page.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/admin_messages.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/admin_messages.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/admin_settings.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/admin_settings.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/settings_page_content.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/settings_page_content.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/staff_reg_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/staff_reg_table.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/includes/activation.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/activation.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/tools.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/tools.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/training_registration_loader.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/training_registration_loader.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/training_registration_main.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/training_registration_main.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/ui.php" beforeDir="false" afterPath="$PROJECT_DIR$/ui/ui.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/ui_content.php" beforeDir="false" />
     </list>
     <list id="8c76e95e-b6fb-45e4-b02e-81869b9033e2" name="Revert &quot;Update File&quot;" comment="Revert &quot;Update File&quot;&#10;&#10;This reverts commit 17f032c5" />
     <option name="SHOW_DIALOG" value="false" />
@@ -128,7 +125,8 @@
       <workItem from="1589923304464" duration="3676000" />
       <workItem from="1589929900563" duration="26902000" />
       <workItem from="1590003043131" duration="222000" />
-      <workItem from="1590003985258" duration="4017000" />
+      <workItem from="1590003985258" duration="10352000" />
+      <workItem from="1590021769002" duration="2558000" />
     </task>
     <task id="LOCAL-00001" summary="Renamed Files and started the changes">
       <created>1589922250539</created>
@@ -235,7 +233,14 @@
       <option name="project" value="LOCAL" />
       <updated>1590005529009</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Added class description">
+      <created>1590008097230</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1590008097230</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -271,7 +276,8 @@
     <MESSAGE value="Solved a bunch of problems related to PHPExcel" />
     <MESSAGE value="Changed the directory of all the code for better debugging" />
     <MESSAGE value="Changed the directory of all the code for better debugging. Also improved the Excel formatting. The Excel form is now &quot;true&quot; xlsx" />
-    <option name="LAST_COMMIT_MESSAGE" value="Changed the directory of all the code for better debugging. Also improved the Excel formatting. The Excel form is now &quot;true&quot; xlsx" />
+    <MESSAGE value="Added class description" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added class description" />
   </component>
   <component name="WindowStateProjectService">
     <state x="657" y="190" width="596" height="727" key="#PHP" timestamp="1589922317422">
@@ -287,10 +293,10 @@
     </state>
     <state x="418" y="213" width="800" height="675" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.30.1920.1050@0.30.1920.1050" timestamp="1589924870810" />
     <state x="2338" y="188" width="852" height="695" key="#com.intellij.execution.impl.EditConfigurationsDialog/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1589941572925" />
-    <state x="3051" y="30" width="636" height="1050" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1589930337856">
+    <state x="3051" y="30" width="636" height="1050" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1590015255981">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="3051" y="30" width="636" height="1050" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1589930337856" />
+    <state x="3051" y="30" width="636" height="1050" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1590015255981" />
     <state x="547" y="113" width="815" height="881" key="CommitChangelistDialog2" timestamp="1589923147759">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
@@ -300,10 +306,10 @@
     </state>
     <state x="310" y="317" width="424" height="510" key="FileChooserDialogImpl/0.30.1920.1050@0.30.1920.1050" timestamp="1589923301334" />
     <state x="2230" y="295" key="FileChooserDialogImpl/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1589941535752" />
-    <state x="2566" y="282" width="618" height="543" key="NewPhpClassDialog" timestamp="1589956821136">
+    <state x="2566" y="282" width="618" height="543" key="NewPhpClassDialog" timestamp="1590008018714">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
-    <state x="2566" y="282" width="618" height="543" key="NewPhpClassDialog/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1589956821136" />
+    <state x="2566" y="282" width="618" height="543" key="NewPhpClassDialog/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1590008018714" />
     <state x="2700" y="464" width="349" height="144" key="NewPhpFileDialog" timestamp="1590005826501">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
@@ -318,12 +324,12 @@
     </state>
     <state x="464" y="190" key="SettingsEditor/0.30.1920.1050@0.30.1920.1050" timestamp="1589922304371" />
     <state x="2384" y="165" key="SettingsEditor/1920.0.1920.1080/0.0.1920.1080@1920.0.1920.1080" timestamp="1589954154789" />
-    <state x="2475" y="268" width="800" height="526" key="Vcs.Push.Dialog.v2" timestamp="1589960722587">
+    <state x="2475" y="268" width="800" height="526" key="Vcs.Push.Dialog.v2" timestamp="1590008103709">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="555" y="291" width="800" height="526" key="Vcs.Push.Dialog.v2/0.30.1920.1050@0.30.1920.1050" timestamp="1589926253122" />
     <state x="2475" y="268" width="800" height="526" key="Vcs.Push.Dialog.v2/1920.0.1920.1080/0.0.1920.1080@1920.0.1920.1080" timestamp="1589954340480" />
-    <state x="2475" y="268" width="800" height="526" key="Vcs.Push.Dialog.v2/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1589960722587" />
+    <state x="2475" y="268" width="800" height="526" key="Vcs.Push.Dialog.v2/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1590008103709" />
     <state x="765" y="471" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1589922641360">
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
