@@ -58,11 +58,25 @@ class admin_messages {
         </div>
         <?php
     }
+
     public function settingsUpdated() {
         ?>
         <div class="notice notice-success is-dismissible">
-            <p>Settings Updated! (You might need to refresh this page to see the updated settings on this page)</p>
+            <p>Settings Updated!</p>
         </div>
         <?php
     }
+
+    public function invalidTheme() {
+        $admin_site_url = (string)get_option('home') . '/wp-admin/admin.php?page=er_settings';
+        if (get_transient('invalid_theme_transient')) {
+            ?>
+            <div class="notice notice-error is-dismissible">
+                <p><b>New pages are not create!</b> Please make sure you are using the built-in Twenty Twenty theme!<br>
+                    Go to Training Registration <a href="<?php echo $admin_site_url ?>">Settings</a> to create pages after you have changed the theme.</p>
+            </div>
+            <?php
+        }
+    }
+
 }

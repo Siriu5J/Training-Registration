@@ -10,12 +10,6 @@ Author URI: https://github.com/Siriu5J/Training-Registration
 License: A "Slug" license name e.g. GPL2
 */
 
-// Make sure we don't expose any info if called directly
-if ( !function_exists( 'add_action' ) ) {
-    echo 'Hi there!  I\'m just a plugin, not much I can do when called directly.';
-    exit;
-}
-
 // Defined Values
 define('ER_PLUGIN_DIR', dirname(__FILE__));
 define('ER_STAFF_PROFILE', $wpdb->prefix . 'er_staff_profile');

@@ -91,23 +91,14 @@ class activation {
             dbDelta($sql);
         }
 
-        // Create full width template
-
-
         // Add the pages if necessary
-        require_once(ER_PLUGIN_DIR . '/includes/create_page.php');
-        $creator = new create_page();
-        if (post_exists('Create Staff Profile', '', '', 'page') == 0) {
-            $creator->create_staff_profile();
-        }
-        if (post_exists('Manage My Staff', '', '', 'page') == 0) {
-            $creator->create_manage_my_staff();
-        }
-        if (post_exists('Register to Training', '', '', 'page') == 0) {
-            $creator->create_register_to_training();
-        }
-        if (post_exists('Training Registration', '', '', 'page') == 0) {
-            $creator->create_home();
+        // The current theme must be Twenty Twenty
+        if (get_option('template') == 'twentytwenty') {
+            require_once(ER_PLUGIN_DIR . '/includes/create_page.php');
+            $creator = new create_page();
+            $creator->run();
+        }  else {
+            set_transient( 'invalid_theme_transient', true, 5 );
         }
     }
 }

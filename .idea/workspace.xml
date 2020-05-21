@@ -21,8 +21,13 @@
   <component name="ChangeListManager">
     <list default="true" id="3d0ac7a8-841e-49be-910c-086a858c82b6" name="Default Changelist" comment="Update File">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/admin_messages.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/admin_messages.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/admin_settings.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/admin_settings.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/settings_page_content.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/settings_page_content.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/includes/activation.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/activation.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/create_page.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/create_page.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/create_page.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/create_page.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/training_registration_main.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/training_registration_main.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/training-registration.php" beforeDir="false" afterPath="$PROJECT_DIR$/training-registration.php" afterDir="false" />
     </list>
     <list id="8c76e95e-b6fb-45e4-b02e-81869b9033e2" name="Revert &quot;Update File&quot;" comment="Revert &quot;Update File&quot;&#10;&#10;This reverts commit 17f032c5" />
     <option name="SHOW_DIALOG" value="false" />
@@ -123,7 +128,7 @@
       <workItem from="1589929900563" duration="26902000" />
       <workItem from="1590003043131" duration="222000" />
       <workItem from="1590003985258" duration="10352000" />
-      <workItem from="1590021769002" duration="5123000" />
+      <workItem from="1590021769002" duration="8823000" />
     </task>
     <task id="LOCAL-00001" summary="Renamed Files and started the changes">
       <created>1589922250539</created>
@@ -244,7 +249,14 @@
       <option name="project" value="LOCAL" />
       <updated>1590024814882</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Now the pages sets the twenty-twenty template &quot;full-width template&quot;">
+      <created>1590027120183</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1590027120183</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -282,7 +294,8 @@
     <MESSAGE value="Changed the directory of all the code for better debugging. Also improved the Excel formatting. The Excel form is now &quot;true&quot; xlsx" />
     <MESSAGE value="Added class description" />
     <MESSAGE value="The plugin now creates the necessary pages automatically" />
-    <option name="LAST_COMMIT_MESSAGE" value="The plugin now creates the necessary pages automatically" />
+    <MESSAGE value="Now the pages sets the twenty-twenty template &quot;full-width template&quot;" />
+    <option name="LAST_COMMIT_MESSAGE" value="Now the pages sets the twenty-twenty template &quot;full-width template&quot;" />
   </component>
   <component name="WindowStateProjectService">
     <state x="657" y="190" width="596" height="727" key="#PHP" timestamp="1589922317422">
@@ -339,6 +352,10 @@
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
     <state x="765" y="471" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.30.1920.1050@0.30.1920.1050" timestamp="1589922641360" />
+    <state x="2543" y="261" width="672" height="678" key="search.everywhere.popup" timestamp="1590027720719">
+      <screen x="1920" y="0" width="1920" height="1080" />
+    </state>
+    <state x="2543" y="261" width="672" height="678" key="search.everywhere.popup/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1590027720719" />
     <state x="2260" y="304" key="vcs.ApplyPatchDifferentiatedDialog" timestamp="1590005227474">
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>

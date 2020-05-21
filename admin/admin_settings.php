@@ -161,8 +161,6 @@ class training_registration_acp {
      * MANAGE REGISTRATION PAGE
      */
     public function erViewEventReg() {
-        global $wpdb;
-
         $this->content->manage_reg($this->tools);
 
     }
@@ -178,13 +176,17 @@ class training_registration_acp {
                 update_option( 'show_availability', 0);
             }
 
-            add_action('admin_notices', 'settingsUpdated');
+            add_action('admin_notices', $this->admin_notice->settingsUpdated());
         }
 
-        echo post_exists('Training Registration', '', '', 'page');
-        echo get_option('show_on_front');
-        echo get_option('page_on_front');
-        $this->content->view_settings();
+        if ($_POST['create-page']) {
+            require_once(ER_PLUGIN_DIR . '/includes/create_page.php');
+            $creator = new create_page();
+            $creator->run();
+        }
+
+        $availability = get_option('show_availability');
+        $this->content->view_settings($availability);
     }
 }
 

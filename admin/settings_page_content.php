@@ -319,9 +319,7 @@ class settings_page_content {
         }
     }
 
-    public function view_settings() {
-        $show_available = (int)get_option( 'show_availability', 0 );
-
+    public function view_settings($show_available) {
         ?>
         <h1>Settings</h1>
         <form id="update-settings" name="update-settings" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
@@ -340,6 +338,20 @@ class settings_page_content {
             <p class="submit">
                 <input type="submit" class="button button-primary" name="save-settings" id="save-settings" value="Save Settings">
             </p>
+        </form>
+        <hr>
+        <form id="create" name="create" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+            <table class="form-table">
+                <tbody>
+                <tr>
+                    <th>Create Necessary Pages</th>
+                    <td>
+                        <input type="submit" class="button button-primary" name="create-page" id="create-page" value="Create Pages">
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
         </form>
         <?php
     }

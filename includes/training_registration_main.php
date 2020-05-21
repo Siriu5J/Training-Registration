@@ -30,6 +30,9 @@ class training_registration_main {
         // Admin Menu
         require_once(ER_PLUGIN_DIR . '/admin/admin_settings.php');
 
+        // Admin Message
+        require_once(ER_PLUGIN_DIR . '/admin/admin_messages.php');
+
         // Loader
         require_once(ER_PLUGIN_DIR . '/includes/training_registration_loader.php');
         $this->loader = new training_registration_loader();
@@ -45,6 +48,8 @@ class training_registration_main {
 
         // Admin menu
         $admin = new training_registration_acp();
+        $messages = new admin_messages();
+        $this->loader->er_add_action('admin_notices', $messages, 'invalidTheme');
         $this->loader->er_add_action('admin_menu', $admin, 'adminSettingsPageRegistration');
     }
 

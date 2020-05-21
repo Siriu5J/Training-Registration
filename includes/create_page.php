@@ -2,7 +2,22 @@
 
 
 class create_page {
-    public function create_staff_profile() {
+    public function run() {
+        if (post_exists('Create Staff Profile', '', '', 'page') == 0) {
+            $this->create_staff_profile();
+        }
+        if (post_exists('Manage My Staff', '', '', 'page') == 0) {
+            $this->create_manage_my_staff();
+        }
+        if (post_exists('Register to Training', '', '', 'page') == 0) {
+            $this->create_register_to_training();
+        }
+        if (post_exists('Training Registration', '', '', 'page') == 0) {
+            $this->create_home();
+        }
+    }
+
+    private function create_staff_profile() {
         $content = '<!-- wp:shortcode -->[staff_form]<!-- /wp:shortcode -->';
         $staff_profile_content = array(
             'post_title'    =>  "Create Staff Profile",
@@ -15,7 +30,7 @@ class create_page {
         wp_insert_post($staff_profile_content);
     }
 
-    public function create_manage_my_staff() {
+    private function create_manage_my_staff() {
         $content = '<!-- wp:shortcode -->[view_staff]<!-- /wp:shortcode -->';
         $manage_staff_content = array(
             'post_title'    =>  "Manage My Staff",
@@ -28,7 +43,7 @@ class create_page {
         wp_insert_post($manage_staff_content);
     }
 
-    public function create_register_to_training() {
+    private function create_register_to_training() {
         $content = '<!-- wp:shortcode -->[register_training]<!-- /wp:shortcode -->';
         $create_register_content = array(
             'post_title'    =>  "Register to Training",
@@ -41,7 +56,7 @@ class create_page {
         wp_insert_post($create_register_content);
     }
 
-    public function create_home() {
+    private function create_home() {
         $site_home = (string)get_option('home');
         $content = '
         <!-- wp:button {"className":"aligncenter"} -->
