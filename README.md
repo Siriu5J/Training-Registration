@@ -15,8 +15,9 @@ The Training Registration Plugin is a WordPress plugin created to allow SOT trai
 * Manage training registrations from its own Learning Center
 ## Installation
 **Install Plugin**
-1. Download the plugin .zip from the [release page](https://github.com/Siriu5J/Training-Registration/releases).
-2. Install the plugin to WordPress by using local upload.
+1. Go to `Settings` > `Permalinks` and set it to "Post Name"
+2. Download the plugin .zip from the [release page](https://github.com/Siriu5J/Training-Registration/releases).
+3. Install the plugin to WordPress by using local upload.
 
 **Customize Site**
 1. Make sure you are using the default Twenty Twenty Theme
