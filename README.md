@@ -49,6 +49,22 @@ a:not(.wp-block-button__link){
 .wp-block-button__link:hover{
 	color: #012552;
 }
+.entry-title {
+	font-size: 45pt;
+}
+.singular .entry-header{
+	padding-top: 0;
+	padding-bottom: 1.3rem;
+}
+}
+html, body {
+	height: 100%;
+}
+.home #site-footer {
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+}
 ```
 
 ## Additional Libraries Used/Thanks
