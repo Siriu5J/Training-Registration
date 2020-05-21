@@ -7,7 +7,7 @@
  * @since 2020-5-19
  * @version 1.1
  *
- * @package Training-Registration
+ * @package training-registration
  */
 
 class settings_page_content {

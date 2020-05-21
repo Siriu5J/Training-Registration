@@ -8,7 +8,7 @@
  * @since 2019-12
  * @version 2.0
  *
- * @package Training-Registration
+ * @package training-registration
  */
 class training_registration_ui {
     // Helpful tools

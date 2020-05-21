@@ -9,7 +9,7 @@
  * @since 2020-5-19
  * @version 1.2
  *
- * @package Training-Registration
+ * @package training-registration
  */
 
 class training_registration_acp {
