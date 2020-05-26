@@ -65,6 +65,9 @@ html, body {
 	bottom: 0;
 	width: 100%;
 }
+.header-navigation-wrapper {
+	display: none;
+}
 ```
 
 ## Additional Libraries Used/Thanks
