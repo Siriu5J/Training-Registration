@@ -220,10 +220,18 @@ class settings_page_content {
                 <br>
                 <?php
             }
+        } else {    // No trainings? Show the way to create event
+            ?>
+            <h1>View Trainings</h1>
+            <div class="wrap" style="position: fixed; top: 50%; left: 50%;">
+                <h3 align="center">No Trainings Found!</h3>
+                <h2 align="center"><a class="add-new-h2" href="<?php echo get_admin_url(get_current_blog_id(), 'admin.php?page=er_new_event_set');?>">Add New Training</a></h2>
+            </div>
+            <?php
         }
     }
 
-    public function manage_reg($tools) {
+    public function manage_reg($tools, $my_mode) {
 
         global $wpdb;
         $event_table = ER_EVENT_LIST;
@@ -277,7 +285,11 @@ class settings_page_content {
             // Take care of the view registration form
             foreach ($trainings as $training) {
                 // Create a new WP List Table for each training
-                $reg_table = new StaffRegTable($tools);
+                if ($my_mode == 1) {
+                    $reg_table = new StaffRegTableMY($tools);
+                } else {
+                    $reg_table = new StaffRegTableCN($tools);
+                }
                 $reg_table->set_event_id($training->id);
                 $reg_table->prepare_items();
 
@@ -297,6 +309,7 @@ class settings_page_content {
                 <br>
                 <form id="manage-events" name="manage-events" method="POST" action="<?php echo $_SERVER['REQUEST_URI'] ?>">
                     <input type="hidden" name="event-id" value="<?php echo $training->id; ?>">
+                    <input type="hidden" name="my-mode" value="<?php echo $my_mode; ?>">
                     <input style="float: left; background-image: linear-gradient(#387039, #387039); border-color: #2a5936; color: white"
                            type="submit" name="download-xls" id="download-xls" value="Download This Training Registration as Excel Spreadsheet"/>
                 </form>
@@ -305,9 +318,6 @@ class settings_page_content {
                 <?php
 
             }
-
-
-
         } else {    // No trainings? Show the way to create event
             ?>
             <h1>Manage Registrations</h1>

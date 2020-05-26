@@ -38,7 +38,6 @@ class training_registration_acp {
 
         register_setting('reading', 'show_availability');
         register_setting('reading', 'my_mode');
-
     }
 
     /**
@@ -163,7 +162,7 @@ class training_registration_acp {
      * MANAGE REGISTRATION PAGE
      */
     public function erViewEventReg() {
-        $this->content->manage_reg($this->tools);
+        $this->content->manage_reg($this->tools, get_option('my_mode'));
 
     }
 
@@ -207,31 +206,54 @@ class training_registration_acp {
  */
 global $wpdb;
 if (isset($_POST['download-xls'])) {
+    $my_mode = (int)$_POST['my-mode'];
 
-    $data_array = array(
-        array(
-            'Registration Time',
-            'First Name',
-            'Last Name',
-            'Name in Native Language',
-            'Sex/Gender',
-            'Age',
-            'School',
-            'School Username',
-            'Email',
-            'Phone',
-            'Position in LC',
-            'LC',
-            '# of trainings attended',
-            '# of CEC attended',
-            'Highest Degree',
-            'Year of Graduation',
-            'Major',
-            'Minor',
-            'Institution',
-            'Comment'
-        )
-    );
+    // Place the right headers for each mode
+    if ($my_mode == 1) {
+        $data_array = array(
+            array(
+                'Registration Time' . $my_mode,
+                'First Name',
+                'Last Name',
+                'Full Name (name to be printed)',
+                'Gender',
+                'Religion',
+                'School',
+                'School Username',
+                'Phone',
+                'Position in LC',
+                'Year of Last Training',
+                'Training Attended',
+                'Highest Degree',
+                'Comment'
+            )
+        );
+    } else {
+        $data_array = array(
+            array(
+                'Registration Time',
+                'First Name',
+                'Last Name',
+                'Name in Native Language',
+                'Sex/Gender',
+                'Age',
+                'School',
+                'School Username',
+                'Email',
+                'Phone',
+                'Position in LC',
+                'LC',
+                '# of trainings attended',
+                '# of CEC attended',
+                'Highest Degree',
+                'Year of Graduation',
+                'Major',
+                'Minor',
+                'Institution',
+                'Comment'
+            )
+        );
+    }
 
     $registration_list = ER_REGISTRATION_LIST;
     $event_list        = ER_EVENT_LIST;
@@ -250,29 +272,49 @@ if (isset($_POST['download-xls'])) {
         $school_id		= $wpdb->get_var("SELECT `ID` FROM $wpdb->users WHERE `user_login` = '$trainee_data->school'");
         $school_nick	= $wpdb->get_var("SELECT `meta_value` FROM $wpdb->usermeta WHERE `user_id` = $school_id AND `meta_key` = 'nickname'");
 
-        array_push($data_array, array(
-            $reg_time,
-            $trainee_data->first_name,
-            $trainee_data->last_name,
-            $trainee_data->cn_name,
-            $trainee_data->sex,
-            $trainee_data->age,
-            $school_nick,
-            $trainee_data->school,
-            $trainee_data->email,
-            $trainee_data->phone,
-            $trainee_data->pos,
-            $trainee_data->lc,
-            $trainee_data->training_exp,
-            $trainee_data->cec_exp,
-            $trainee_data->degree,
-            $trainee_data->grad_year,
-            $trainee_data->major,
-            $trainee_data->minor,
-            $trainee_data->institution,
-            $trainee_data->comment
+        if ($my_mode == 1) {
+            array_push($data_array, array(
+                $reg_time,
+                $trainee_data->first_name,
+                $trainee_data->last_name,
+                $trainee_data->mid_name,
+                $trainee_data->sex,
+                $trainee_data->cn_name,
+                $school_nick,
+                $trainee_data->school,
+                $trainee_data->phone,
+                $trainee_data->pos,
+                $trainee_data->grad_year,
+                $trainee_data->lc,
+                $trainee_data->degree,
+                $trainee_data->comment
 
-        ));
+            ));
+        } else {
+            array_push($data_array, array(
+                $reg_time,
+                $trainee_data->first_name,
+                $trainee_data->last_name,
+                $trainee_data->cn_name,
+                $trainee_data->sex,
+                $trainee_data->age,
+                $school_nick,
+                $trainee_data->school,
+                $trainee_data->email,
+                $trainee_data->phone,
+                $trainee_data->pos,
+                $trainee_data->lc,
+                $trainee_data->training_exp,
+                $trainee_data->cec_exp,
+                $trainee_data->degree,
+                $trainee_data->grad_year,
+                $trainee_data->major,
+                $trainee_data->minor,
+                $trainee_data->institution,
+                $trainee_data->comment
+
+            ));
+        }
     }
 
     // Fix the issue of Excel not being able to generate excel when there's only one registration by pushing an empty row to the array
