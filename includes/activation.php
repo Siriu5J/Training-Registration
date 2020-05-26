@@ -11,12 +11,13 @@
  */
 
 class activation {
-    function activate_plugin() {
+    public function activate_plugin() {
         global $wpdb;
 
-        $staff = ER_STAFF_PROFILE;
-        $event = ER_EVENT_LIST;
-        $registration = ER_REGISTRATION_LIST;
+        // Somehow the $wpdb->prefix wouldn't work with the constants here. So I'll have to explicitly express this
+        $staff = $wpdb->prefix . 'er_staff_profile';
+        $event = $wpdb->prefix . 'er_event_list';
+        $registration = $wpdb->prefix . 'er_event_reg';
 
         $charset_collate = $wpdb->get_charset_collate();
 
