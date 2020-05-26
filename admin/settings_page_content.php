@@ -319,7 +319,7 @@ class settings_page_content {
         }
     }
 
-    public function view_settings($show_available) {
+    public function view_settings($show_available, $my_enabled) {
         ?>
         <h1>Settings</h1>
         <form id="update-settings" name="update-settings" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
@@ -330,6 +330,14 @@ class settings_page_content {
                     <td>
                         <fieldset>
                             <label for="show-available"><input type="checkbox" name="show-available" value="1" <?php if ($show_available == 1) {echo 'checked';} ?>> Disabling this option will hide the number of seats remaining in a training to schools.</label>
+                        </fieldset>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Enable SOTAM Forms</th>
+                    <td>
+                        <fieldset>
+                            <label for="enable-my"><input type="checkbox" name="enable-my" value="1" <?php if ($my_enabled == 1) {echo 'checked';} ?>> Enable SOTAM requested form formats.</label>
                         </fieldset>
                     </td>
                 </tr>

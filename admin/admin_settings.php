@@ -37,6 +37,8 @@ class training_registration_acp {
         add_submenu_page('er_gen_set', 'Settings', 'Settings', 'edit_plugins', 'er_settings', array($this, 'erSettings') );
 
         register_setting('reading', 'show_availability');
+        register_setting('reading', 'my_mode');
+
     }
 
     /**
@@ -170,10 +172,17 @@ class training_registration_acp {
      */
     public function erSettings() {
         if ($_POST['save-settings']) {
+            // Update show available
             if ($_POST['show-available'] == 1) {
                 update_option( 'show_availability', 1);
             } else {
                 update_option( 'show_availability', 0);
+            }
+            // Update MY mode
+            if ($_POST['enable-my'] == 1) {
+                update_option('my_mode', 1);
+            } else {
+                update_option('my_mode', 0);
             }
 
             add_action('admin_notices', $this->admin_notice->settingsUpdated());
@@ -186,7 +195,8 @@ class training_registration_acp {
         }
 
         $availability = get_option('show_availability');
-        $this->content->view_settings($availability);
+        $my_mode = get_option('my_mode');
+        $this->content->view_settings($availability, $my_mode);
     }
 }
 

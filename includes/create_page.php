@@ -9,7 +9,7 @@ class create_page {
         if (post_exists('Manage My Staff', '', '', 'page') == 0) {
             $this->create_manage_my_staff();
         }
-        if (post_exists('Register to Training', '', '', 'page') == 0) {
+        if (post_exists('Register for Training', '', '', 'page') == 0) {
             $this->create_register_to_training();
         }
         if (post_exists('Training Registration', '', '', 'page') == 0) {

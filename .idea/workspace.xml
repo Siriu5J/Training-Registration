@@ -6,10 +6,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="3d0ac7a8-841e-49be-910c-086a858c82b6" name="Default Changelist" comment="Update File">
-      <change afterPath="$PROJECT_DIR$/training-registration.zip" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ui/ui_content.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/admin/admin_settings.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/admin_settings.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/admin/settings_page_content.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/settings_page_content.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/includes/activation.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/activation.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/includes/create_page.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/create_page.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run.sh" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ui/ui.php" beforeDir="false" afterPath="$PROJECT_DIR$/ui/ui.php" afterDir="false" />
     </list>
     <list id="8c76e95e-b6fb-45e4-b02e-81869b9033e2" name="Revert &quot;Update File&quot;" comment="Revert &quot;Update File&quot;&#10;&#10;This reverts commit 17f032c5" />
     <option name="SHOW_DIALOG" value="false" />
@@ -44,6 +49,7 @@
   </component>
   <component name="PhpWorkspaceProjectConfiguration">
     <include_path>
+      <path value="/var/www/html/wordpress" />
       <path value="$PROJECT_DIR$/../../.." />
     </include_path>
   </component>
@@ -61,8 +67,8 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Confirmation" />
+    <property name="last_opened_file_path" value="/var/www/html/wordpress" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -112,6 +118,12 @@
       <workItem from="1590003985258" duration="10352000" />
       <workItem from="1590021769002" duration="9192000" />
       <workItem from="1590031271298" duration="2223000" />
+      <workItem from="1590453255345" duration="129000" />
+      <workItem from="1590453580219" duration="41000" />
+      <workItem from="1590520576623" duration="205000" />
+      <workItem from="1590520811319" duration="921000" />
+      <workItem from="1590521748762" duration="17000" />
+      <workItem from="1590521780911" duration="5119000" />
     </task>
     <task id="LOCAL-00001" summary="Renamed Files and started the changes">
       <created>1589922250539</created>
@@ -319,14 +331,16 @@
       <screen x="0" y="30" width="1920" height="1050" />
     </state>
     <state x="547" y="113" width="815" height="881" key="CommitChangelistDialog2/0.30.1920.1050@0.30.1920.1050" timestamp="1589923147759" />
-    <state x="2230" y="295" width="424" height="510" key="FileChooserDialogImpl" timestamp="1589941535752">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state x="310" y="315" width="424" height="510" key="FileChooserDialogImpl" timestamp="1590520755988">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="310" y="317" width="424" height="510" key="FileChooserDialogImpl/0.30.1920.1050@0.30.1920.1050" timestamp="1589923301334" />
+    <state x="310" y="315" key="FileChooserDialogImpl/149.1080.1536.864/0.27.1920.1053@0.27.1920.1053" timestamp="1590520755988" />
     <state x="2230" y="295" key="FileChooserDialogImpl/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1589941535752" />
-    <state x="2566" y="282" width="618" height="543" key="NewPhpClassDialog" timestamp="1590008018714">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state x="646" y="302" width="727" height="530" key="NewPhpClassDialog" timestamp="1590520661602">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
+    <state x="646" y="302" width="727" height="530" key="NewPhpClassDialog/149.1080.1536.864/0.27.1920.1053@0.27.1920.1053" timestamp="1590520661602" />
     <state x="2566" y="282" width="618" height="543" key="NewPhpClassDialog/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1590008018714" />
     <state x="2700" y="464" width="349" height="144" key="NewPhpFileDialog" timestamp="1590005826501">
       <screen x="1920" y="0" width="1920" height="1080" />
@@ -337,10 +351,11 @@
       <screen x="1920" y="0" width="1920" height="1080" />
     </state>
     <state x="2624" y="279" width="502" height="550" key="RollbackChangesDialog/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1589939217696" />
-    <state x="2384" y="165" key="SettingsEditor" timestamp="1589954154789">
-      <screen x="1920" y="0" width="1920" height="1080" />
+    <state x="289" y="195" width="1414" height="737" key="SettingsEditor" timestamp="1590521937884">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="464" y="190" key="SettingsEditor/0.30.1920.1050@0.30.1920.1050" timestamp="1589922304371" />
+    <state x="289" y="195" width="1414" height="737" key="SettingsEditor/149.1080.1536.864/0.27.1920.1053@0.27.1920.1053" timestamp="1590521937884" />
     <state x="2384" y="165" key="SettingsEditor/1920.0.1920.1080/0.0.1920.1080@1920.0.1920.1080" timestamp="1589954154789" />
     <state x="2475" y="268" width="800" height="526" key="Vcs.Push.Dialog.v2" timestamp="1590031313848">
       <screen x="1920" y="0" width="1920" height="1080" />
@@ -362,6 +377,6 @@
     <state x="2260" y="304" key="vcs.ApplyPatchDifferentiatedDialog/1920.0.1920.1080/0.30.1920.1050@1920.0.1920.1080" timestamp="1590005227474" />
   </component>
   <component name="WordPressConfiguration" enabled="true">
-    <wordpressPath>$PROJECT_DIR$/../../..</wordpressPath>
+    <wordpressPath>/var/www/html/wordpress</wordpressPath>
   </component>
 </project>

@@ -13,10 +13,13 @@
 class training_registration_ui {
     // Helpful tools
     protected $tools;
+    protected $ui_content;
 
     public function __construct() {
         require_once(ER_PLUGIN_DIR . '/includes/tools.php');
+        require_once(ER_PLUGIN_DIR . '/ui/ui_content.php');
         $this->tools = new training_registration_tools();
+        $this->ui_content = new ui_content();
     }
 
     /*
@@ -24,165 +27,145 @@ class training_registration_ui {
      */
     public function staffFormCreation() {
         $username = wp_get_current_user()->user_login;  // Get Current username for school name
+        $my_mode = get_option('my_mode');
 
-        // Insert information to database for staff registration
-        if ($_POST['create_staff']) {
-            global $wpdb;
-            $showProfileMessage = true;
+        // Check if MY mode is on
+        if ($my_mode == 1) {
+            if ($_POST['create_staff']) {
+                global $wpdb;
+                $showProfileMessage = true;
 
-            $staff_table = ER_STAFF_PROFILE;
-            $first_name = $_POST['first_name'];
-            $last_name  = $_POST['last_name'];
-            $cn_name    = $_POST['cn_name'];
-            $sex        = $_POST['sex'];
-            $age        = $_POST['age'];
-            $email      = $_POST['email'];
-            $phone      = $_POST['phone'];
+                $staff_table = ER_STAFF_PROFILE;
+                $first_name = $_POST['first_name'];
+                $last_name  = $_POST['last_name'];
+                $mid_name   = $_POST['mid_name'];   // Used as Full name
+                $cn_name    = $_POST['cn_name'];    // Used as religion
+                $sex        = $_POST['sex'];
 
-            $position   = $_POST['position'];
-            $lc         = $_POST['lc'];
+                $phone      = $_POST['phone'];      // Used
 
-            $t_exp      = $_POST['t-exp'];
-            $cec_exp    = $_POST['cec-exp'];
+                $position   = $_POST['position'];   // Used
+                $lc         = $_POST['lc'];         // Used as training attended
 
-            $degree     = $_POST['degree'];
-            $grad_year  = $_POST['grad-year'];
-            $major      = $_POST['major'];
-            $minor      = $_POST['minor'];
-            $institution= $_POST['institution'];
+                $t_exp      = $_POST['t-exp'];      // Used as year of last training
 
-            $comment    = $_POST['comment'];
-            $school     = $_POST['school'];
+                $degree     = $_POST['degree'];     // Used
 
-            // Check Duplicate
-            if ($wpdb->get_var("SELECT COUNT(*) FROM $staff_table WHERE `first_name` = \"$first_name\" AND `last_name` = \"$last_name\" AND `school` = \"$school\" AND `phone` = $phone") == 0) {
-                $success = $wpdb->insert($staff_table, array(
-                    "first_name" => $first_name,
-                    "last_name" => $last_name,
-                    "cn_name" => $cn_name,
-                    "sex" => $sex,
-                    "age" => $age,
-                    "school" => $school,
-                    "email" => $email,
-                    "phone" => $phone,
+                $comment    = $_POST['comment'];
+                $school     = $_POST['school'];
 
-                    "pos" => $position,
-                    "lc" => $lc,
-                    "training_exp" => $t_exp,
-                    "cec_exp" => $cec_exp,
+                // Check Duplicate
+                if ($wpdb->get_var("SELECT COUNT(*) FROM $staff_table WHERE `first_name` = \"$first_name\" AND `last_name` = \"$last_name\" AND `school` = \"$school\" AND `phone` = $phone") == 0) {
+                    $success = $wpdb->insert($staff_table, array(
+                        "first_name" => $first_name,
+                        "last_name" => $last_name,
+                        "cn_name" => $cn_name,
+                        "mid_name" => $mid_name,
+                        "sex" => $sex,
+                        "school" => $school,
+                        "phone" => $phone,
 
-                    "degree" => $degree,
-                    "grad_year" => $grad_year,
-                    "major" => $major,
-                    "minor" => $minor,
-                    "institution" => $institution,
+                        "pos" => $position,
+                        "lc" => $lc,
+                        "grad_year" => $t_exp,
 
-                    "comment" => $comment,
-                ));
+                        "degree" => $degree,
 
-                if ($success) {
+                        "comment" => $comment,
+                    ));
+
+                    if ($success) {
+                        ?>
+                        <div style="background-color: #5ac18e; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">Profile for <?php echo $first_name.' '.$last_name ?> created</div>
+                        <?php
+                    } else {
+                        ?>
+                        <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">Cannot create staff profile. Please contact the Site Admin for support.</div>
+                        <?php
+                    }
+                }else {
                     ?>
-                    <div style="background-color: #5ac18e; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">Profile for <?php echo $first_name.' '.$last_name ?> created</div>
+                    <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">Staff, <?php echo $first_name.' '.$last_name; ?>, already exist in record!</div>
                     <?php
-                } else {
-        // TODO: add site admin
-        ?>
-        <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">Cannot create staff profile. Please contact the Site Admin for support.</div>
-        <?php
-    }
-    }else {
-        ?>
-        <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">Staff, <?php echo $first_name.' '.$last_name; ?>, already exist in record!</div>
-        <?php
-    }
-    }
+                }
+            }
 
-    ?>
-    <form id="staff-profile" name="staff-profile" method="post" action="<?php echo $_SERVER['REQUEST_URI'];?>">
-        <p>Fill out all fields marked with *</p>
-        <strong>Part 1: Personal Information</strong><br><br>
-        <label for="first_name">First Name*</label><input type="text" name="first_name" id="first_name" required/>
-        <br/>
-        <label for="last_name">Last Name*</label><input type="text" name="last_name" id="last_name" required/>
-        <br/>
-        <label style="margin-bottom: 5px; margin-top: 5px; float: left;" for="cn_name">Name in Native Language</label><input type="text" name="cn_name" id="cn_name"/>
-        <br/>
-        <label for="sex">Sex*</label>
-        <input type="radio" name="sex" value="M" id="M" required/>M
-        <input type="radio" name="sex" value="F" id="F" required/>F
-        <br/><br>
-        <label for="age">Age*</label>
-        <select id="age" name="age" required>
-            <option selected disabled>--</option>
-            <option value="18-25">18-25</option>
-            <option value="26-35">26-35</option>
-            <option value="36-45">36-45</option>
-            <option value="45+">45 or above</option>
-        </select>
-        <br/><br>
-        <label for="email">Email*</label> <input type="email" name="email" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required/>
-        <br/>
-        <label for="phone">Phone*</label> <input type="tel" name="phone" id="phone" placeholder="Numbers Only!" required/>
-        <br/>
-        <br><hr>
-        <strong>Part 2: Current LC Service</strong><br><br>
-        <label for="position">Position*</label>
-        <select id="position" name="position" required>
-            <option selected disabled>--</option>
-            <option value="Administrator">Administrator</option>
-            <option value="Principal">Principal</option>
-            <option value="Supervisor">Supervisor</option>
-            <option value="Monitor">Monitor</option>
-            <option value="Others">Others</option>
-        </select>
-        <br/><br>
-        <label for="lc">Learning Center*</label>
-        <select id="lc" name="lc" required>
-            <option selected disabled>--</option>
-            <option value="Kindergarten">Kindergarten</option>
-            <option value="ABC's">ABC's</option>
-            <option value="Lower LC">Lower LC</option>
-            <option value="Upper LC">Upper LC</option>
-            <option value="Not in LC">Not in LC</option>
-        </select>
-        <br />
-        <br><hr>
-        <strong>Part 3: Training Experience</strong><br><br>
-        <label style="margin-top: 5px; margin-bottom: 5px; float: left;" for="t-exp">Number of Summer Training Attended*</label><input type="number" name="t-exp" id="t-exp" min="0" required/>
-        <br />
-        <label style="margin-top: 5px; margin-bottom: 5px; float: left;" for="cec-exp">Number of Educators' Conventions Attended*</label><input type="number" name="cec-exp" id="cec-exp" min="0" required/>
-        <br />
-        <br><hr>
-        <strong>Part 4: Educational Attainment</strong><br><br>
-        <label style="margin-top: 5px; margin-bottom: 5px; margin-right: 15px; float: left;" for="degree">Highest Degree Obtained*</label>
-        <select id="degree" name="degree" required>
-            <option selected disabled>--</option>
-            <option value="Elementary">Elementary</option>
-            <option value="Middle School">Middle School</option>
-            <option value="High School">High School</option>
-            <option value="Associates">Associates</option>
-            <option value="Bachelors">Bachelors</option>
-            <option value="Masters">Masters</option>
-            <option value="Doctorate">Doctorate</option>
-        </select>
-        <br/><br>
-        <label for="grad-year">Year of Graduation*</label><input type="number" name="grad-year" id="grad-year" min="1950" step="1" required/>
-        <br />
-        <label for="major">Major</label><input class="er_input" type="text" name="major" id="major"/>
-        <br />
-        <label for="minor">Minor</label><input class="er_input" type="text" name="minor" id="minor" />
-        <br />
-        <label for="institution">Institution*</label><input class="er_input" type="text" name="institution" id="institution" required/>
-        <br /><br><hr>
-        <label for="comment">Comment</label><textarea name="comment" id="comment" cols="45" rows="5"></textarea>
-        <br />
-        <input type="hidden" name="school" value="<?php echo $username; ?>">
-        <br/>
-        <input type="submit" name="create_staff" id="create_staff" value="Create" />
-        <input type="reset">
-        <br />
-    </form>
-    <?php
+            $this->ui_content->create_staff_my($username);
+        } else {
+            // Insert information to database for staff registration
+            if ($_POST['create_staff']) {
+                global $wpdb;
+                $showProfileMessage = true;
+
+                $staff_table = ER_STAFF_PROFILE;
+                $first_name = $_POST['first_name'];
+                $last_name  = $_POST['last_name'];
+                $cn_name    = $_POST['cn_name'];
+                $sex        = $_POST['sex'];
+                $age        = $_POST['age'];
+                $email      = $_POST['email'];
+                $phone      = $_POST['phone'];
+
+                $position   = $_POST['position'];
+                $lc         = $_POST['lc'];
+
+                $t_exp      = $_POST['t-exp'];
+                $cec_exp    = $_POST['cec-exp'];
+
+                $degree     = $_POST['degree'];
+                $grad_year  = $_POST['grad-year'];
+                $major      = $_POST['major'];
+                $minor      = $_POST['minor'];
+                $institution= $_POST['institution'];
+
+                $comment    = $_POST['comment'];
+                $school     = $_POST['school'];
+
+                // Check Duplicate
+                if ($wpdb->get_var("SELECT COUNT(*) FROM $staff_table WHERE `first_name` = \"$first_name\" AND `last_name` = \"$last_name\" AND `school` = \"$school\" AND `phone` = $phone") == 0) {
+                    $success = $wpdb->insert($staff_table, array(
+                        "first_name" => $first_name,
+                        "last_name" => $last_name,
+                        "cn_name" => $cn_name,
+                        "sex" => $sex,
+                        "age" => $age,
+                        "school" => $school,
+                        "email" => $email,
+                        "phone" => $phone,
+
+                        "pos" => $position,
+                        "lc" => $lc,
+                        "training_exp" => $t_exp,
+                        "cec_exp" => $cec_exp,
+
+                        "degree" => $degree,
+                        "grad_year" => $grad_year,
+                        "major" => $major,
+                        "minor" => $minor,
+                        "institution" => $institution,
+
+                        "comment" => $comment,
+                    ));
+
+                    if ($success) {
+                        ?>
+                        <div style="background-color: #5ac18e; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">Profile for <?php echo $first_name.' '.$last_name ?> created</div>
+                        <?php
+                    } else {
+                        ?>
+                        <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">Cannot create staff profile. Please contact the Site Admin for support.</div>
+                        <?php
+                    }
+                }else {
+                    ?>
+                    <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">Staff, <?php echo $first_name.' '.$last_name; ?>, already exist in record!</div>
+                    <?php
+                }
+            }
+
+            $this->ui_content->create_staff_cn($username);
+        }
+
     }
 
     /*
@@ -340,9 +323,9 @@ class training_registration_ui {
 
     }
 
-    /*
-MANAGE STAFF PROFILES
- */
+    /**
+    *MANAGE STAFF PROFILES
+    */
     function viewEditStaff() {
         global $wpdb;
         $staff_table = ER_STAFF_PROFILE;
@@ -350,39 +333,69 @@ MANAGE STAFF PROFILES
         $event_table = ER_EVENT_LIST;
         $username = wp_get_current_user()->user_login;
         $time_now = current_time('mysql');
+        $my_mode = get_option('my_mode');
 
         // Update the database after editing profile
-        if ($_POST['update-profile']) {
-            $staff_table = ER_STAFF_PROFILE;
-            $wpdb->update($staff_table, array(
-                "first_name"    =>  $_POST['first_name'],
-                "last_name"     =>  $_POST['last_name'],
-                "cn_name"       =>  $_POST['cn_name'],
-                "sex"           =>  $_POST['sex'],
-                "age"           =>  $_POST['age'],
-                "school"        =>  $_POST['school'],
-                "email"         =>  $_POST['email'],
-                "phone"         =>  $_POST['phone'],
+        if ($my_mode == 1) {
+            if ($_POST['update-profile']) {
+                $staff_table = ER_STAFF_PROFILE;
+                $wpdb->update($staff_table, array(
+                    "first_name"    =>  $_POST['first_name'],
+                    "last_name"     =>  $_POST['last_name'],
+                    "mid_name"      =>  $_POST['mid_name'],
+                    "cn_name"       =>  $_POST['cn_name'],
+                    "sex"           =>  $_POST['sex'],
+                    "school"        =>  $_POST['school'],
+                    "phone"         =>  $_POST['phone'],
 
-                "pos"           =>  $_POST['position'],
-                "lc"            =>  $_POST['lc'],
-                "training_exp"  =>  $_POST['t-exp'],
-                "cec_exp"       =>  $_POST['cec-exp'],
+                    "pos"           =>  $_POST['position'],
+                    "lc"            =>  $_POST['lc'],
 
-                "degree"        =>  $_POST['degree'],
-                "grad_year"     =>  $_POST['grad-year'],
-                "major"         =>  $_POST['major'],
-                "minor"         =>  $_POST['minor'],
-                "institution"   =>  $_POST['institution'],
+                    "degree"        =>  $_POST['degree'],
+                    "grad_year"     =>  $_POST['t-exp'],
 
-                "comment"       =>  $_POST['comment'],
-            ), array(
-                "id"            =>  $_POST['id'],
-            ));
+                    "comment"       =>  $_POST['comment'],
+                ), array(
+                    "id"            =>  $_POST['id'],
+                ));
 
-            ?>
-            <div style="background-color: #5ac18e; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">Staff Profile Updated</div>
-            <?php
+                ?>
+                <div style="background-color: #5ac18e; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">Staff Profile Updated</div>
+                <?php
+            }
+        } else {
+            if ($_POST['update-profile']) {
+                $staff_table = ER_STAFF_PROFILE;
+                $wpdb->update($staff_table, array(
+                    "first_name"    =>  $_POST['first_name'],
+                    "last_name"     =>  $_POST['last_name'],
+                    "cn_name"       =>  $_POST['cn_name'],
+                    "sex"           =>  $_POST['sex'],
+                    "age"           =>  $_POST['age'],
+                    "school"        =>  $_POST['school'],
+                    "email"         =>  $_POST['email'],
+                    "phone"         =>  $_POST['phone'],
+
+                    "pos"           =>  $_POST['position'],
+                    "lc"            =>  $_POST['lc'],
+                    "training_exp"  =>  $_POST['t-exp'],
+                    "cec_exp"       =>  $_POST['cec-exp'],
+
+                    "degree"        =>  $_POST['degree'],
+                    "grad_year"     =>  $_POST['grad-year'],
+                    "major"         =>  $_POST['major'],
+                    "minor"         =>  $_POST['minor'],
+                    "institution"   =>  $_POST['institution'],
+
+                    "comment"       =>  $_POST['comment'],
+                ), array(
+                    "id"            =>  $_POST['id'],
+                ));
+
+                ?>
+                <div style="background-color: #5ac18e; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">Staff Profile Updated</div>
+                <?php
+            }
         }
 
         // Withdraw from a training
@@ -417,7 +430,8 @@ MANAGE STAFF PROFILES
                     <th style="width: fit-content">Name</th>
                     <th style="width: fit-content">Sex</th>
                     <th style="width: fit-content">Position</th>
-                    <th style="width: fit-content">Email</th>
+                    <!-- only show email on non-my mode -->
+                    <?php if ($my_mode == 0) {echo "<th style=\"width: fit-content\">Email</th>";} ?>
                     <th style="width: max-content">Upcoming Training(s) Registered</th>
                 </tr>
                 <form id="select-staff" name="select-staff" method="post" action="<?php echo $_SERVER['REQUEST_URI'];?>">
@@ -446,7 +460,7 @@ MANAGE STAFF PROFILES
                             <td><?php echo $this->tools->idtoName($staff->id); ?></td>
                             <td><?php echo $staff->sex; ?></td>
                             <td><?php echo $staff->pos; ?></td>
-                            <td><?php echo $staff->email; ?></td>
+                            <?php if ($my_mode == 0) {echo "<td>$staff->email</td>";} ?>
                             <td><?php if ($training_registered != "<ul style='margin:0'></ul>") {echo $training_registered;} else {echo "No Trainings Registered";} ?></td>   <!--show no trainings registered when appropriate -->
                         </tr>
                         <?php
@@ -472,93 +486,13 @@ MANAGE STAFF PROFILES
         if ($_POST['edit-profile']) {
             $staff_id = $_POST['select'];
             $profile = $wpdb->get_row("SELECT * FROM $staff_table WHERE `id` = $staff_id");
+            // Determine which form to show
+            if ($my_mode == 1) {
+                $this->ui_content->edit_staff_my($username, $profile, $staff_id);
+            } else {
+                $this->ui_content->edit_staff_cn($username, $profile, $staff_id);
+            }
 
-            ?>
-            <form id="staff-profile" name="staff-profile" method="post" action="<?php echo $_SERVER['REQUEST_URI'];?>">
-                <br>
-                <hr>
-                <h3>Editing Staff Profile</h3>
-                <p>Fill out all fields marked with *</p>
-                <strong>Part 1: Personal Information</strong><br><br>
-                <label for="first_name">First Name*</label><input type="text" name="first_name" id="first_name" value="<?php echo $profile->first_name ?>" required/>
-                <br/>
-                <label for="last_name">Last Name*</label><input type="text" name="last_name" id="last_name" value="<?php echo $profile->last_name ?>" required/>
-                <br/>
-                <label style="margin-bottom: 5px; margin-top: 5px; float: left;" for="cn_name">Name in Native Language</label><input type="text" name="cn_name" id="cn_name" value="<?php echo $profile->cn_name ?>"/>
-                <br/>
-                <label for="sex">Gender/Sex*</label>
-                <input type="radio" name="sex" value="M" id="M" required <?php if ($profile->sex == 'M') {echo 'checked';} ?>/>M
-                <input type="radio" name="sex" value="F" id="F" required <?php if ($profile->sex == 'F') {echo 'checked';} ?>/>F
-                <br/><br>
-                <label for="age">Age*</label>
-                <select id="age" name="age" required >
-                    <option value="18-25" <?php if ($profile->age == '18-25') {echo 'selected';} ?>>18-25</option>
-                    <option value="26-35" <?php if ($profile->age == '26-35') {echo 'selected';} ?>>26-35</option>
-                    <option value="36-45" <?php if ($profile->age == '36-45') {echo 'selected';} ?>>36-45</option>
-                    <option value="45+" <?php if ($profile->age == '45+') {echo 'selected';} ?>>45 or above</option>
-                </select>
-                <br/><br>
-                <label for="email">Email*</label> <input type="email" name="email" id="email" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" required value="<?php echo $profile->email ?>"/>
-                <br/>
-                <label for="phone">Phone*</label> <input type="tel" name="phone" id="phone" placeholder="Numbers Only!" required value="<?php echo $profile->phone ?>"/>
-                <br/>
-                <br><hr>
-                <strong>Part 2: Current LC Service</strong><br><br>
-                <label for="position">Position*</label>
-                <select id="position" name="position" required>
-                    <option value="Administrator" <?php if ($profile->pos == 'Administrator') {echo 'selected';} ?>>Administrator</option>
-                    <option value="Principal" <?php if ($profile->pos == 'Principal') {echo 'selected';} ?>>Principal</option>
-                    <option value="Supervisor" <?php if ($profile->pos == 'Supervisor') {echo 'selected';} ?>>Supervisor</option>
-                    <option value="Monitor" <?php if ($profile->pos == 'Monitor') {echo 'selected';} ?>>Monitor</option>
-                    <option value="Others" <?php if ($profile->pos == 'Others') {echo 'selected';} ?>>Others</option>
-                </select>
-                <br/><br>
-                <label for="lc">Learning Center*</label>
-                <select id="lc" name="lc" required>
-                    <option value="Kindergarten" <?php if ($profile->lc == 'Kindergarten') {echo 'selected';} ?>>Kindergarten</option>
-                    <option value="ABC's" <?php if ($profile->lc == 'ABC\'s') {echo 'selected';} ?>>ABC's</option>
-                    <option value="Lower LC" <?php if ($profile->lc == 'Lower LC') {echo 'selected';} ?>>Lower LC</option>
-                    <option value="Upper LC" <?php if ($profile->lc == 'Upper LC') {echo 'selected';} ?>>Upper LC</option>
-                    <option value="Upper LC" <?php if ($profile->lc == 'Not in LC') {echo 'selected';} ?>>Not in LC</option>
-                </select>
-                <br />
-                <br><hr>
-                <strong>Part 3: Training Experience</strong><br><br>
-                <label style="margin-top: 5px; margin-bottom: 5px; float: left;" for="t-exp">Number of Summer Training Attended*</label><input type="number" name="t-exp" id="t-exp" min="0" required value="<?php echo $profile->training_exp ?>"/>
-                <br />
-                <label style="margin-top: 5px; margin-bottom: 5px; float: left;" for="cec-exp">Number of Educators' Conventions Attended*</label><input type="number" name="cec-exp" id="cec-exp" min="0" required value="<?php echo $profile->cec_exp ?>"/>
-                <br />
-                <br><hr>
-                <strong>Part 4: Educational Attainment</strong><br><br>
-                <label style="margin-top: 5px; margin-bottom: 5px; margin-right: 15px; float: left;" for="degree">Highest Degree Obtained*</label>
-                <select id="degree" name="degree" required>
-                    <option value="Elementary" <?php if ($profile->degree == 'Elementary') {echo 'selected';} ?>>Elementary</option>
-                    <option value="Middle School" <?php if ($profile->degree == 'Middle School') {echo 'selected';} ?>>Middle School</option>
-                    <option value="High School" <?php if ($profile->degree == 'High School') {echo 'selected';} ?>>High School</option>
-                    <option value="Associates" <?php if ($profile->degree == 'Associates') {echo 'selected';} ?>>Associates</option>
-                    <option value="Bachelors" <?php if ($profile->degree == 'Bachelors') {echo 'selected';} ?>>Bachelors</option>
-                    <option value="Masters" <?php if ($profile->degree == 'Masters') {echo 'selected';} ?>>Masters</option>
-                    <option value="Ph.D" <?php if ($profile->degree == 'Doctorate') {echo 'selected';} ?>>Doctorate</option>
-                </select>
-                <br/><br>
-                <label for="grad-year">Year of Graduation*</label><input type="number" name="grad-year" id="grad-year" min="1950" required value="<?php echo $profile->grad_year ?>"/>
-                <br />
-                <label for="major">Major</label><input class="er_input" type="text" name="major" id="major" value="<?php echo $profile->major; ?>"/>
-                <br />
-                <label for="minor">Minor</label><input class="er_input" type="text" name="minor" id="minor" value="<?php echo $profile->minor; ?>"/>
-                <br />
-                <label for="institution">Institution*</label><input class="er_input" type="text" name="institution" id="institution" required value="<?php echo $profile->institution; ?>"/>
-                <br /><br><hr>
-                <label for="comment">Comment</label><textarea name="comment" id="comment" cols="45" rows="5"><?php echo $profile->comment ?></textarea>
-                <br />
-                <input type="hidden" name="school" value="<?php echo $username; ?>">
-                <input type="hidden" name="id" value="<?php echo $staff_id ?>">
-                <br/>
-                <input type="submit" name="update-profile" id="update-profile" value="Update Profile" />
-                <input type="submit" name="update-cancel" id="update-cancel" value="Cancel" />
-                <br />
-            </form>
-            <?php
         }
 
         // Edit Staff Registration
