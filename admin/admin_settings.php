@@ -40,6 +40,26 @@ class training_registration_acp {
         register_setting('reading', 'my_mode');
     }
 
+    // Registers the required CSS
+    public function enqueueCSS() {
+        wp_enqueue_style('new_training_style', plugins_url('stylesheet/add_new_training_styles.css', __FILE__));
+    }
+
+    private function download_excel($filename) {
+        // Redirect output to a client’s web browser (Excel2007)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="'. $filename .'"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+
+        // If you're serving to IE over SSL, then the following may be needed
+        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
+        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header ('Pragma: public'); // HTTP/1.0
+    }
+
     /**
      * MAIN SETTINGS PAGE
      */
@@ -51,6 +71,9 @@ class training_registration_acp {
      * CREATE TRAINING PAGE
      */
     public function erNewEvent() {
+        // Inject CSS
+        add_action('admin_enqueue_scripts', $this->enqueueCSS(), 5);
+
         global $wpdb;
         // Create new table for the new event and fill first data
         if($_POST['create_training']) {
@@ -162,6 +185,8 @@ class training_registration_acp {
      * MANAGE REGISTRATION PAGE
      */
     public function erViewEventReg() {
+        //add_action('admin_head', $this->download_excel('TEST.xlsx'));
+
         $this->content->manage_reg($this->tools, get_option('my_mode'));
 
     }
@@ -206,6 +231,8 @@ class training_registration_acp {
  */
 global $wpdb;
 if (isset($_POST['download-xls'])) {
+
+
     $my_mode = (int)$_POST['my-mode'];
 
     // Place the right headers for each mode
@@ -261,7 +288,7 @@ if (isset($_POST['download-xls'])) {
     $event_id          = $_POST['event-id'];
     $registrations     = $wpdb->get_results("SELECT * FROM $registration_list WHERE `event_id` = $event_id");
     $event_info        = $wpdb->get_row("SELECT * FROM $event_list WHERE id = $event_id");
-    $worksheet_name    = $event_info->event_name . ' at ' . $event_info->location . ' ' . date("Y", strtotime($event_info->start_time));
+    $worksheet_name    = $event_info->event_name;
 
     foreach($registrations as $trainee) {
         $trainee_id     = $trainee->staff;
@@ -322,6 +349,7 @@ if (isset($_POST['download-xls'])) {
 
     $filename = 'Training_Registration_' . $event_info->location . '_' . date("Y-m-d", strtotime($event_info->start_time)) . '.xlsx';
 
+
     // Enable error reporting
     error_reporting(E_ALL);
     ini_set('display_errors', TRUE);
@@ -333,7 +361,7 @@ if (isset($_POST['download-xls'])) {
     // Set Properties
     $objPHPExcel->getProperties()->setCreator("Training Registration Plugin")
         ->setLastModifiedBy("Training Registration Plugin")
-        ->setTitle($filename)
+        ->setTitle('Registrations')
         ->setSubject("Training Registration");
 
     // Write data

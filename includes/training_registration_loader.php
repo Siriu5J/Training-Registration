@@ -22,11 +22,12 @@ class training_registration_loader {
     }
 
     // Fill the actions array
-    public function er_add_action($hook, $component, $callback) {
+    public function er_add_action($hook, $component, $callback, $priority = 10) {
         $this->actions[] = array(
             'hook'      => $hook,
             'component' => $component,
-            'callback'  => $callback
+            'callback'  => $callback,
+            'priority'  => $priority
         );
     }
 
@@ -42,7 +43,7 @@ class training_registration_loader {
     // Register all the hooks to WordPress
     public function run() {
         foreach ($this->actions as $action) {
-            add_action($action['hook'], array($action['component'], $action['callback']));
+            add_action($action['hook'], array($action['component'], $action['callback']), $action['priority']);
         }
 
         foreach ($this->shortcodes as $shortcode) {
