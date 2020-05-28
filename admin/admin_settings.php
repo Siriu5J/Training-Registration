@@ -18,11 +18,14 @@ class training_registration_acp {
     protected $content;         // All the html contents are stored here
     protected $admin_notice;    // All admin notices are stored here
 
+    protected $home_table;
+
     // Constructor. Instantiates the protected variables
     public function __construct() {
         require_once(ER_PLUGIN_DIR . '/includes/tools.php');
         require_once(ER_PLUGIN_DIR . '/admin/settings_page_content.php');
         require_once(ER_PLUGIN_DIR . '/admin/admin_messages.php');
+
         $this->tools = new training_registration_tools();
         $this->content = new settings_page_content();
         $this->admin_notice = new admin_messages();
@@ -41,30 +44,31 @@ class training_registration_acp {
     }
 
     // Registers the required CSS
-    public function enqueueCSS() {
+    public function enqueue_new_training_CSS() {
         wp_enqueue_style('new_training_style', plugins_url('stylesheet/add_new_training_styles.css', __FILE__));
     }
 
-    private function download_excel($filename) {
-        // Redirect output to a client’s web browser (Excel2007)
-        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="'. $filename .'"');
-        header('Cache-Control: max-age=0');
-        // If you're serving to IE 9, then the following may be needed
-        header('Cache-Control: max-age=1');
-
-        // If you're serving to IE over SSL, then the following may be needed
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+    public function enqueue_home_CSS() {
+        wp_enqueue_style('home_styles', plugins_url('stylesheet/home_styles.css', __FILE__));
     }
+
 
     /**
      * MAIN SETTINGS PAGE
      */
     public function erSettingsPage() {
-        $this->content->overview();
+        // Inject CSS
+        add_action('admin_enqueue_scripts', $this->enqueue_home_CSS(), 5);
+
+        //TODO: Add screen options
+
+        // The home table
+        if (!class_exists('admin_home_table')) {
+            require_once(ER_PLUGIN_DIR . '/admin/admin_home_table.php');
+        }
+        $this->home_table = new admin_home_table();
+
+        $this->content->overview($this->home_table);
     }
 
     /**
@@ -72,7 +76,7 @@ class training_registration_acp {
      */
     public function erNewEvent() {
         // Inject CSS
-        add_action('admin_enqueue_scripts', $this->enqueueCSS(), 5);
+        add_action('admin_enqueue_scripts', $this->enqueue_new_training_CSS(), 5);
 
         global $wpdb;
         // Create new table for the new event and fill first data
@@ -230,10 +234,10 @@ class training_registration_acp {
  * This function created with PHPExcel
  */
 global $wpdb;
-if (isset($_POST['download-xls'])) {
+if ($_GET['print-excel'] == "true") {
 
 
-    $my_mode = (int)$_POST['my-mode'];
+    $my_mode = (int)$_GET['mode'];
 
     // Place the right headers for each mode
     if ($my_mode == 1) {
@@ -285,7 +289,7 @@ if (isset($_POST['download-xls'])) {
     $registration_list = ER_REGISTRATION_LIST;
     $event_list        = ER_EVENT_LIST;
     $staff_profile     = ER_STAFF_PROFILE;
-    $event_id          = $_POST['event-id'];
+    $event_id          = $_GET['id'];
     $registrations     = $wpdb->get_results("SELECT * FROM $registration_list WHERE `event_id` = $event_id");
     $event_info        = $wpdb->get_row("SELECT * FROM $event_list WHERE id = $event_id");
     $worksheet_name    = $event_info->event_name;

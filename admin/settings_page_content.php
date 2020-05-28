@@ -11,13 +11,29 @@
  */
 
 class settings_page_content {
-    public function overview() {
+    public function overview($home_table) {
         ?>
+        <div class="wrap">
+            <h1 class="wp-heading-inline">Event Registration Plugin</h1>
+            <a class="page-title-action" href="<?php echo get_admin_url(get_current_blog_id(), 'admin.php?page=er_new_event_set');?>">Add New Training</a>
+            <hr class="wp-header-end">
+        <?php
 
-        <h1>Event Registration Plugin V2</h1>
-        <br>
-        <p>V1 of this plugin is an unpublished beta version of this plugin. The V2 version is a rewritten version of V1, focusing on optimizing the codes and providing some minor visual update.</p>
-
+        $home_table->prepare_items();
+        ?>
+            <div id="er-home-table">
+                <?php
+                $home_table->views();
+                ?>
+                <form method="post">
+                    <input type="hidden" name="page" value="home_table_search" />
+                    <?php
+                    $home_table->search_box('Search Trainings', 'search_id');
+                    $home_table->display();
+                    ?>
+                </form>
+            </div>
+        </div>
         <?php
     }
 
@@ -137,10 +153,7 @@ class settings_page_content {
                                 } ?>">&nbsp;
                                 </div>
                             </td>
-                            <td style="text-align: center; vertical-align: middle; padding-top: 2.75pt"><input type="radio"
-                                                                                                               name="select"
-                                                                                                               value="<?php echo $training->id ?>"
-                                                                                                               required/>
+                            <td style="text-align: center; vertical-align: middle; padding-top: 2.75pt"><input type="radio" name="select" value="<?php echo $training->id ?>" required/>
                             </td>
                         </tr>
                         <?php
