@@ -53,7 +53,7 @@ class admin_home_table extends WP_List_Table {
     }
 
     function column_event_name($item) {
-        return '<a href="' . get_admin_url(get_current_blog_id(), 'admin.php?page=er_new_event_set') . '&event-id='. $item['id'] . '">' . $item['event_name'] . '</a>' . ( $item['activated'] == 0 ? ' (Deactivated)' : '');
+        return '<a href="' . get_admin_url(get_current_blog_id(), 'admin.php?page=er_new_event_set') . '&event-id='. $item['id'] . '&view-event">' . $item['event_name'] . '</a>' . ( $item['activated'] == 0 ? ' (Deactivated)' : '');
     }
 
     function column_availability($item) {

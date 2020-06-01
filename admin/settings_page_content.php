@@ -37,67 +37,145 @@ class settings_page_content {
         <?php
     }
 
-    public function new_event() {
+    public function new_event($data, $tools) {
+        // Set Appropriate text
+        if ($data->event_name != '') {
+            $header = "View/Edit Training";
+            $save   = "Save Training Details";
+            $submit_id = 'submit_edit';
+            $show_stat = true;
+        } else {
+            $header = "Create New Training";
+            $save   = "Create Training";
+            $submit_id = 'create_training';
+            $show_stat = false;
+        }
+
+        // Set Appropriate max values
+        if ($data->max == -999) {
+            $data->max = '';
+        }
+
         $warning_text_registration = "Please make sure that the start time is always before the end time. Also, the start time must be in the future to have the system recognize the training as an upcoming training.";
         $warning_text_cap = "If you chose to toggle limit maximum registration on, the max registration must be greater than 0.";
         $question_mark = "Unchecking this option will keep this training hidden to the public even when its open for registration.";
         ?>
-        <h1 class="er-admin-header">Create New Training</h1>
-        <form id="new-event" name="new-event" method="post" action="<?php echo $_SERVER['REQUEST_URI'];?>">
-            <div id="er-display-two-columns">
-                <div id="er-main-content">
-                    <div id="er-title">
-                        <input type="text" name="event-name" placeholder="Enter Training Name Here" id="event-name" spellcheck="true" required/>
-                    </div>
-                    <div id="er-information">
-                        <label for="location">Location:<br></label>
-                        <input class="er_input" type="text" name="location" id="location" required/>
-                        <br/>
-                        <label for="comment">Training Information:<br></label>
-                        <textarea name="comment" id="comment" cols="45" rows="5" spellcheck="true"></textarea>
-                    </div>
-                </div>
-
-                <div id="er-side-bar">
-                    <div class="er-sidebar-block">
-                        <div class="er-block-title">
-                            <h3>Registration Dates <span class="dashicons dashicons-warning" title="<?php echo $warning_text_registration ?>"></span></h3>
-                        </div>
-                        <div class="er-block-content">
-                            <label for="open-date">Registration Open Date:<br></label><input class="er_input" type="datetime-local" name="open-date" id="open-date" value="<?php echo date("Y-m-d\TH:i", mktime(0,0)) ?>" required/>
-                            <br /><br />
-                            <label for="close-date">Registration Close Date:<br></label><input class="er_input" type="datetime-local" name="close-date" id="close-date" value="<?php echo date("Y-m-d\TH:i", strtotime("+31 days" ,mktime(0,0))) ?>" required/>
-                            <br /><br />
-                            <label for="start-date">Training Start Date:<br></label><input class="er_input" type="datetime-local" name="start-date" id="start-date" value="<?php echo date("Y-m-d\TH:i", strtotime("+31 days" ,mktime(0,0))) ?>" required/>
-                            <br /><br />
-                            <label for="end-date">Training End Date:<br></label><input class="er_input" type="datetime-local" name="end-date" id="end-date" value="<?php echo date("Y-m-d\TH:i", strtotime("+31 days" ,mktime(0,0))) ?>" required/>
-                        </div>
-                    </div>
-
-                    <div class="er-sidebar-block">
-                        <div class="er-block-title">
-                            <h3>Capacity and Status <span class="dashicons dashicons-warning" title="<?php echo $warning_text_cap ?>"></span></h3>
-                        </div>
-                        <div class="er-block-content">
-                            <label for="max">Max Registration:<br></label><input class="er_input" type="number" name="max" id="max" min="0" step="1"/>
-                            <br /><br />
-                            <table>
-                                <tr>
-                                    <td><input type="checkbox" name="max-limit" id="max-limit" value="1"/></td>
-                                    <td><label for="max-limit">Limit Maximum registration?</label></td>
-                                </tr>
-                                <tr>
-                                    <td><input type="checkbox" name="activated" id="activated" value="1" checked/></td>
-                                    <td><label for="activated">Activated? <span class="dashicons dashicons-editor-help" title="<?php echo $question_mark ?>"></span></label></td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="wrap">
+            <h1 class="wp-heading-inline"><?php echo $header ?></h1>
+            <hr class="wp-header-end">
             <br />
-            <input class="er-submit-button" type="submit" name="create_training" id="create_training" value="Create Training" />
-        </form>
+            <form id="new-event" name="new-event" method="post" action="<?php echo $_SERVER['REQUEST_URI'];?>">
+                <input type="hidden" name="event-id" value="<?php echo $data->id ?>" />
+                <div id="er-display-two-columns">
+                    <div id="er-main-content">
+                        <div id="er-title">
+                            <input type="text" name="event-name" placeholder="Enter Training Name Here" id="event-name" spellcheck="true" value="<?php echo $data->event_name ?>" required/>
+                        </div>
+                        <div id="er-information">
+                            <label for="location">Location:<br></label>
+                            <input class="er_input" type="text" name="location" id="location" value="<?php echo $data->location ?>" required/>
+                            <br/>
+                            <label for="comment">Training Information:<br></label>
+                            <textarea name="comment" id="comment" cols="45" rows="5" spellcheck="true"><?php echo $data->comment ?></textarea>
+                        </div>
+                    </div>
+
+                    <div id="er-side-bar">
+                        <?php
+                        // Show stat block
+                        if ($show_stat) {
+                            ?>
+                            <div class="er-sidebar-block">
+                                <div class="er-block-title">
+                                    <h3>Statistics</h3>
+                                </div>
+                                <div class="er-block-content">
+                                    <table>
+                                        <tr>
+                                            <td class="er-tb-cell"><b>Registration status:</b></td>
+                                            <td class="er-tb-cell"><?php echo $tools->availability($data) ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="er-tb-cell"><b>Currently registered:</b></td>
+                                            <td class="er-tb-cell"><?php echo $data->num_reg ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td class="er-tb-cell"><b>Activated?</b></td>
+                                            <td class="er-tb-cell"><?php echo ($data->activated == 1? 'Yes' : 'No'); ?></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div>
+                            <?php
+                        }
+                        ?>
+
+                        <div class="er-sidebar-block">
+                            <div class="er-block-title">
+                                <h3>Registration Dates <span class="dashicons dashicons-warning" title="<?php echo $warning_text_registration ?>"></span></h3>
+                            </div>
+                            <div class="er-block-content">
+                                <label for="open-date">Registration Open Date:<br></label><input class="er_input" type="datetime-local" name="open-date" id="open-date" value="<?php echo date( "Y-m-d\TH:i:s", strtotime($data->open_time)); ?>" required/>
+                                <br /><br />
+                                <label for="close-date">Registration Close Date:<br></label><input class="er_input" type="datetime-local" name="close-date" id="close-date" value="<?php echo date( "Y-m-d\TH:i:s", strtotime($data->close_time)); ?>" required/>
+                                <br /><br />
+                                <label for="start-date">Training Start Date:<br></label><input class="er_input" type="datetime-local" name="start-date" id="start-date" value="<?php echo date( "Y-m-d\TH:i:s", strtotime($data->start_time)); ?>" required/>
+                                <br /><br />
+                                <label for="end-date">Training End Date:<br></label><input class="er_input" type="datetime-local" name="end-date" id="end-date" value="<?php echo date( "Y-m-d\TH:i:s", strtotime($data->end_time)); ?>" required/>
+                            </div>
+                        </div>
+
+                        <div class="er-sidebar-block">
+                            <div class="er-block-title">
+                                <h3>Capacity and Status <span class="dashicons dashicons-warning" title="<?php echo $warning_text_cap ?>"></span></h3>
+                            </div>
+                            <div class="er-block-content">
+                                <label for="max">Max Registration:<br></label><input class="er_input" type="number" name="max" id="max" min="0" step="1" value="<?php echo $data->max ?>"/>
+                                <br /><br />
+                                <table>
+                                    <tr>
+                                        <td><input type="checkbox" name="max-limit" id="max-limit" value="1" <?php echo ($data->limit_max == 1 ? 'checked' : '') ?>/></td>
+                                        <td><label for="max-limit">Limit Maximum registration?</label></td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="checkbox" name="activated" id="activated" value="1" <?php echo ($data->activated == 1 ? 'checked' : '') ?>/></td>
+                                        <td><label for="activated">Activation <span class="dashicons dashicons-editor-help" title="<?php echo $question_mark ?>"></span></label></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <?php
+                        // Show danger zone
+                        if ($show_stat) {
+                            ?>
+                            <div class="er-sidebar-block">
+                                <div class="er-block-title">
+                                    <h3>Danger Zone</h3>
+                                </div>
+                                <div class="er-block-content">
+                                    <p><b>Remove Training</b><br />
+                                        Warning! Doing this will remove the training event and registration records from the database. Type "remove training" in the box below and click remove to remove the training.
+                                    </p>
+                                    <form id="confirm-remove-event" name="confirm-remove-event" method="post" action="<?php echo get_site_url() . '/admin.php?page=er_gen_set';?>">
+                                        <input type="hidden" name="removal-id" id="removal-id" value="<?php echo $data->id ?>" />
+                                        <br />
+                                        <input type="text" class="er_input" name="confirm" required pattern="remove training" autocomplete="off" />
+                                        <br />
+                                        <br />
+                                        <input type="submit" id="confirm_remove_button" name="confirm_remove" value="Remove Training">
+                                    </form>
+                                </div>
+                            </div>
+                            <?php
+                        }
+                        ?>
+                    </div>
+                </div>
+                <br />
+                <input class="er-submit-button" type="submit" name="<?php echo $submit_id ?>" id="create_training" value="<?php echo $save ?>" />
+            </form>
+        </div>
         <?php
     }
 

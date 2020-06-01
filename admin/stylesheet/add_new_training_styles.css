@@ -50,7 +50,7 @@
 #er-side-bar {
     width: 280px;
     margin-left: 15px;
-    margin-right: -270px;
+    margin-right: -280px;
     float: right;
 }
 
@@ -60,7 +60,7 @@
     margin-bottom: 15px;
 }
 
-.er-sidebar-block input[type="datetime-local"], input[type="number"]  {
+.er-sidebar-block input[type="datetime-local"], input[type="number"], input[type="text"]  {
     width: 100%;
 }
 
@@ -91,6 +91,14 @@
     padding: 8px;
 }
 
+.er-block-content p {
+    margin: 0;
+}
+
+.er-tb-cell {
+    width: 50%;
+}
+
 .er-block-content table {
     width: 100%;
 }
@@ -98,6 +106,14 @@
 .er-submit-button {
     background: #0071a1;
     border-color: #0071a1;
+    border-radius: 2px;
+    padding: 4px;
+    color: white;
+}
+
+#confirm_remove_button {
+    background: #c62828;
+    border-color: #c62828;
     border-radius: 2px;
     padding: 4px;
     color: white;

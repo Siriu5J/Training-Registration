@@ -80,7 +80,7 @@ class training_registration_acp {
 
         global $wpdb;
         // Create new table for the new event and fill first data
-        if($_POST['create_training']) {
+        if($_POST['create_training'] || $_POST['submit_edit']) {
             $event_name     = $_POST['event-name'];
             $location       = $_POST['location'];
             $start_date     = $_POST['start-date'];
@@ -89,34 +89,78 @@ class training_registration_acp {
 
             if($max == 0 && $limit_max == '1') {
                 add_action('admin_notices', $this->admin_notice->createEventNotAllowed());
-            } elseif ($this->tools->isValidEvent($event_name, $location, $start_date)) { // Check if the training name is valid
+            } elseif ($this->tools->isValidEvent($event_name, $location, $start_date, $_POST['event-id'])) { // Check if the training name is valid
                 // If max is unfilled, set as -999
                 if ($max == 0) {
                     $max = -999;
                 }
 
-                $success = $wpdb->insert(ER_EVENT_LIST, array(
-                    "event_name"    =>  $_POST['event-name'],
-                    "max"           =>  $max,
-                    "open_time"     =>  $_POST['open-date'],
-                    "close_time"    =>  $_POST['close-date'],
-                    "start_time"    =>  $start_date,
-                    "end_time"      =>  $_POST['end-date'],
-                    "location"      =>  $_POST['location'],
-                    "limit_max"     =>  $limit_max,
-                    "comment"       =>  $_POST['comment'],
-                    "activated"     =>  (int)$_POST['activated'],
-                    "num_reg"       =>  0,
-                ));
+                if ($_POST['create_training']) {
+                    $success = $wpdb->insert(ER_EVENT_LIST, array(
+                        "event_name"    =>  $_POST['event-name'],
+                        "max"           =>  $max,
+                        "open_time"     =>  $_POST['open-date'],
+                        "close_time"    =>  $_POST['close-date'],
+                        "start_time"    =>  $start_date,
+                        "end_time"      =>  $_POST['end-date'],
+                        "location"      =>  $_POST['location'],
+                        "limit_max"     =>  $limit_max,
+                        "comment"       =>  $_POST['comment'],
+                        "activated"     =>  (int)$_POST['activated'],
+                        "num_reg"       =>  0,
+                    ));
 
-                if ($success) {add_action('admin_notices', $this->admin_notice->tableSuccessCreation());}
-                else {add_action('admin_notices', $this->admin_notice->tableFailedCreation());}
+                    if ($success) {add_action('admin_notices', $this->admin_notice->tableSuccessCreation());}
+                    else {add_action('admin_notices', $this->admin_notice->tableFailedCreation());}
+                } else {
+                    $wpdb->update(ER_EVENT_LIST, array(
+                        "event_name"    =>  $_POST['event-name'],
+                        "max"           =>  $max,
+                        "open_time"     =>  $_POST['open-date'],
+                        "close_time"    =>  $_POST['close-date'],
+                        "start_time"    =>  $start_date,
+                        "end_time"      =>  $_POST['end-date'],
+                        "location"      =>  $_POST['location'],
+                        "limit_max"     =>  $limit_max,
+                        "comment"       =>  $_POST['comment'],
+                        "activated"     =>  (int)$_POST['activated'],
+                    ), array(
+                        'id'    =>  $_POST['event-id']
+                    ));
+
+                    add_action('admin_notices', $this->admin_notice->tableSuccessUpdate());
+                }
             } else {
                 add_action('admin_notices', $this->admin_notice->tableAlreadyExist());
             }
         }
 
-        $this->content->new_event();
+        // Check if user came here to view the training
+        if (isset($_GET['view-event'])) {
+            $id = $_GET['event-id'];
+            $data = $wpdb->get_row("SELECT * FROM ".ER_EVENT_LIST." WHERE `id` = $id");
+            $this->content->new_event($data, $this->tools);
+        } else {
+            // If the user is here to create new event, send preset data to produce an empty training form
+            $default_empty = array(
+                'id'            =>  -1,
+                'event_name'    =>  '',
+                'max'           =>  '',
+                'open_time'     =>  date("Y-m-d\TH:i", mktime(0,0)),
+                'close_time'    =>  date("Y-m-d\TH:i", strtotime("+31 days" ,mktime(0,0))),
+                'start_time'    =>  date("Y-m-d\TH:i", strtotime("+31 days" ,mktime(0,0))),
+                'end_time'      =>  date("Y-m-d\TH:i", strtotime("+31 days" ,mktime(0,0))),
+                'location'      =>  '',
+                'limit_max'     =>  0,
+                'activated'     =>  1,
+                'comment'       =>  '',
+                'num_reg'       =>  0
+            );
+
+            $this->content->new_event((object) $default_empty, $this->tools);
+        }
+
+
     }
 
     /**
@@ -157,7 +201,7 @@ class training_registration_acp {
 
             if($max == 0 && $limit_max == '1') {
                 add_action('admin_notices', $this->admin_notice->createEventNotAllowed());
-            } elseif ($this->tools->isValidEvent($event_name, $location, $start_date)) { // Check if the training name is valid
+            } elseif ($this->tools->isValidEvent($event_name, $location, $start_date, $_POST['update-event_id'])) { // Check if the training name is valid
                 // If max is unfilled, set as -999
                 if ($max == 0) {
                     $max = -999;

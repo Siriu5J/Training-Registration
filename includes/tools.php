@@ -11,7 +11,7 @@
  */
 
 class training_registration_tools {
-    public function isValidEvent($name, $location, $start_date) {
+    public function isValidEvent($name, $location, $start_date, $id) {
         global $wpdb;
         $table = ER_EVENT_LIST;
         $duplicates = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table WHERE `event_name` = $name"));   // Get all trainings that has the same name
@@ -22,7 +22,9 @@ class training_registration_tools {
             foreach ($duplicates as $training) {
                 if ($training->location == $location) { // check location
                     if ($training->start_time == $start_date) { // Check time
-                        return false;
+                        if ($id == $training->id) { // is actually the same event
+                            return false;
+                        }
                     }
                 }
             }
