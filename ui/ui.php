@@ -80,7 +80,8 @@ class training_registration_ui {
                         <?php
                     } else {
                         ?>
-                        <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">Cannot create staff profile. Please contact the Site Admin for support.</div>
+                        <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">Cannot create staff profile. Please contact the Site Admin for support.
+                        </div>
                         <?php
                     }
                 }else {

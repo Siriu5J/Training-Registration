@@ -25,15 +25,7 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="3d0ac7a8-841e-49be-910c-086a858c82b6" name="Default Changelist" comment="Update File">
-      <change afterPath="$PROJECT_DIR$/Training-Registration.zip" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/admin_home_table.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/admin_home_table.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/admin_settings.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/admin_settings.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/settings_page_content.php" beforeDir="false" afterPath="$PROJECT_DIR$/admin/settings_page_content.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/admin/stylesheet/add_new_training_styles.css" beforeDir="false" afterPath="$PROJECT_DIR$/admin/stylesheet/add_new_training_styles.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/includes/tools.php" beforeDir="false" afterPath="$PROJECT_DIR$/includes/tools.php" afterDir="false" />
-    </list>
+    <list default="true" id="3d0ac7a8-841e-49be-910c-086a858c82b6" name="Default Changelist" comment="Update File" />
     <list id="8c76e95e-b6fb-45e4-b02e-81869b9033e2" name="Revert &quot;Update File&quot;" comment="Revert &quot;Update File&quot;&#10;&#10;This reverts commit 17f032c5" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -152,6 +144,7 @@
       <workItem from="1590521748762" duration="17000" />
       <workItem from="1590521780911" duration="7712000" />
       <workItem from="1590607597347" duration="41821000" />
+      <workItem from="1591138672592" duration="27000" />
     </task>
     <task id="LOCAL-00001" summary="Renamed Files and started the changes">
       <created>1589922250539</created>

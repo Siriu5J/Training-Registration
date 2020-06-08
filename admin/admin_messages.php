@@ -24,7 +24,7 @@ class admin_messages {
     public function tableSuccessCreation() {
         ?>
         <div class="notice notice-success is-dismissible">
-            <p>Training has been created successfully! Click <a href="../wp-admin/admin.php?page=er_event_view_set">here</a> to see the training you created.</p>
+            <p>Training has been created successfully!</p>
         </div>
         <?php
     }

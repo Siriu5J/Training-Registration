@@ -97,6 +97,7 @@
 
 .er-tb-cell {
     width: 50%;
+    vertical-align: top;
 }
 
 .er-block-content table {
