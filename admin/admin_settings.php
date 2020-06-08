@@ -180,23 +180,12 @@ class training_registration_acp {
     public function erViewEvent() {
         global $wpdb;
 
-        if (isset($_GET['id'])) {
-            $id = $_GET['id'];
-            $this->content->view_event($this->tools, get_option('my_mode'), $id);
+        if (isset($_GET['event-id'])) {
+            $this->content->view_event($this->tools, get_option('my_mode'), $_GET['event-id']);
         } else {
             $this->content->manage_reg($this->tools, get_option('my_mode'));
         }
 
-
-    }
-
-    /**
-     * MANAGE REGISTRATION PAGE
-     */
-    public function erViewEventReg() {
-        //add_action('admin_head', $this->download_excel('TEST.xlsx'));
-
-        $this->content->manage_reg($this->tools, get_option('my_mode'));
 
     }
 

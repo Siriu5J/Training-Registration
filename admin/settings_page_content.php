@@ -194,10 +194,6 @@ class settings_page_content {
             $reg_table = new StaffRegTableCN($tools);
         }
 
-        if (isset($_GET['id[0]'])) {
-            $id = $_GET['id[0]'];
-        }
-
         $reg_table->set_event_id($id);
         $reg_table->prepare_items();
 
@@ -206,8 +202,9 @@ class settings_page_content {
             <h1 class="wp-heading-inline">Registrations for <?php echo $tools->getFieldById(ER_EVENT_LIST, 'event_name', $id).' at '. $tools->getFieldById(ER_EVENT_LIST, 'location', $id) ?></h1>
             <hr class="wp-header-end">
 
-            <form id="staff-reg" method="GET" action="<?php echo $_SERVER['REQUEST_URI'] ?>">
+            <form id="staff-reg" method="GET" action="<?php echo $_SERVER['REQUEST_URI']?>">
                 <!-- For plugins, we also need to ensure that the form posts back to our current page -->
+                <input type="hidden" name="event-id" value="<?php echo $id ?>" />
                 <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
                 <!-- Now we can render the completed list table -->
                 <?php $reg_table->display() ?>

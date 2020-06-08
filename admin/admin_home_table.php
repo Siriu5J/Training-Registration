@@ -77,7 +77,7 @@ class admin_home_table extends WP_List_Table {
     function column_print_sheet($item) {
         $mode = get_option('my_mode');
         $download = '<a href="' . $_SERVER['REQUEST_URI'] . '&id=' . $item['id'] . '&print-excel=true&mode='. $mode . '">Download</a>';
-        $view     = '<a href="'. get_admin_url(get_current_blog_id(), 'admin.php?page=er_view_reg_set') . '&id=' . $item['id'] .'">View</a>';
+        $view     = '<a href="'. get_admin_url(get_current_blog_id(), 'admin.php?page=er_view_reg_set') . '&event-id=' . $item['id'] .'">View</a>';
         return $download . '<br />' . $view;
     }
 

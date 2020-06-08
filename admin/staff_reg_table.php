@@ -34,6 +34,22 @@ class StaffRegTableCN extends WP_List_Table {
 
     }
 
+    function get_columns(){
+        $columns = array(
+            'cb'        => '<input type="checkbox" />', //Render a checkbox instead of text
+            'staff_name'        => 'Name',
+            'staff_sex'         => 'Sex',
+            'staff_age'         => 'Age',
+            'staff_position'    => 'Position',
+            'school'            => 'School',
+            'contact'           => 'Contact',
+            'reg_time'          => 'Reg Time',
+            'staff_comment'     => 'Staff Comment',
+            'comment'           => 'Reg Comment'
+        );
+        return $columns;
+    }
+
     // The column renderer if a custom one is not found
     // Custom renderer looks like: function column_{column_name}()
     function column_default($item, $column_name){
@@ -126,22 +142,6 @@ class StaffRegTableCN extends WP_List_Table {
         return get_user_by('login',$item['school'])->nickname;
     }
 
-    function get_columns(){
-        $columns = array(
-            'cb'        => '<input type="checkbox" />', //Render a checkbox instead of text
-            'staff_name'        => 'Name',
-            'staff_sex'         => 'Sex',
-            'staff_age'         => 'Age',
-            'staff_position'    => 'Position',
-            'school'            => 'School',
-            'contact'           => 'Contact',
-            'reg_time'          => 'Reg Time',
-            'staff_comment'     => 'Staff Comment',
-            'comment'           => 'Reg Comment'
-        );
-        return $columns;
-    }
-
     function get_sortable_columns() {
         $sortable_columns = array(
             'school'    => array('school', false),
@@ -168,6 +168,7 @@ class StaffRegTableCN extends WP_List_Table {
             $record_to_remove = $_GET['id'];
 
             foreach($record_to_remove as $record) {
+
                 // STEP 1: remove from registration list
                 $wpdb->delete($reg_table, array(
                     'event_id' => $this->event_id,
@@ -309,7 +310,7 @@ class StaffRegTableMY extends WP_List_Table {
     }
 
     function column_school($item) {
-        return get_user_by(login,$item['school'])->nickname;
+        return get_user_by('login',$item['school'])->nickname;
     }
 
     function get_columns(){
