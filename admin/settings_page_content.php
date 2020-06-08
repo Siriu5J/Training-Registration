@@ -280,7 +280,7 @@ class settings_page_content {
 
                 ?>
                 <div class="wrap" id="<?php echo $training->id; ?>">
-                    <h3>Registrations for <?php echo $training->event_name; ?></h3>
+                    <h3>Registrations for <?php echo $training->event_name . ' at ' . $training->location; ?></h3>
                     <form id="staff-reg" method="GET" action="<?php echo $_SERVER['REQUEST_URI'] ?>">
                         <!-- For plugins, we also need to ensure that the form posts back to our current page -->
                         <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />

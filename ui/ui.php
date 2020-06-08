@@ -76,17 +76,25 @@ class training_registration_ui {
 
                     if ($success) {
                         ?>
-                        <div style="background-color: #5ac18e; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">Profile for <?php echo $first_name.' '.$last_name ?> created</div>
+                        <div style="background-color: #5ac18e; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+                            Profile for <?php echo $first_name.' '.$last_name ?> created
+                            <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
+                        </div>
                         <?php
                     } else {
                         ?>
-                        <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">Cannot create staff profile. Please contact the Site Admin for support.
+                        <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+                            Cannot create staff profile. Please contact the Site Admin for support.
+                            <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
                         </div>
                         <?php
                     }
                 }else {
                     ?>
-                    <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">Staff, <?php echo $first_name.' '.$last_name; ?>, already exist in record!</div>
+                    <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+                        Staff, <?php echo $first_name.' '.$last_name; ?>, already exist in record!
+                        <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
+                    </div>
                     <?php
                 }
             }
@@ -150,16 +158,25 @@ class training_registration_ui {
 
                     if ($success) {
                         ?>
-                        <div style="background-color: #5ac18e; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">Profile for <?php echo $first_name.' '.$last_name ?> created</div>
+                        <div style="background-color: #5ac18e; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+                            Profile for <?php echo $first_name.' '.$last_name ?> created
+                            <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
+                        </div>
                         <?php
                     } else {
                         ?>
-                        <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">Cannot create staff profile. Please contact the Site Admin for support.</div>
+                        <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+                            Cannot create staff profile. Please contact the Site Admin for support.
+                            <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
+                        </div>
                         <?php
                     }
                 }else {
                     ?>
-                    <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">Staff, <?php echo $first_name.' '.$last_name; ?>, already exist in record!</div>
+                    <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+                        Staff, <?php echo $first_name.' '.$last_name; ?>, already exist in record!
+                        <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
+                    </div>
                     <?php
                 }
             }
@@ -206,21 +223,33 @@ class training_registration_ui {
                             "id" => $event,
                         ));
                         ?>
-                        <div style="background-color: #5ac18e; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;"><?php echo $this->tools->idtoName($staff) ?> is successfully registered to <?php echo $training->event_name.' at '.$training->location ?></div>
+                        <div style="background-color: #5ac18e; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+                            <?php echo $this->tools->idtoName($staff) ?> is successfully registered to <?php echo $training->event_name.' at '.$training->location ?>
+                            <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
+                        </div>
                         <?php
                     } else {
                         ?>
-                        <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;"><?php echo $this->tools->idtoName($staff) ?> has already been registered to <?php echo $training->event_name.' at '.$training->location ?>. </div>
+                        <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+                            <?php echo $this->tools->idtoName($staff) ?> has already been registered to <?php echo $training->event_name.' at '.$training->location ?>.
+                            <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
+                        </div>
                         <?php
                     }
                 } else {
                     ?>
-                    <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">Staff cannot be registered. Try to refresh the page and try again.</div>
+                    <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+                        Staff cannot be registered. Try to refresh the page and try again.
+                        <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
+                    </div>
                     <?php
                 }
             } else {
                 ?>
-                <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">You must select a training AND a staff to register.</div>
+                <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+                    You must select a training AND a staff to register.
+                    <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
+                </div>
                 <?php
             }
 
@@ -361,7 +390,10 @@ class training_registration_ui {
                 ));
 
                 ?>
-                <div style="background-color: #5ac18e; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">Staff Profile Updated</div>
+                <div style="background-color: #5ac18e; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+                    Staff Profile Updated
+                    <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
+                </div>
                 <?php
             }
         } else {
@@ -394,7 +426,10 @@ class training_registration_ui {
                 ));
 
                 ?>
-                <div style="background-color: #5ac18e; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">Staff Profile Updated</div>
+                <div style="background-color: #5ac18e; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+                    Staff Profile Updated
+                    <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
+                </div>
                 <?php
             }
         }
@@ -418,7 +453,10 @@ class training_registration_ui {
                 ));
             }
             ?>
-            <div style="background-color: #5ac18e; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">Registration(s) Cancelled</div>
+            <div style="background-color: #5ac18e; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+                Registration(s) Cancelled
+                <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
+            </div>
             <?php
         }
 

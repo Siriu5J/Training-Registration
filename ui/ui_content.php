@@ -4,6 +4,7 @@
 class ui_content
 {
     public function create_staff_cn($username) {
+        $this_year = date("Y");
         ?>
         <form id="staff-profile" name="staff-profile" method="post" action="<?php echo $_SERVER['REQUEST_URI'];?>">
             <p>Fill out all fields marked with *</p>
@@ -73,13 +74,13 @@ class ui_content
                 <option value="Doctorate">Doctorate</option>
             </select>
             <br/><br>
-            <label for="grad-year">Year of Graduation*</label><input type="number" name="grad-year" id="grad-year" min="1950" step="1" required/>
+            <label for="grad-year">Year of Graduation*</label><input type="number" name="grad-year" id="grad-year" min="1950" max="<?php echo $this_year ?>" step="1" required/>
             <br />
             <label for="major">Major</label><input class="er_input" type="text" name="major" id="major"/>
             <br />
             <label for="minor">Minor</label><input class="er_input" type="text" name="minor" id="minor" />
             <br />
-            <label for="institution">Institution*</label><input class="er_input" type="text" name="institution" id="institution" required/>
+            <label for="institution">Institution</label><input class="er_input" type="text" name="institution" id="institution"/>
             <br /><br><hr>
             <label for="comment">Comment</label><textarea name="comment" id="comment" cols="45" rows="5"></textarea>
             <br />
@@ -93,6 +94,7 @@ class ui_content
     }
 
     public function create_staff_my($username) {
+        $this_year = date("Y");
         ?>
         <form id="staff-profile" name="staff-profile" method="post" action="<?php echo $_SERVER['REQUEST_URI'];?>">
             <p>Fill out all fields marked with *</p>
@@ -137,7 +139,7 @@ class ui_content
                 <option value="Others">Others</option>
             </select>
             <br/><br>
-            <label style="margin-top: 5px; margin-bottom: 5px; float: left;" for="t-exp">Year of Last Training*</label><input type="number" name="t-exp" id="t-exp" min="1950" required/>
+            <label style="margin-top: 5px; margin-bottom: 5px; float: left;" for="t-exp">Year of Last Training*</label><input type="number" name="t-exp" id="t-exp" min="2010" max="<?php echo $this_year ?>" required/>
             <br />
             <label for="lc">Which Training was attended above?*</label>
             <select id="lc" name="lc" required>
