@@ -34,6 +34,11 @@ class StaffRegTableCN extends WP_List_Table {
 
     }
 
+    /** No Items */
+    public function no_items() {
+        _e( 'No trainings found.' );
+    }
+
     function get_columns(){
         $columns = array(
             'cb'        => '<input type="checkbox" />', //Render a checkbox instead of text
@@ -144,10 +149,23 @@ class StaffRegTableCN extends WP_List_Table {
 
     function get_sortable_columns() {
         $sortable_columns = array(
+            'staff_name'=> array('staff_name', false),
             'school'    => array('school', false),
-            'reg_time'  => array('reg_time',false)
+            'reg_time'  => array('reg_time',true)
         );
         return $sortable_columns;
+    }
+
+    /** Usort */
+    function usort_reorder( $a, $b ) {
+        // If no sort, default to title
+        $orderby = ( ! empty( $_GET['orderby'] ) ) ? $_GET['orderby'] : 'reg_time';
+        // If no order, default to asc
+        $order = ( ! empty($_GET['order'] ) ) ? $_GET['order'] : 'desc';
+        // Determine sort order
+        $result = strcmp( $a[$orderby], $b[$orderby] );
+        // Send final sort direction to usort
+        return ( $order === 'asc' ) ? $result : -$result;
     }
 
     function get_bulk_actions() {

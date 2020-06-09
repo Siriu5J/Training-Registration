@@ -200,6 +200,7 @@ class settings_page_content {
         ?>
         <div class="wrap">
             <h1 class="wp-heading-inline">Registrations for <?php echo $tools->getFieldById(ER_EVENT_LIST, 'event_name', $id).' at '. $tools->getFieldById(ER_EVENT_LIST, 'location', $id) ?></h1>
+            <p>Please use the browser search feature to search this list (Press Ctrl+f or Command+f). You can use the bulk action to remove trainee(s) from a training.</p>
             <hr class="wp-header-end">
 
             <form id="staff-reg" method="GET" action="<?php echo $_SERVER['REQUEST_URI']?>">
@@ -207,7 +208,9 @@ class settings_page_content {
                 <input type="hidden" name="event-id" value="<?php echo $id ?>" />
                 <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
                 <!-- Now we can render the completed list table -->
-                <?php $reg_table->display() ?>
+                <?php
+                $reg_table->display()
+                ?>
             </form>
         </div>
         <?php
@@ -224,129 +227,133 @@ class settings_page_content {
         // Only show information if there are upcoming and activated trainings
         if ($wpdb->get_var("SELECT COUNT(*) FROM $event_table WHERE `activated` = 1 AND `start_time` > '$time_now'") != 0) {
             ?>
-            <h1>Manage Registrations</h1>
-            <p>All the registrations of <b>upcoming AND activated trainings</b> can be seen here. To see the registration list of a particular training, click on the name of the training. You can use the bulk action to remove trainee(s) from a training. You can also choose to download the registration list as Excel Spreadsheet (.xls) by clicking on the "Download Training Registration as Excel Spreadsheet" button under each training.</p>
-            <table style="width:100%; border-collapse: collapse">
-                <tr style="outline: thin solid; text-align: left;">
-                    <th style="width: 30%">Training Name</th>
-                    <th style="width: 15%">Location</th>
-                    <th style="width: 10%">Training Start Time</th>
-                    <th style="width: 10%">Training End Time</th>
-                    <th style="width: 13%">Available Slots</th>
-                    <th style="width: 13%">Registration Stat</th>
+            <div class="wrap">
+                <h1 class="wp-heading-inline">Manage Registrations</h1>
+                <p>All the registrations of <b>upcoming AND activated trainings</b> can be seen here. To see the registration list of a particular training, click on the name of the training. You can use the bulk action to remove trainee(s) from a training.</p>
+                <hr class="wp-header-end">
+                <table style="width:100%; border-collapse: collapse">
+                    <tr style="outline: thin solid; text-align: left;">
+                        <th style="width: 30%">Training Name</th>
+                        <th style="width: 15%">Location</th>
+                        <th style="width: 10%">Training Start Time</th>
+                        <th style="width: 10%">Training End Time</th>
+                        <th style="width: 13%">Available Slots</th>
+                        <th style="width: 13%">Registration Stat</th>
 
-                </tr>
-                <?php
-
-                // Only show trainings that are upcoming and activated
-                $trainings = $wpdb->get_results("SELECT * FROM $event_table WHERE `activated` = 1 AND `start_time` > '$time_now' ORDER BY `start_time` DESC");
-                $trainingNumber = 0;    // This will keep track of the number of row the foreach loop is on to set the background of every other row
-
-                foreach ($trainings as $training) {
-                    $trainingNumber++;
-                    ?>
-                    <tr <?php if ($trainingNumber % 2 == 0) {
-                        echo "bgcolor=\"#A9A9A9\"";
-                    } ?> style="height: 25pt; ">
-                        <td><a href="#<?php echo $training->id; ?>"><?php echo $training->event_name ?></a></td>
-                        <td><?php echo $training->location ?></td>
-                        <td><?php echo date("Y-m-d", strtotime($training->start_time)) ?></td>
-                        <td><?php echo date("Y-m-d", strtotime($training->end_time)) ?></td>
-                        <td><?php echo $tools->spotsOpen($training->max, $training->num_reg) ?></td>
-                        <td><?php echo $tools->availability($training) ?></td>
                     </tr>
                     <?php
-                }
-                ?>
-            </table>
-            <br>
-            <br><br>
-            <hr/>
-            <?php
 
-            // Take care of the view registration form
-            foreach ($trainings as $training) {
-                // Create a new WP List Table for each training
-                if ($my_mode == 1) {
-                    $reg_table = new StaffRegTableMY($tools);
-                } else {
-                    $reg_table = new StaffRegTableCN($tools);
-                }
-                $reg_table->set_event_id($training->id);
-                $reg_table->prepare_items();
+                    // Only show trainings that are upcoming and activated
+                    $trainings = $wpdb->get_results("SELECT * FROM $event_table WHERE `activated` = 1 AND `start_time` > '$time_now' ORDER BY `start_time` DESC");
+                    $trainingNumber = 0;    // This will keep track of the number of row the foreach loop is on to set the background of every other row
 
-                // Due to WP's restrictions on using certain functions in global scope, I had to pre-fetch the school nicknames and send them through the form
-                // This will be a two dimensional array which contains all
-
-                ?>
-                <div class="wrap" id="<?php echo $training->id; ?>">
-                    <h3>Registrations for <?php echo $training->event_name . ' at ' . $training->location; ?></h3>
-                    <form id="staff-reg" method="GET" action="<?php echo $_SERVER['REQUEST_URI'] ?>">
-                        <!-- For plugins, we also need to ensure that the form posts back to our current page -->
-                        <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
-                        <!-- Now we can render the completed list table -->
-                        <?php $reg_table->display() ?>
-                    </form>
-                </div>
+                    foreach ($trainings as $training) {
+                        $trainingNumber++;
+                        ?>
+                        <tr <?php if ($trainingNumber % 2 == 0) {
+                            echo "bgcolor=\"#A9A9A9\"";
+                        } ?> style="height: 25pt; ">
+                            <td><a href="#<?php echo $training->id; ?>"><?php echo $training->event_name ?></a></td>
+                            <td><?php echo $training->location ?></td>
+                            <td><?php echo date("Y-m-d", strtotime($training->start_time)) ?></td>
+                            <td><?php echo date("Y-m-d", strtotime($training->end_time)) ?></td>
+                            <td><?php echo $tools->spotsOpen($training->max, $training->num_reg) ?></td>
+                            <td><?php echo $tools->availability($training) ?></td>
+                        </tr>
+                        <?php
+                    }
+                    ?>
+                </table>
                 <br>
-                <br/>
+                <br><br>
                 <hr/>
                 <?php
 
+                // Take care of the view registration form
+                foreach ($trainings as $training) {
+                    // Create a new WP List Table for each training
+                    if ($my_mode == 1) {
+                        $reg_table = new StaffRegTableMY($tools);
+                    } else {
+                        $reg_table = new StaffRegTableCN($tools);
+                    }
+                    $reg_table->set_event_id($training->id);
+                    $reg_table->prepare_items();
+
+                    // Due to WP's restrictions on using certain functions in global scope, I had to pre-fetch the school nicknames and send them through the form
+                    // This will be a two dimensional array which contains all
+
+                    ?>
+                    <div class="wrap" id="<?php echo $training->id; ?>">
+                        <h3>Registrations for <?php echo $training->event_name . ' at ' . $training->location; ?></h3>
+                        <form id="staff-reg" method="GET" action="<?php echo $_SERVER['REQUEST_URI'] ?>">
+                            <!-- For plugins, we also need to ensure that the form posts back to our current page -->
+                            <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
+                            <!-- Now we can render the completed list table -->
+                            <?php $reg_table->display() ?>
+                        </form>
+                    </div>
+                    <br>
+                    <br/>
+                    <hr/>
+                    <?php
+
+                }
+            } else {    // No trainings? Show the way to create event
+                ?>
+                <h1>Manage Registrations</h1>
+                <div style="display: contents; justify-content: center;">
+                    <h3 align="center">No Activated and Upcoming Trainings Found!<br>
+                        <p align="center">This page will only allow you to manage registrations of activated and upcoming (start date set to time in the future) trainings.<br>Make sure trainings you want to manage fulfill both requirements.</p>
+                </div>
+                <?php
             }
-        } else {    // No trainings? Show the way to create event
-            ?>
-            <h1>Manage Registrations</h1>
-            <div style="display: contents; justify-content: center;">
-                <h3 align="center">No Activated and Upcoming Trainings Found!<br>
-                    <p align="center">This page will only allow you to manage registrations of activated and upcoming (start date set to time in the future) trainings.<br>Make sure trainings you want to manage fulfill both requirements.</p>
-            </div>
-            <?php
         }
-    }
 
-    public function view_settings($show_available, $my_enabled) {
-        ?>
-        <h1>Settings</h1>
-        <form id="update-settings" name="update-settings" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
-            <table class="form-table">
-                <tbody>
-                <tr>
-                    <th>Show Available Seats</th>
-                    <td>
-                        <fieldset>
-                            <label for="show-available"><input type="checkbox" name="show-available" value="1" <?php if ($show_available == 1) {echo 'checked';} ?>> Disabling this option will hide the number of seats remaining in a training to schools.</label>
-                        </fieldset>
-                    </td>
-                </tr>
-                <tr>
-                    <th>Enable SOTAM Forms</th>
-                    <td>
-                        <fieldset>
-                            <label for="enable-my"><input type="checkbox" name="enable-my" value="1" <?php if ($my_enabled == 1) {echo 'checked';} ?>> Enable SOTAM requested form formats.</label>
-                        </fieldset>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <p class="submit">
-                <input type="submit" class="button button-primary" name="save-settings" id="save-settings" value="Save Settings">
-            </p>
-        </form>
-        <hr>
-        <form id="create" name="create" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
-            <table class="form-table">
-                <tbody>
-                <tr>
-                    <th>Create Necessary Pages</th>
-                    <td>
-                        <input type="submit" class="button button-primary" name="create-page" id="create-page" value="Create Pages">
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+        public function view_settings($show_available, $my_enabled) {
+            ?>
+            <h1>Settings</h1>
+            <form id="update-settings" name="update-settings" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                <table class="form-table">
+                    <tbody>
+                    <tr>
+                        <th>Show Available Seats</th>
+                        <td>
+                            <fieldset>
+                                <label for="show-available"><input type="checkbox" name="show-available" value="1" <?php if ($show_available == 1) {echo 'checked';} ?>> Disabling this option will hide the number of seats remaining in a training to schools.</label>
+                            </fieldset>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>Enable SOTAM Forms</th>
+                        <td>
+                            <fieldset>
+                                <label for="enable-my"><input type="checkbox" name="enable-my" value="1" <?php if ($my_enabled == 1) {echo 'checked';} ?>> Enable SOTAM requested form formats.</label>
+                            </fieldset>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <p class="submit">
+                    <input type="submit" class="button button-primary" name="save-settings" id="save-settings" value="Save Settings">
+                </p>
+            </form>
+            <hr>
+            <form id="create" name="create" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+                <table class="form-table">
+                    <tbody>
+                    <tr>
+                        <th>Create Necessary Pages</th>
+                        <td>
+                            <input type="submit" class="button button-primary" name="create-page" id="create-page" value="Create Pages">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
 
-        </form>
+            </form>
+            </div>
+
         <?php
     }
 }

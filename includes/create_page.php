@@ -59,22 +59,30 @@ class create_page {
     private function create_home() {
         $site_home = (string)get_option('home');
         $content = '
-        <!-- wp:button {"className":"aligncenter"} -->
-        <div class="wp-block-button aligncenter"><a class="wp-block-button__link" href="'.$site_home.'/create-staff-profile/">Create Staff Profile</a></div>
-        <!-- /wp:button -->
-
-        <!-- wp:button {"className":"aligncenter"} -->
-        <div class="wp-block-button aligncenter"><a class="wp-block-button__link" href="'.$site_home.'/register-for-training/">Register for Training</a></div>
-        <!-- /wp:button -->
-
-        <!-- wp:button {"className":"aligncenter"} -->
-        <div class="wp-block-button aligncenter"><a class="wp-block-button__link" href="'.$site_home.'/manage-my-staff/">Manage my Staff</a></div>
-        <!-- /wp:button -->
+        <!-- wp:group -->
+        <div class="wp-block-group"><div class="wp-block-group__inner-container">
+            <!-- wp:buttons {"align":"center","className":".container { width: 80%; }"} -->
+            <div class="wp-block-buttons aligncenter .container { width: 80%; }">
+                <!-- wp:button {"className":"aligncenter"} -->
+                <div class="wp-block-button aligncenter"><a class="wp-block-button__link" href="'.$site_home.'/create-staff-profile/">Create Staff Profile</a></div>
+                <!-- /wp:button -->
+        
+                <!-- wp:button {"className":"aligncenter"} -->
+                <div class="wp-block-button aligncenter"><a class="wp-block-button__link" href="'.$site_home.'/register-for-training/">Register for Training</a></div>
+                <!-- /wp:button -->
+        
+                <!-- wp:button {"className":"aligncenter"} -->
+                <div class="wp-block-button aligncenter"><a class="wp-block-button__link" href="'.$site_home.'/manage-my-staff/">Manage my Staff</a></div>
+                <!-- /wp:button -->
+            </div>
+            <!-- /wp:buttons -->
+        </div></div>
+        <!-- /wp:group -->
         ';
         $create_home = array(
             'post_title'    =>  "Training Registration",
             'post_type'     =>  'page',
-            'page_template' =>  'Default Template',
+            'page_template' =>  'templates/template-full-width.php',
             'post_content'  =>  $content,
             'post_status'   =>  'publish'
         );

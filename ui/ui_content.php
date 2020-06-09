@@ -48,7 +48,6 @@ class ui_content
             <select id="lc" name="lc" required>
                 <option selected disabled>--</option>
                 <option value="Kindergarten">Kindergarten</option>
-                <option value="ABC's">ABC's</option>
                 <option value="Lower LC">Lower LC</option>
                 <option value="Upper LC">Upper LC</option>
                 <option value="Not in LC">Not in LC</option>
@@ -203,7 +202,6 @@ class ui_content
             <label for="lc">Learning Center*</label>
             <select id="lc" name="lc" required>
                 <option value="Kindergarten" <?php if ($profile->lc == 'Kindergarten') {echo 'selected';} ?>>Kindergarten</option>
-                <option value="ABC's" <?php if ($profile->lc == 'ABC\'s') {echo 'selected';} ?>>ABC's</option>
                 <option value="Lower LC" <?php if ($profile->lc == 'Lower LC') {echo 'selected';} ?>>Lower LC</option>
                 <option value="Upper LC" <?php if ($profile->lc == 'Upper LC') {echo 'selected';} ?>>Upper LC</option>
                 <option value="Upper LC" <?php if ($profile->lc == 'Not in LC') {echo 'selected';} ?>>Not in LC</option>

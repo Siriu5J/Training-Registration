@@ -1,0 +1,31 @@
+.er-notice-green {
+    background-color: #5ac18e;
+    color: white;
+    padding: 15pt;
+    border-radius: 5px;
+    position: initial;
+    left: 50%;
+}
+
+.er-notice-red {
+    background-color: #ff4040;
+    color: white;
+    padding: 15pt;
+    border-radius: 5px;
+    position: initial;
+    left: 50%;
+}
+
+.closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.closebtn:hover {
+    color: black;
+}

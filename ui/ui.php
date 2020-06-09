@@ -20,6 +20,14 @@ class training_registration_ui {
         require_once(ER_PLUGIN_DIR . '/ui/ui_content.php');
         $this->tools = new training_registration_tools();
         $this->ui_content = new ui_content();
+
+        // Add CSS
+        add_action('wp_enqueue_scripts', array($this, 'enqueue_ui_css'));
+    }
+
+    public function enqueue_ui_css() {
+        wp_enqueue_style('ui_styles', plugins_url('stylesheet/ui.css', __FILE__));
+        wp_enqueue_style('ui_styles');
     }
 
     /*
@@ -76,24 +84,24 @@ class training_registration_ui {
 
                     if ($success) {
                         ?>
-                        <div style="background-color: #5ac18e; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+                        <div class="er-notice-green">
                             Profile for <?php echo $first_name.' '.$last_name ?> created
-                            <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
+                            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                         </div>
                         <?php
                     } else {
                         ?>
-                        <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+                        <div class="er-notice-red">
                             Cannot create staff profile. Please contact the Site Admin for support.
-                            <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
+                            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                         </div>
                         <?php
                     }
                 }else {
                     ?>
-                    <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+                    <div class="er-notice-red">
                         Staff, <?php echo $first_name.' '.$last_name; ?>, already exist in record!
-                        <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
+                        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                     </div>
                     <?php
                 }
@@ -158,24 +166,28 @@ class training_registration_ui {
 
                     if ($success) {
                         ?>
-                        <div style="background-color: #5ac18e; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+                        <div class="er-notice-green">
                             Profile for <?php echo $first_name.' '.$last_name ?> created
-                            <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
+                            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                         </div>
                         <?php
                     } else {
                         ?>
-                        <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+                        <div class="er-notice-red">
                             Cannot create staff profile. Please contact the Site Admin for support.
-                            <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
+							<br />
+							<?php echo 'Last query:' . $wpdb->last_query; ?>
+                            <br />
+							<?php echo 'Last error:' . $wpdb->last_error; ?>
+							<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                         </div>
                         <?php
                     }
                 }else {
                     ?>
-                    <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+                    <div class="er-notice-red">
                         Staff, <?php echo $first_name.' '.$last_name; ?>, already exist in record!
-                        <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
+                        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                     </div>
                     <?php
                 }
@@ -223,32 +235,32 @@ class training_registration_ui {
                             "id" => $event,
                         ));
                         ?>
-                        <div style="background-color: #5ac18e; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+                        <div class="er-notice-green">
                             <?php echo $this->tools->idtoName($staff) ?> is successfully registered to <?php echo $training->event_name.' at '.$training->location ?>
-                            <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
+                            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                         </div>
                         <?php
                     } else {
                         ?>
-                        <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+                        <div class="er-notice-red">
                             <?php echo $this->tools->idtoName($staff) ?> has already been registered to <?php echo $training->event_name.' at '.$training->location ?>.
-                            <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
+                            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                         </div>
                         <?php
                     }
                 } else {
                     ?>
-                    <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+                    <div class="er-notice-red">
                         Staff cannot be registered. Try to refresh the page and try again.
-                        <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
+                        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                     </div>
                     <?php
                 }
             } else {
                 ?>
-                <div style="background-color: #ff4040; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+                <div class="er-notice-red">
                     You must select a training AND a staff to register.
-                    <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                 </div>
                 <?php
             }
@@ -324,7 +336,7 @@ class training_registration_ui {
                     ?>
                 </select>
                 <br>
-                <label for="staff" style="float: left; width: 30%;">Staff List</label>
+                <label for="staff" style="float: left; width: 30%;">Staff List:</label>
                 <select id="staff" name="staff">
                     <option selected disabled >Select a staff</option>
                     <?php
@@ -390,9 +402,9 @@ class training_registration_ui {
                 ));
 
                 ?>
-                <div style="background-color: #5ac18e; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+                <div class="er-notice-green">
                     Staff Profile Updated
-                    <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                 </div>
                 <?php
             }
@@ -426,9 +438,9 @@ class training_registration_ui {
                 ));
 
                 ?>
-                <div style="background-color: #5ac18e; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+                <div class="er-notice-green">
                     Staff Profile Updated
-                    <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
+                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
                 </div>
                 <?php
             }
@@ -453,9 +465,9 @@ class training_registration_ui {
                 ));
             }
             ?>
-            <div style="background-color: #5ac18e; color: white; padding: 15pt; border-radius: 5px; position: initial; left: 50%;">
+            <div class="er-notice-green">
                 Registration(s) Cancelled
-                <span style="float: right;" onclick="this.parentElement.style.display='none';">&times;</span>
+                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
             </div>
             <?php
         }
