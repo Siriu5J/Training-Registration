@@ -50,11 +50,11 @@ a:not(.wp-block-button__link){
 	color: #012552;
 }
 .entry-title {
-	font-size: 45pt;
+	font-size: 35pt;
 }
 .singular .entry-header{
 	padding-top: 0;
-	padding-bottom: 1.3rem;
+	padding-bottom: 1.5rem;
 }
 }
 html, body {
@@ -67,6 +67,9 @@ html, body {
 }
 .header-navigation-wrapper {
 	display: none;
+}
+.header-inner {
+	padding-bottom: 0px;
 }
 ```
 
