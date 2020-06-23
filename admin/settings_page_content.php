@@ -257,7 +257,7 @@ class settings_page_content {
                             <td><?php echo $training->location ?></td>
                             <td><?php echo date("Y-m-d", strtotime($training->start_time)) ?></td>
                             <td><?php echo date("Y-m-d", strtotime($training->end_time)) ?></td>
-                            <td><?php echo $tools->spotsOpen($training->max, $training->num_reg) ?></td>
+                            <td><?php echo $tools->spotsOpen($training->id) ?></td>
                             <td><?php echo $tools->availability($training) ?></td>
                         </tr>
                         <?php
