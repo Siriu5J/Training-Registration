@@ -304,7 +304,7 @@ class training_registration_ui {
                             <tr>
                                 <td></td>
                                 <th>Available Seats</th>
-                                <td colspan="3"><?php echo $this->tools->spotsOpen($training->max, $training->num_reg); ?></td>
+                                <td colspan="3"><?php echo $this->tools->spotsOpen($training->id); ?></td>
                             </tr>
                             <?php
                         }
