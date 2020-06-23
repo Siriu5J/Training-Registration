@@ -33,10 +33,16 @@ class training_registration_tools {
     }
 
     // Translate the available slot from number to useful information
-    public function spotsOpen ($max, $occupied) {
+    public function spotsOpen ($id) {
+        global $wpdb;
+        $table = ER_EVENT_LIST;
+        $registration = ER_REGISTRATION_LIST;
 
         // Query for the number of users
-
+        $training = $wpdb->get_row("SELECT * FROM $table WHERE `id` = $id");
+        $max = $training->max;
+        $occupied = $wpdb->get_var("SELECT COUNT(*) FROM $registration WHERE `event_id` = $id");
+        
         if ($max == -999) {
             return "Unlimited, ".$occupied." registered";
         } elseif ($max-$occupied > 0) {
