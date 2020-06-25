@@ -286,7 +286,7 @@ if ($_GET['print-excel'] == "true") {
     $event_id          = $_GET['id'];
     $registrations     = $wpdb->get_results("SELECT * FROM $registration_list WHERE `event_id` = $event_id");
     $event_info        = $wpdb->get_row("SELECT * FROM $event_list WHERE id = $event_id");
-    $worksheet_name    = $event_info->event_name;
+    $worksheet_name    = “Training Registrations";
 
     foreach($registrations as $trainee) {
         $trainee_id     = $trainee->staff;
@@ -345,7 +345,7 @@ if ($_GET['print-excel'] == "true") {
     // Fix the issue of Excel not being able to generate excel when there's only one registration by pushing an empty row to the array
     array_push($data_array, array(""));
 
-    $filename = 'Training_Registration_' . $event_info->location . '_' . date("Y-m-d", strtotime($event_info->start_time)) . '.xlsx';
+    $filename = $event_info->event_name . '_' . $event_info->location . '_' . date("Y-m-d", strtotime($event_info->start_time)) . '.xlsx';
 
 
     // Enable error reporting
