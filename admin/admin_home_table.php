@@ -57,7 +57,7 @@ class admin_home_table extends WP_List_Table {
     }
 
     function column_availability($item) {
-        return $this->tools->spotsOpen($item['max'], $item['num_reg']) . '<br />' . $this->tools->availability((object) $item);
+        return $this->tools->spotsOpen($item['id']) . '<br />' . $this->tools->availability((object) $item);
     }
 
     function column_reg_dates($item) {
