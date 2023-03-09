@@ -1,4 +1,4 @@
-# Training Registration Plugin v2
+# Training Registration Plugin v3
 The Training Registration Plugin is a WordPress plugin created to allow SOT training organizers to create training registration forms where Learning Centers could register to. This plugin does require preliminary setup on the WordPress. For example, user login control and theme customization is necessary.
 ## Features
 **For Training Organizers:**
