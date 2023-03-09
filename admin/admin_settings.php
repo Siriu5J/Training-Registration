@@ -286,7 +286,7 @@ if ($_GET['print-excel'] == "true") {
     $event_id          = $_GET['id'];
     $registrations     = $wpdb->get_results("SELECT * FROM $registration_list WHERE `event_id` = $event_id");
     $event_info        = $wpdb->get_row("SELECT * FROM $event_list WHERE id = $event_id");
-    $worksheet_name    = “Training Registrations";
+    $worksheet_name    = "Training Registrations";
 
     foreach($registrations as $trainee) {
         $trainee_id     = $trainee->staff;
