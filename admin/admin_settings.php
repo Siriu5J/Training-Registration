@@ -12,6 +12,9 @@
  * @package training-registration
  */
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use \PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+
 class training_registration_acp {
     // Objects
     protected $tools;           // Some helpful tools
@@ -225,60 +228,15 @@ class training_registration_acp {
 /**
  * Download to Excel
  * I couldn't find another place tp store this because of the header issues.
- * This function created with PHPExcel
+ * This function migrated from PHPExcel to PHPSpreadsheet
  */
 global $wpdb;
 if ($_GET['print-excel'] == "true") {
+    // Load PHP Spreadsheet
+    require_once(ER_PLUGIN_DIR . '/vendor/autoload.php');
 
 
     $my_mode = (int)$_GET['mode'];
-
-    // Place the right headers for each mode
-    if ($my_mode == 1) {
-        $data_array = array(
-            array(
-                'Registration Time' . $my_mode,
-                'First Name',
-                'Last Name',
-                'Full Name (name to be printed)',
-                'Gender',
-                'Religion',
-                'School',
-                'School Username',
-                'Phone',
-                'Position in LC',
-                'Year of Last Training',
-                'Training Attended',
-                'Highest Degree',
-                'Comment'
-            )
-        );
-    } else {
-        $data_array = array(
-            array(
-                'Registration Time',
-                'First Name',
-                'Last Name',
-                'Name in Native Language',
-                'Sex/Gender',
-                'Age',
-                'School',
-                'School Username',
-                'Email',
-                'Phone',
-                'Position in LC',
-                'LC',
-                '# of trainings attended',
-                '# of CEC attended',
-                'Highest Degree',
-                'Year of Graduation',
-                'Major',
-                'Minor',
-                'Institution',
-                'Comment'
-            )
-        );
-    }
 
     $registration_list = ER_REGISTRATION_LIST;
     $event_list        = ER_EVENT_LIST;
@@ -286,7 +244,7 @@ if ($_GET['print-excel'] == "true") {
     $event_id          = $_GET['id'];
     $registrations     = $wpdb->get_results("SELECT * FROM $registration_list WHERE `event_id` = $event_id");
     $event_info        = $wpdb->get_row("SELECT * FROM $event_list WHERE id = $event_id");
-    $worksheet_name    = "Training Registrations";
+    $data_array        = array();
 
     foreach($registrations as $trainee) {
         $trainee_id     = $trainee->staff;
@@ -310,8 +268,8 @@ if ($_GET['print-excel'] == "true") {
                 $trainee_data->phone,
                 $trainee_data->pos,
                 $trainee_data->grad_year,
-                $trainee_data->lc,
-                $trainee_data->degree,
+                stripslashes($trainee_data->lc),
+                stripslashes($trainee_data->degree),
                 $trainee_data->comment
 
             ));
@@ -342,43 +300,34 @@ if ($_GET['print-excel'] == "true") {
         }
     }
 
-    // Fix the issue of Excel not being able to generate excel when there's only one registration by pushing an empty row to the array
-    array_push($data_array, array(""));
+    error_log(implode(', ', $data_array));
 
-    $filename = $event_info->event_name . '_' . $event_info->location . '_' . date("Y-m-d", strtotime($event_info->start_time)) . '.xlsx';
-
+    // Set filenames
+    if ($my_mode == 1) {
+        $template_file = ER_PLUGIN_DIR . '/files/SOTAM_Excel_Template.xlsx';
+    } else {
+        $template_file = ER_PLUGIN_DIR . '/files/Default_Excel_Template.xlsx';
+    }
+    $output_filename = $event_info->event_name . '_' . $event_info->location . '_' . date("Y-m-d", strtotime($event_info->start_time)) . '.xlsx';
 
     // Enable error reporting
     error_reporting(E_ALL);
     ini_set('display_errors', TRUE);
     ini_set('display_startup_errors', TRUE);
 
-    require_once(ER_PLUGIN_DIR . '/lib/PHPExcel.php');
-    $objPHPExcel = new PHPExcel();
+    // Read the template registration form
+    $registration_sheet = IOFactory::load($template_file);
 
-    // Set Properties
-    $objPHPExcel->getProperties()->setCreator("Training Registration Plugin")
-        ->setLastModifiedBy("Training Registration Plugin")
-        ->setTitle('Registrations')
-        ->setSubject("Training Registration");
+    // Get the first sheet
+    $data_sheet = $registration_sheet->getActiveSheet();
 
     // Write data
-    $objPHPExcel->setActiveSheetIndex(0);
-    $objPHPExcel->getActiveSheet()->setTitle($worksheet_name);
-    $objPHPExcel->getActiveSheet()->fromArray($data_array, null, 'A1');
-
-    // Make a more formatted Excel form
-    $objPHPExcel->getActiveSheet()->getStyle("A1:T1")->getFont()->setBold(true);
-    foreach(range('A', 'T') as $columnID) { // Autosize column
-        $objPHPExcel->getActiveSheet()->getColumnDimension($columnID)->setAutoSize(true);
-    }
-
-    // Set active sheet
-    $objPHPExcel->setActiveSheetIndex(0);
+    $data_sheet->fromArray($data_array, null, 'A2');
+    $data_sheet->getStyle('A2:N2')->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_TEXT);
 
     // Redirect output to a client’s web browser (Excel2007)
     header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    header('Content-Disposition: attachment;filename="'. $filename .'"');
+    header('Content-Disposition: attachment;filename="'. $output_filename .'"');
     header('Cache-Control: max-age=0');
     // If you're serving to IE 9, then the following may be needed
     header('Cache-Control: max-age=1');
@@ -389,7 +338,7 @@ if ($_GET['print-excel'] == "true") {
     header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
     header ('Pragma: public'); // HTTP/1.0
 
-    $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+    $objWriter = IOFactory::createWriter($registration_sheet, IOFactory::WRITER_XLSX);
     $objWriter->save('php://output');
     exit();
 }

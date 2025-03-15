@@ -28,12 +28,12 @@ function erActivation() {
 }
 
 // Run the plugin
-function run_trianing_registration_main() {
+function run_training_registration_main() {
     $run_main = new training_registration_main();
 
     $run_main->run();
 }
 
-run_trianing_registration_main();
+run_training_registration_main();
 
 

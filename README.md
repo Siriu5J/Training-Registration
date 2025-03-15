@@ -74,4 +74,5 @@ html, body {
 ```
 
 ## Additional Libraries Used/Thanks
-* [PHPExcel](https://github.com/PHPOffice/PHPExcel)
+* ~~[PHPExcel](https://github.com/PHPOffice/PHPExcel)~~
+* [PhpSpreadsheet](https://github.com/PHPOffice/PhpSpreadsheet)
