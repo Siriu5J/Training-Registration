@@ -233,8 +233,10 @@ class training_registration_acp {
 global $wpdb;
 if ($_GET['print-excel'] == "true") {
     // Load PHP Spreadsheet
-    require_once(ER_PLUGIN_DIR . '/vendor/autoload.php');
-
+    // Only load our autoloader if the class doesn't already exist.
+    if (!class_exists('PhpOffice\PhpSpreadsheet\IOFactory')) {
+        require_once(ER_PLUGIN_DIR . '/vendor/autoload.php');
+    }
 
     $my_mode = (int)$_GET['mode'];
 
