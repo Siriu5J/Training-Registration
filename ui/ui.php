@@ -41,7 +41,6 @@ class training_registration_ui {
         if ($my_mode == 1) {
             if ($_POST['create_staff']) {
                 global $wpdb;
-                $showProfileMessage = true;
 
                 $staff_table = ER_STAFF_PROFILE;
                 $first_name = $_POST['first_name'];
@@ -112,7 +111,6 @@ class training_registration_ui {
             // Insert information to database for staff registration
             if ($_POST['create_staff']) {
                 global $wpdb;
-                $showProfileMessage = true;
 
                 $staff_table = ER_STAFF_PROFILE;
                 $first_name = $_POST['first_name'];
@@ -216,7 +214,7 @@ class training_registration_ui {
             // Make sure people don't try to submit "--"
             if ($event != '' && $staff != '') {
 
-                // Double check the availability of the training
+                // Double-check the availability of the training
                 $training = $wpdb->get_row("SELECT * FROM $event_table WHERE id = $event");
                 if ($training->open_time < $time_now && $training->close_time > $time_now && ($training->limit_max == 0 || $training->max == -999 || $training->max - $training->num_reg > 0)) {
 
@@ -275,7 +273,7 @@ class training_registration_ui {
 
         if (count($trainings_to_show) != 0) {
 
-            // Get preference on whether or not to show available seats
+            // Get preference on whether to show available seats
             $show_available = get_option( 'show_availability', 0 );
 
             ?>
@@ -363,8 +361,8 @@ class training_registration_ui {
 
         } else {    // Show a different message if there are no trainings to register
             ?>
-            <div align="center">
-                <h3 align="center">No trainings are available now. Check again later.</h3>
+            <div style="text-align: center;">
+                <h3 style="text-align: center;">No trainings are available now. Check again later.</h3>
             </div>
             <?php
         }
@@ -386,7 +384,6 @@ class training_registration_ui {
         // Update the database after editing profile
         if ($my_mode == 1) {
             if ($_POST['update-profile']) {
-                $staff_table = ER_STAFF_PROFILE;
                 $wpdb->update($staff_table, array(
                     "first_name"    =>  $_POST['first_name'],
                     "last_name"     =>  $_POST['last_name'],
@@ -416,7 +413,6 @@ class training_registration_ui {
             }
         } else {
             if ($_POST['update-profile']) {
-                $staff_table = ER_STAFF_PROFILE;
                 $wpdb->update($staff_table, array(
                     "first_name"    =>  $_POST['first_name'],
                     "last_name"     =>  $_POST['last_name'],
@@ -481,60 +477,62 @@ class training_registration_ui {
         // Don't show table if there are no staffs
         if ($wpdb->get_var("SELECT COUNT(*) FROM $staff_table WHERE `school` = '$username'") != 0) {
             ?>
-            <table>
-                <tr>
-                    <th style="width: fit-content"></th>
-                    <th style="width: fit-content">Name</th>
-                    <th style="width: fit-content">Sex</th>
-                    <th style="width: fit-content">Position</th>
-                    <!-- only show email on non-my mode -->
-                    <?php if ($my_mode == 0) {echo "<th style=\"width: fit-content\">Email</th>";} ?>
-                    <th style="width: max-content">Upcoming Training(s) Registered</th>
-                </tr>
-                <form id="select-staff" name="select-staff" method="post" action="<?php echo $_SERVER['REQUEST_URI'];?>">
-                    <?php
-                    // List staff
-                    $all_staff = $wpdb->get_results("SELECT * FROM $staff_table WHERE `school` = '$username'");
-                    foreach ($all_staff as $staff) {
-
-                        // List the upcoming trainings that this staff is registered to (don't include past trainings
-                        $trainings = $wpdb->get_results($wpdb->prepare("SELECT `event_id` FROM $reg_table WHERE `staff` = $staff->id")); // List all trainings related to the staff then filter
-
-                        $training_registered = "<ul style='margin:0'>"; // The string we are going to work on
-
-                        foreach ($trainings as $training) { // add each event name to $training_registered as list item
-                            // Only show the training if it is upcoming
-                            if ($time_now < $wpdb->get_var("SELECT `start_time` FROM $event_table WHERE `id` = $training->event_id")) {
-                                $training_registered .= '<li>'.$wpdb->get_var("SELECT `event_name` FROM $event_table WHERE `id` = $training->event_id").'</li>';
-                            }
-                        }
-
-                        $training_registered .= '</ul>';
-
-                        ?>
-                        <tr>
-                            <td><input type="radio" name="select" value="<?php echo $staff->id ?>" required/></td>
-                            <td><?php echo $this->tools->idtoName($staff->id); ?></td>
-                            <td><?php echo $staff->sex; ?></td>
-                            <td><?php echo $staff->pos; ?></td>
-                            <?php if ($my_mode == 0) {echo "<td>$staff->email</td>";} ?>
-                            <td><?php if ($training_registered != "<ul style='margin:0'></ul>") {echo $training_registered;} else {echo "No Trainings Registered";} ?></td>   <!--show no trainings registered when appropriate -->
-                        </tr>
+            <form id="select-staff" name="select-staff" method="post" action="<?php echo $_SERVER['REQUEST_URI'];?>">
+                <table>
+                    <tr>
+                        <th style="width: fit-content"></th>
+                        <th style="width: fit-content">Name</th>
+                        <th style="width: fit-content">Sex</th>
+                        <th style="width: fit-content">Position</th>
+                        <!-- only show email on non-my mode -->
+                        <?php if ($my_mode == 0) {echo "<th style=\"width: fit-content\">Email</th>";} ?>
+                        <th style="width: max-content">Upcoming Training(s) Registered</th>
+                    </tr>
                         <?php
-                    }
-                    ?>
-            </table>
-            <br>
-            <div align="center" style="">
-                <input style="float: left; width: fit-content" type="submit" name="edit-reg" id="edit-reg" value="Cancel Staff Registration" />
-                <input style="float: right; width: fit-content" type="submit" name="edit-profile" id="edit-profile" value="Edit Staff Profile" />
-            </div>
+                        // List staff
+                        $all_staff = $wpdb->get_results("SELECT * FROM $staff_table WHERE `school` = '$username'");
+                        foreach ($all_staff as $staff) {
+
+                            // List the upcoming trainings that this staff is registered to (don't include past trainings
+                            $trainings = $wpdb->get_results($wpdb->prepare("SELECT `event_id` FROM $reg_table WHERE `staff` = $staff->id")); // List all trainings related to the staff then filter
+
+                            $training_registered = "<ul style='margin:0'>"; // The string we are going to work on
+
+                            foreach ($trainings as $training) { // add each event name to $training_registered as list item
+                                // Only show the training if it is upcoming
+                                if ($time_now < $wpdb->get_var("SELECT `start_time` FROM $event_table WHERE `id` = $training->event_id")) {
+                                    $training_registered .= '<li>'.$wpdb->get_var("SELECT `event_name` FROM $event_table WHERE `id` = $training->event_id").'</li>';
+                                }
+                            }
+
+                            $training_registered .= '</ul>';
+
+                            ?>
+                            <tr>
+                                <td><label>
+                                        <input type="radio" name="select" value="<?php echo $staff->id ?>" required/>
+                                    </label></td>
+                                <td><?php echo $this->tools->idtoName($staff->id); ?></td>
+                                <td><?php echo $staff->sex; ?></td>
+                                <td><?php echo $staff->pos; ?></td>
+                                <?php if ($my_mode == 0) {echo "<td>$staff->email</td>";} ?>
+                                <td><?php if ($training_registered != "<ul style='margin:0'></ul>") {echo $training_registered;} else {echo "No Trainings Registered";} ?></td>   <!--show no trainings registered when appropriate -->
+                            </tr>
+                            <?php
+                        }
+                        ?>
+                </table>
+                <br>
+                <div style="text-align: center;">
+                    <input style="float: left; width: fit-content" type="submit" name="edit-reg" id="edit-reg" value="Cancel Staff Registration" />
+                    <input style="float: right; width: fit-content" type="submit" name="edit-profile" id="edit-profile" value="Edit Staff Profile" />
+                </div>
             </form>
             <?php
         } else {
             ?>
-            <div align="center">
-                <h3 align="center">No Staff Found</h3>
+            <div style="text-align: center;">
+                <h3 style="text-align: center;">No Staff Found</h3>
             </div>
             <?php
         }
@@ -564,9 +562,9 @@ class training_registration_ui {
                 ?>
                 <h4>Cancel Registrations for <?php echo $this->tools->idtoName($staff_id) ?>:</h4>
                 <p><b>Important Notice:</b><br>Although it is possible to withdraw from a training here even after the training registration is closed, please <b>ALWAYS</b> notify the training organizer before doing so. To withdraw from a training, select the training(s) and click withdraw.</p>
-                <div align="center">
+                <div style="text-align: center;">
                     <form id="staff-profile" name="staff-profile" method="post" action="<?php echo $_SERVER['REQUEST_URI'];?>">
-                        <select name="training-id[]" id="training-id" required multiple="multiple">
+                        <label for="training-id">Select from list</label><select name="training-id[]" id="training-id" required multiple="multiple">
                             <?php
                             foreach ($trainings_registered as $training) {
                                 // Only show open if it also shows on the list above, which are upcoming trainings
