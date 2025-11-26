@@ -233,8 +233,10 @@ class training_registration_acp {
 global $wpdb;
 if ($_GET['print-excel'] == "true") {
     // Load PHP Spreadsheet
-    require_once(ER_PLUGIN_DIR . '/vendor/autoload.php');
-
+    // Only load our autoloader if the class doesn't already exist.
+    if (!class_exists('PhpOffice\PhpSpreadsheet\IOFactory')) {
+        require_once(ER_PLUGIN_DIR . '/vendor/autoload.php');
+    }
 
     $my_mode = (int)$_GET['mode'];
 
@@ -256,7 +258,7 @@ if ($_GET['print-excel'] == "true") {
         $school_nick	= $wpdb->get_var("SELECT `meta_value` FROM $wpdb->usermeta WHERE `user_id` = $school_id AND `meta_key` = 'nickname'");
 
         if ($my_mode == 1) {
-            array_push($data_array, array(
+            $data_array[] = array(
                 $reg_time,
                 $trainee_data->first_name,
                 $trainee_data->last_name,
@@ -272,9 +274,9 @@ if ($_GET['print-excel'] == "true") {
                 stripslashes($trainee_data->degree),
                 $trainee_data->comment
 
-            ));
+            );
         } else {
-            array_push($data_array, array(
+            $data_array[] = array(
                 $reg_time,
                 $trainee_data->first_name,
                 $trainee_data->last_name,
@@ -296,7 +298,7 @@ if ($_GET['print-excel'] == "true") {
                 $trainee_data->institution,
                 $trainee_data->comment
 
-            ));
+            );
         }
     }
 
