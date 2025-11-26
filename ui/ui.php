@@ -322,7 +322,8 @@ class training_registration_ui {
 
             <!-- Form for registering into training -->
             <form id="reg-event" name="reg-event" method="post" action="<?php echo $_SERVER['REQUEST_URI'];?>">
-                <label for="training" style="float: left; width: 30%;">Select Training:</label>
+			<div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <label for="training" style="width: 20%;">Select Training:</label>
                 <select id="training" name="training" required>
                     <option selected disabled>Select a training</option>
                     <?php
@@ -335,10 +336,12 @@ class training_registration_ui {
                     }
                     ?>
                 </select>
+			</div>
                 <br>
-                <label for="staff" style="float: left; width: 30%;">Staff List:</label>
+			<div style="display: flex; align-items: center; margin-bottom: 10px;">
+                <label for="staff" style="width: 20%;">Staff List:</label>
                 <select id="staff" name="staff">
-                    <option selected disabled >Select a staff</option>
+                    <option selected disabled>Select a staff</option>
                     <?php
                     // Get all staff profiles of a school
                     $staff_available = $wpdb->get_results($wpdb->prepare("SELECT * FROM $staff_table  WHERE school = '$username'"));
@@ -348,8 +351,11 @@ class training_registration_ui {
                     }
                     ?>
                 </select>
+				</div>
                 <br>
-                <label for="comment">Comment: </label><textarea name="comment" id="comment"></textarea>
+			<div style="display: flex; margin-bottom: 10px;">
+                <label for="comment" style="width: 20%">Comment: </label><textarea name="comment" id="comment"></textarea>
+			</div>
                 <input type="hidden" name="school" value="<?php echo $username; ?>">
                 <br><br><input type="submit" name="reg-training" id="reg-training" value="Register"/><br><br>
             </form>
