@@ -4,7 +4,6 @@ services:
   db:
     image: mysql:8.0
     container_name: wordpress_db
-    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: changeme_db_root_password
       MYSQL_DATABASE: wordpress
@@ -18,7 +17,6 @@ services:
   wordpress:
     build: .
     container_name: wordpress_site
-    restart: always
     ports:
       - "8080:80"
     environment:
