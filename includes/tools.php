@@ -14,7 +14,7 @@ class training_registration_tools {
     public function isValidEvent($name, $location, $start_date, $id) {
         global $wpdb;
         $table = ER_EVENT_LIST;
-        $duplicates = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table WHERE `event_name` = $name"));   // Get all trainings that has the same name
+        $duplicates = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table WHERE `event_name` = %s", $name));   // Get all trainings that has the same name
 
         if (empty($duplicates)) {
             return true;    // No duplicated names, training name is valid
@@ -39,10 +39,10 @@ class training_registration_tools {
         $registration = ER_REGISTRATION_LIST;
 
         // Query for the number of users
-        $training = $wpdb->get_row("SELECT * FROM $table WHERE `id` = $id");
+        $training = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table WHERE `id` = %d", $id));
         $max = $training->max;
-        $occupied = $wpdb->get_var("SELECT COUNT(*) FROM $registration WHERE `event_id` = $id");
-        
+        $occupied = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $registration WHERE `event_id` = %d", $id));
+
         if ($max == -999) {
             return "Unlimited, ".$occupied." registered";
         } elseif ($max-$occupied > 0) {
@@ -84,12 +84,12 @@ class training_registration_tools {
         $reg_table = ER_REGISTRATION_LIST;
         $time_now = current_time('mysql');
 
-        $trainings_registered = $wpdb->get_results($wpdb->prepare("SELECT * FROM $reg_table WHERE `staff` = $id"));
+        $trainings_registered = $wpdb->get_results($wpdb->prepare("SELECT * FROM $reg_table WHERE `staff` = %d", $id));
         if (!empty($trainings_registered)) {
             $valid_count = 0;   // Counts the number of trainings the staff registered that are currently upcoming
             foreach ($trainings_registered as $training) {
                 // Count increments when the the start time of a training is greater than the current time, hence upcoming
-                if ($wpdb->get_var("SELECT `start_time` FROM $event_table WHERE `id` = $training->event_id") > $time_now) {
+                if ($wpdb->get_var($wpdb->prepare("SELECT `start_time` FROM $event_table WHERE `id` = %d", $training->event_id)) > $time_now) {
                     $valid_count++;
                 }
             }
@@ -109,14 +109,14 @@ class training_registration_tools {
     public function idtoName($id) {
         global $wpdb;
         $staff_profile = $wpdb->prefix . 'er_staff_profile';
-        $row = $wpdb->get_row("SELECT `first_name`, `last_name` FROM $staff_profile WHERE id = $id");
+        $row = $wpdb->get_row($wpdb->prepare("SELECT `first_name`, `last_name` FROM $staff_profile WHERE id = %d", $id));
 
-        return $row->first_name . ' ' . $row->last_name;
+        return esc_html($row->first_name . ' ' . $row->last_name);
     }
 
     // Find a field with the ID, table, and field name given
     public function getFieldById($table, $field_name, $id) {
         global $wpdb;
-        return $wpdb->get_var("SELECT `$field_name` FROM $table WHERE `id` = $id");;
+        return $wpdb->get_var($wpdb->prepare("SELECT `$field_name` FROM $table WHERE `id` = %d", $id));;
     }
 }

@@ -59,6 +59,11 @@ class training_registration_acp {
      * MAIN SETTINGS PAGE
      */
     public function erSettingsPage() {
+        // Add capability check
+        if (!current_user_can('edit_plugins')) {
+            wp_die(__('You do not have sufficient permissions to access this page.'));
+        }
+
         global $wpdb;
 
         // Inject CSS
@@ -67,12 +72,13 @@ class training_registration_acp {
         //TODO: Add screen options
 
         //Handle Training Delete
-        if ($_POST['confirm_remove']) {
+        if (isset($_POST['confirm_remove']) && wp_verify_nonce($_POST['remove_training_nonce_field'], 'remove_training_nonce')) {
+            $removal_id = intval($_POST['removal-id']);
             $wpdb->delete(ER_EVENT_LIST, array(
-                'id'    => $_POST['removal-id']
+                'id'    => $removal_id
             ));
             $wpdb->delete(ER_REGISTRATION_LIST, array(
-                'event_id'  => $_POST['removal-id']
+                'event_id'  => $removal_id
             ));
         }
 
@@ -89,38 +95,51 @@ class training_registration_acp {
      * CREATE TRAINING PAGE
      */
     public function erNewEvent() {
+        // Add capability check
+        if (!current_user_can('edit_plugins')) {
+            wp_die(__('You do not have sufficient permissions to access this page.'));
+        }
+
         // Inject CSS
         add_action('admin_enqueue_scripts', $this->enqueue_new_training_CSS(), 5);
 
         global $wpdb;
         // Create new table for the new event and fill first data
-        if($_POST['create_training'] || $_POST['submit_edit']) {
-            $event_name     = $_POST['event-name'];
-            $location       = $_POST['location'];
-            $start_date     = $_POST['start-date'];
-            $limit_max      = (int)$_POST['max-limit'];
-            $max            = $_POST['max'];
+        if((isset($_POST['create_training']) && wp_verify_nonce($_POST['training_nonce_field'], 'create_training_nonce')) ||
+           (isset($_POST['submit_edit']) && wp_verify_nonce($_POST['training_nonce_field'], 'edit_training_nonce'))) {
+            // Sanitize inputs
+            $event_name     = sanitize_text_field($_POST['event-name']);
+            $location       = sanitize_text_field($_POST['location']);
+            $start_date     = sanitize_text_field($_POST['start-date']);
+            $limit_max      = intval($_POST['max-limit']);
+            $max            = sanitize_text_field($_POST['max']);
+            $event_id       = intval($_POST['event-id']);
+            $open_date      = sanitize_text_field($_POST['open-date']);
+            $close_date     = sanitize_text_field($_POST['close-date']);
+            $end_date       = sanitize_text_field($_POST['end-date']);
+            $comment        = sanitize_textarea_field($_POST['comment']);
+            $activated      = intval($_POST['activated']);
 
-            if($max == 0 && $limit_max == '1') {
+            if($max == 0 && $limit_max == 1) {
                 add_action('admin_notices', $this->admin_notice->createEventNotAllowed());
-            } elseif ($this->tools->isValidEvent($event_name, $location, $start_date, $_POST['event-id'])) { // Check if the training name is valid
+            } elseif ($this->tools->isValidEvent($event_name, $location, $start_date, $event_id)) { // Check if the training name is valid
                 // If max is unfilled, set as -999
                 if ($max == 0) {
                     $max = -999;
                 }
 
-                if ($_POST['create_training']) {
+                if (isset($_POST['create_training'])) {
                     $success = $wpdb->insert(ER_EVENT_LIST, array(
-                        "event_name"    =>  $_POST['event-name'],
+                        "event_name"    =>  $event_name,
                         "max"           =>  $max,
-                        "open_time"     =>  $_POST['open-date'],
-                        "close_time"    =>  $_POST['close-date'],
+                        "open_time"     =>  $open_date,
+                        "close_time"    =>  $close_date,
                         "start_time"    =>  $start_date,
-                        "end_time"      =>  $_POST['end-date'],
-                        "location"      =>  $_POST['location'],
+                        "end_time"      =>  $end_date,
+                        "location"      =>  $location,
                         "limit_max"     =>  $limit_max,
-                        "comment"       =>  $_POST['comment'],
-                        "activated"     =>  (int)$_POST['activated'],
+                        "comment"       =>  $comment,
+                        "activated"     =>  $activated,
                         "num_reg"       =>  0,
                     ));
 
@@ -128,18 +147,18 @@ class training_registration_acp {
                     else {add_action('admin_notices', $this->admin_notice->tableFailedCreation());}
                 } else {
                     $wpdb->update(ER_EVENT_LIST, array(
-                        "event_name"    =>  $_POST['event-name'],
+                        "event_name"    =>  $event_name,
                         "max"           =>  $max,
-                        "open_time"     =>  $_POST['open-date'],
-                        "close_time"    =>  $_POST['close-date'],
+                        "open_time"     =>  $open_date,
+                        "close_time"    =>  $close_date,
                         "start_time"    =>  $start_date,
-                        "end_time"      =>  $_POST['end-date'],
-                        "location"      =>  $_POST['location'],
+                        "end_time"      =>  $end_date,
+                        "location"      =>  $location,
                         "limit_max"     =>  $limit_max,
-                        "comment"       =>  $_POST['comment'],
-                        "activated"     =>  (int)$_POST['activated'],
+                        "comment"       =>  $comment,
+                        "activated"     =>  $activated,
                     ), array(
-                        'id'    =>  $_POST['event-id']
+                        'id'    =>  $event_id
                     ));
 
                     add_action('admin_notices', $this->admin_notice->tableSuccessUpdate());
@@ -151,8 +170,8 @@ class training_registration_acp {
 
         // Check if user came here to view the training
         if (isset($_GET['view-event'])) {
-            $id = $_GET['event-id'];
-            $data = $wpdb->get_row("SELECT * FROM ".ER_EVENT_LIST." WHERE `id` = $id");
+            $id = intval($_GET['event-id']);
+            $data = $wpdb->get_row($wpdb->prepare("SELECT * FROM ".ER_EVENT_LIST." WHERE `id` = %d", $id));
             $this->content->new_event($data, $this->tools);
         } else {
             // If the user is here to create new event, send preset data to produce an empty training form
@@ -181,6 +200,11 @@ class training_registration_acp {
      * VIEW REGISTRATION PAGE
      */
     public function erViewEvent() {
+        // Add capability check
+        if (!current_user_can('edit_plugins')) {
+            wp_die(__('You do not have sufficient permissions to access this page.'));
+        }
+
         global $wpdb;
 
         if (isset($_GET['event-id'])) {
@@ -196,6 +220,11 @@ class training_registration_acp {
      * VIEW SETTINGS PAGE
      */
     public function erSettings() {
+        // Add capability check
+        if (!current_user_can('edit_plugins')) {
+            wp_die(__('You do not have sufficient permissions to access this page.'));
+        }
+
         if ($_POST['save-settings']) {
             // Update show available
             if ($_POST['show-available'] == 1) {
@@ -231,7 +260,11 @@ class training_registration_acp {
  * This function migrated from PHPExcel to PHPSpreadsheet
  */
 global $wpdb;
-if ($_GET['print-excel'] == "true") {
+if (isset($_GET['print-excel']) && $_GET['print-excel'] == "true" && wp_verify_nonce($_GET['nonce'], 'excel_export_nonce')) {
+    // Add capability check for Excel export
+    if (!current_user_can('edit_plugins')) {
+        wp_die(__('You do not have sufficient permissions to access this page.'));
+    }
     // Load PHP Spreadsheet
     // Only load our autoloader if the class doesn't already exist.
     if (!class_exists('PhpOffice\PhpSpreadsheet\IOFactory')) {
@@ -243,19 +276,19 @@ if ($_GET['print-excel'] == "true") {
     $registration_list = ER_REGISTRATION_LIST;
     $event_list        = ER_EVENT_LIST;
     $staff_profile     = ER_STAFF_PROFILE;
-    $event_id          = $_GET['id'];
-    $registrations     = $wpdb->get_results("SELECT * FROM $registration_list WHERE `event_id` = $event_id");
-    $event_info        = $wpdb->get_row("SELECT * FROM $event_list WHERE id = $event_id");
+    $event_id          = intval($_GET['id']);
+    $registrations     = $wpdb->get_results($wpdb->prepare("SELECT * FROM $registration_list WHERE `event_id` = %d", $event_id));
+    $event_info        = $wpdb->get_row($wpdb->prepare("SELECT * FROM $event_list WHERE id = %d", $event_id));
     $data_array        = array();
 
     foreach($registrations as $trainee) {
         $trainee_id     = $trainee->staff;
         $reg_time       = date("F j", strtotime($trainee->reg_time));
-        $trainee_data   = $wpdb->get_row("SELECT * FROM $staff_profile WHERE id = $trainee_id");
+        $trainee_data   = $wpdb->get_row($wpdb->prepare("SELECT * FROM $staff_profile WHERE id = %d", $trainee_id));
 
         // Get school nickname
-        $school_id		= $wpdb->get_var("SELECT `ID` FROM $wpdb->users WHERE `user_login` = '$trainee_data->school'");
-        $school_nick	= $wpdb->get_var("SELECT `meta_value` FROM $wpdb->usermeta WHERE `user_id` = $school_id AND `meta_key` = 'nickname'");
+        $school_id		= $wpdb->get_var($wpdb->prepare("SELECT `ID` FROM $wpdb->users WHERE `user_login` = %s", $trainee_data->school));
+        $school_nick	= $wpdb->get_var($wpdb->prepare("SELECT `meta_value` FROM $wpdb->usermeta WHERE `user_id` = %d AND `meta_key` = %s", $school_id, 'nickname'));
 
         if ($my_mode == 1) {
             $data_array[] = array(

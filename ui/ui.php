@@ -39,30 +39,30 @@ class training_registration_ui {
 
         // Check if MY mode is on
         if ($my_mode == 1) {
-            if ($_POST['create_staff']) {
+            if (isset($_POST['create_staff']) && wp_verify_nonce($_POST['staff_nonce_field'], 'create_staff_nonce')) {
                 global $wpdb;
 
                 $staff_table = ER_STAFF_PROFILE;
-                $first_name = $_POST['first_name'];
-                $last_name  = $_POST['last_name'];
-                $mid_name   = $_POST['mid_name'];   // Used as Full name
-                $cn_name    = $_POST['cn_name'];    // Used as religion
-                $sex        = $_POST['sex'];
+                $first_name = sanitize_text_field($_POST['first_name']);
+                $last_name  = sanitize_text_field($_POST['last_name']);
+                $mid_name   = sanitize_text_field($_POST['mid_name']);   // Used as Full name
+                $cn_name    = sanitize_text_field($_POST['cn_name']);    // Used as religion
+                $sex        = sanitize_text_field($_POST['sex']);
 
-                $phone      = $_POST['phone'];      // Used
+                $phone      = sanitize_text_field($_POST['phone']);      // Used
 
-                $position   = $_POST['position'];   // Used
-                $lc         = $_POST['lc'];         // Used as training attended
+                $position   = sanitize_text_field($_POST['position']);   // Used
+                $lc         = sanitize_text_field($_POST['lc']);         // Used as training attended
 
-                $t_exp      = $_POST['t-exp'];      // Used as year of last training
+                $t_exp      = sanitize_text_field($_POST['t-exp']);      // Used as year of last training
 
-                $degree     = $_POST['degree'];     // Used
+                $degree     = sanitize_text_field($_POST['degree']);     // Used
 
-                $comment    = $_POST['comment'];
-                $school     = $_POST['school'];
+                $comment    = sanitize_textarea_field($_POST['comment']);
+                $school     = sanitize_text_field($_POST['school']);
 
                 // Check Duplicate
-                if ($wpdb->get_var("SELECT COUNT(*) FROM $staff_table WHERE `first_name` = \"$first_name\" AND `last_name` = \"$last_name\" AND `school` = \"$school\" AND `phone` = $phone") == 0) {
+                if ($wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $staff_table WHERE `first_name` = %s AND `last_name` = %s AND `school` = %s AND `phone` = %s", $first_name, $last_name, $school, $phone)) == 0) {
                     $success = $wpdb->insert($staff_table, array(
                         "first_name" => $first_name,
                         "last_name" => $last_name,
@@ -109,35 +109,35 @@ class training_registration_ui {
             $this->ui_content->create_staff_my($username);
         } else {
             // Insert information to database for staff registration
-            if ($_POST['create_staff']) {
+            if (isset($_POST['create_staff']) && wp_verify_nonce($_POST['staff_nonce_field'], 'create_staff_nonce')) {
                 global $wpdb;
 
                 $staff_table = ER_STAFF_PROFILE;
-                $first_name = $_POST['first_name'];
-                $last_name  = $_POST['last_name'];
-                $cn_name    = $_POST['cn_name'];
-                $sex        = $_POST['sex'];
-                $age        = $_POST['age'];
-                $email      = $_POST['email'];
-                $phone      = $_POST['phone'];
+                $first_name = sanitize_text_field($_POST['first_name']);
+                $last_name  = sanitize_text_field($_POST['last_name']);
+                $cn_name    = sanitize_text_field($_POST['cn_name']);
+                $sex        = sanitize_text_field($_POST['sex']);
+                $age        = intval($_POST['age']);
+                $email      = sanitize_email($_POST['email']);
+                $phone      = sanitize_text_field($_POST['phone']);
 
-                $position   = $_POST['position'];
-                $lc         = $_POST['lc'];
+                $position   = sanitize_text_field($_POST['position']);
+                $lc         = sanitize_text_field($_POST['lc']);
 
-                $t_exp      = $_POST['t-exp'];
-                $cec_exp    = $_POST['cec-exp'];
+                $t_exp      = sanitize_text_field($_POST['t-exp']);
+                $cec_exp    = sanitize_text_field($_POST['cec-exp']);
 
-                $degree     = $_POST['degree'];
-                $grad_year  = $_POST['grad-year'];
-                $major      = $_POST['major'];
-                $minor      = $_POST['minor'];
-                $institution= $_POST['institution'];
+                $degree     = sanitize_text_field($_POST['degree']);
+                $grad_year  = sanitize_text_field($_POST['grad-year']);
+                $major      = sanitize_text_field($_POST['major']);
+                $minor      = sanitize_text_field($_POST['minor']);
+                $institution= sanitize_text_field($_POST['institution']);
 
-                $comment    = $_POST['comment'];
-                $school     = $_POST['school'];
+                $comment    = sanitize_textarea_field($_POST['comment']);
+                $school     = sanitize_text_field($_POST['school']);
 
                 // Check Duplicate
-                if ($wpdb->get_var("SELECT COUNT(*) FROM $staff_table WHERE `first_name` = \"$first_name\" AND `last_name` = \"$last_name\" AND `school` = \"$school\" AND `phone` = $phone") == 0) {
+                if ($wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $staff_table WHERE `first_name` = %s AND `last_name` = %s AND `school` = %s AND `phone` = %s", $first_name, $last_name, $school, $phone)) == 0) {
                     $success = $wpdb->insert($staff_table, array(
                         "first_name" => $first_name,
                         "last_name" => $last_name,
@@ -207,19 +207,19 @@ class training_registration_ui {
         $time_now = current_time('mysql');
 
         // Take care of the form
-        if ($_POST['reg-training']) {
-            $event = $_POST['training'];
-            $staff = $_POST['staff'];
+        if (isset($_POST['reg-training']) && wp_verify_nonce($_POST['reg_nonce_field'], 'reg_nonce')) {
+            $event = intval($_POST['training']);
+            $staff = intval($_POST['staff']);
 
             // Make sure people don't try to submit "--"
-            if ($event != '' && $staff != '') {
+            if ($event != 0 && $staff != 0) {
 
                 // Double-check the availability of the training
-                $training = $wpdb->get_row("SELECT * FROM $event_table WHERE id = $event");
+                $training = $wpdb->get_row($wpdb->prepare("SELECT * FROM $event_table WHERE id = %d", $event));
                 if ($training->open_time < $time_now && $training->close_time > $time_now && ($training->limit_max == 0 || $training->max == -999 || $training->max - $training->num_reg > 0)) {
 
                     // check for duplicate entries
-                    if ($wpdb->get_var("SELECT COUNT(*) FROM $reg_table WHERE `staff` = $staff AND `event_id` = $event") == 0) {
+                    if ($wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $reg_table WHERE `staff` = %d AND `event_id` = %d", $staff, $event)) == 0) {
                         $wpdb->insert($reg_table, array(
                             "event_id" => $event,
                             "staff"    => $staff,
@@ -310,7 +310,7 @@ class training_registration_ui {
                         <tr>
                             <td></td>
                             <th>Information</th>
-                            <td colspan="3"><?php echo $training->comment; ?></td>
+                            <td colspan="3"><?php echo esc_html($training->comment); ?></td>
                         </tr>
                         <?php
                     }
@@ -320,6 +320,7 @@ class training_registration_ui {
 
             <!-- Form for registering into training -->
             <form id="reg-event" name="reg-event" method="post" action="<?php echo $_SERVER['REQUEST_URI'];?>">
+                <?php wp_nonce_field('reg_nonce', 'reg_nonce_field'); ?>
 			<div style="display: flex; align-items: center; margin-bottom: 10px;">
                 <label for="training" style="width: 20%;">Select Training:</label>
                 <select id="training" name="training" required>
@@ -342,10 +343,10 @@ class training_registration_ui {
                     <option selected disabled>Select a staff</option>
                     <?php
                     // Get all staff profiles of a school
-                    $staff_available = $wpdb->get_results($wpdb->prepare("SELECT * FROM $staff_table  WHERE school = '$username'"));
+                    $staff_available = $wpdb->get_results($wpdb->prepare("SELECT * FROM $staff_table  WHERE school = %s", $username));
 
                     foreach ($staff_available as $staff) {
-                        echo '<option value="'.$staff->id.'">'. $this->tools->idtoName($staff->id).'</option>';
+                        echo '<option value="'.$staff->id.'">'. esc_html($this->tools->idtoName($staff->id)).'</option>';
                     }
                     ?>
                 </select>
@@ -383,25 +384,25 @@ class training_registration_ui {
 
         // Update the database after editing profile
         if ($my_mode == 1) {
-            if ($_POST['update-profile']) {
+            if (isset($_POST['update-profile']) && wp_verify_nonce($_POST['staff_nonce_field'], 'create_staff_nonce')) {
                 $wpdb->update($staff_table, array(
-                    "first_name"    =>  $_POST['first_name'],
-                    "last_name"     =>  $_POST['last_name'],
-                    "mid_name"      =>  $_POST['mid_name'],
-                    "cn_name"       =>  $_POST['cn_name'],
-                    "sex"           =>  $_POST['sex'],
-                    "school"        =>  $_POST['school'],
-                    "phone"         =>  $_POST['phone'],
+                    "first_name"    =>  sanitize_text_field($_POST['first_name']),
+                    "last_name"     =>  sanitize_text_field($_POST['last_name']),
+                    "mid_name"      =>  sanitize_text_field($_POST['mid_name']),
+                    "cn_name"       =>  sanitize_text_field($_POST['cn_name']),
+                    "sex"           =>  sanitize_text_field($_POST['sex']),
+                    "school"        =>  sanitize_text_field($_POST['school']),
+                    "phone"         =>  sanitize_text_field($_POST['phone']),
 
-                    "pos"           =>  $_POST['position'],
-                    "lc"            =>  $_POST['lc'],
+                    "pos"           =>  sanitize_text_field($_POST['position']),
+                    "lc"            =>  sanitize_text_field($_POST['lc']),
 
-                    "degree"        =>  $_POST['degree'],
-                    "grad_year"     =>  $_POST['t-exp'],
+                    "degree"        =>  sanitize_text_field($_POST['degree']),
+                    "grad_year"     =>  sanitize_text_field($_POST['t-exp']),
 
-                    "comment"       =>  $_POST['comment'],
+                    "comment"       =>  sanitize_textarea_field($_POST['comment']),
                 ), array(
-                    "id"            =>  $_POST['id'],
+                    "id"            =>  intval($_POST['id']),
                 ));
 
                 ?>
@@ -412,31 +413,31 @@ class training_registration_ui {
                 <?php
             }
         } else {
-            if ($_POST['update-profile']) {
+            if (isset($_POST['update-profile']) && wp_verify_nonce($_POST['staff_nonce_field'], 'create_staff_nonce')) {
                 $wpdb->update($staff_table, array(
-                    "first_name"    =>  $_POST['first_name'],
-                    "last_name"     =>  $_POST['last_name'],
-                    "cn_name"       =>  $_POST['cn_name'],
-                    "sex"           =>  $_POST['sex'],
-                    "age"           =>  $_POST['age'],
-                    "school"        =>  $_POST['school'],
-                    "email"         =>  $_POST['email'],
-                    "phone"         =>  $_POST['phone'],
+                    "first_name"    =>  sanitize_text_field($_POST['first_name']),
+                    "last_name"     =>  sanitize_text_field($_POST['last_name']),
+                    "cn_name"       =>  sanitize_text_field($_POST['cn_name']),
+                    "sex"           =>  sanitize_text_field($_POST['sex']),
+                    "age"           =>  intval($_POST['age']),
+                    "school"        =>  sanitize_text_field($_POST['school']),
+                    "email"         =>  sanitize_email($_POST['email']),
+                    "phone"         =>  sanitize_text_field($_POST['phone']),
 
-                    "pos"           =>  $_POST['position'],
-                    "lc"            =>  $_POST['lc'],
-                    "training_exp"  =>  $_POST['t-exp'],
-                    "cec_exp"       =>  $_POST['cec-exp'],
+                    "pos"           =>  sanitize_text_field($_POST['position']),
+                    "lc"            =>  sanitize_text_field($_POST['lc']),
+                    "training_exp"  =>  sanitize_text_field($_POST['t-exp']),
+                    "cec_exp"       =>  sanitize_text_field($_POST['cec-exp']),
 
-                    "degree"        =>  $_POST['degree'],
-                    "grad_year"     =>  $_POST['grad-year'],
-                    "major"         =>  $_POST['major'],
-                    "minor"         =>  $_POST['minor'],
-                    "institution"   =>  $_POST['institution'],
+                    "degree"        =>  sanitize_text_field($_POST['degree']),
+                    "grad_year"     =>  sanitize_text_field($_POST['grad-year']),
+                    "major"         =>  sanitize_text_field($_POST['major']),
+                    "minor"         =>  sanitize_text_field($_POST['minor']),
+                    "institution"   =>  sanitize_text_field($_POST['institution']),
 
-                    "comment"       =>  $_POST['comment'],
+                    "comment"       =>  sanitize_textarea_field($_POST['comment']),
                 ), array(
-                    "id"            =>  $_POST['id'],
+                    "id"            =>  intval($_POST['id']),
                 ));
 
                 ?>
@@ -449,7 +450,7 @@ class training_registration_ui {
         }
 
         // Withdraw from a training
-        if ($_POST['confirm-remove']) {
+        if (isset($_POST['confirm-remove']) && wp_verify_nonce($_POST['staff_nonce_field'], 'create_staff_nonce')) {
             $trainings_to_remove = $_POST['training-id'];
 
             foreach($trainings_to_remove as $training) {
@@ -461,7 +462,7 @@ class training_registration_ui {
 
                 // Open up spots in event list available numbers
                 $wpdb->update(ER_EVENT_LIST, array(
-                    'num_reg' => $wpdb->get_var("SELECT `num_reg` FROM $event_table WHERE `id` = $training") - 1,
+                    'num_reg' => $wpdb->get_var($wpdb->prepare("SELECT `num_reg` FROM $event_table WHERE `id` = %d", $training)) - 1,
                 ), array (
                     'id' => $training,
                 ));
@@ -478,6 +479,7 @@ class training_registration_ui {
         if ($wpdb->get_var("SELECT COUNT(*) FROM $staff_table WHERE `school` = '$username'") != 0) {
             ?>
             <form id="select-staff" name="select-staff" method="post" action="<?php echo $_SERVER['REQUEST_URI'];?>">
+                <?php wp_nonce_field('create_staff_nonce', 'staff_nonce_field'); ?>
                 <table>
                     <tr>
                         <th style="width: fit-content"></th>
@@ -490,7 +492,7 @@ class training_registration_ui {
                     </tr>
                         <?php
                         // List staff
-                        $all_staff = $wpdb->get_results("SELECT * FROM $staff_table WHERE `school` = '$username'");
+                        $all_staff = $wpdb->get_results($wpdb->prepare("SELECT * FROM $staff_table WHERE `school` = %s", $username));
                         foreach ($all_staff as $staff) {
 
                             // List the upcoming trainings that this staff is registered to (don't include past trainings
@@ -500,8 +502,8 @@ class training_registration_ui {
 
                             foreach ($trainings as $training) { // add each event name to $training_registered as list item
                                 // Only show the training if it is upcoming
-                                if ($time_now < $wpdb->get_var("SELECT `start_time` FROM $event_table WHERE `id` = $training->event_id")) {
-                                    $training_registered .= '<li>'.$wpdb->get_var("SELECT `event_name` FROM $event_table WHERE `id` = $training->event_id").'</li>';
+                                if ($time_now < $wpdb->get_var($wpdb->prepare("SELECT `start_time` FROM $event_table WHERE `id` = %d", $training->event_id))) {
+                                    $training_registered .= '<li>'.$wpdb->get_var($wpdb->prepare("SELECT `event_name` FROM $event_table WHERE `id` = %d", $training->event_id)).'</li>';
                                 }
                             }
 
@@ -512,7 +514,7 @@ class training_registration_ui {
                                 <td><label>
                                         <input type="radio" name="select" value="<?php echo $staff->id ?>" required/>
                                     </label></td>
-                                <td><?php echo $this->tools->idtoName($staff->id); ?></td>
+                                <td><?php echo esc_html($this->tools->idtoName($staff->id)); ?></td>
                                 <td><?php echo $staff->sex; ?></td>
                                 <td><?php echo $staff->pos; ?></td>
                                 <?php if ($my_mode == 0) {echo "<td>$staff->email</td>";} ?>
@@ -564,6 +566,7 @@ class training_registration_ui {
                 <p><b>Important Notice:</b><br>Although it is possible to withdraw from a training here even after the training registration is closed, please <b>ALWAYS</b> notify the training organizer before doing so. To withdraw from a training, select the training(s) and click withdraw.</p>
                 <div style="text-align: center;">
                     <form id="staff-profile" name="staff-profile" method="post" action="<?php echo $_SERVER['REQUEST_URI'];?>">
+                        <?php wp_nonce_field('create_staff_nonce', 'staff_nonce_field'); ?>
                         <label for="training-id">Select from list</label><select name="training-id[]" id="training-id" required multiple="multiple">
                             <?php
                             foreach ($trainings_registered as $training) {
@@ -572,7 +575,7 @@ class training_registration_ui {
                                     // Get information about the Training
                                     $training_info = $wpdb->get_row("SELECT * FROM $event_table WHERE `id` = $training->event_id");
                                     ?>
-                                    <option value="<?php echo $training->event_id ?>"><?php echo $training_info->event_name.' at '.$training_info->location ?></option>
+                                    <option value="<?php echo esc_attr($training->event_id) ?>"><?php echo esc_html($training_info->event_name.' at '.$training_info->location) ?></option>
                                     <?php
                                 }
                             }
