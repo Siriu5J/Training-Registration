@@ -6,6 +6,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
 
 class admin_home_table extends WP_List_Table {
     protected $tools;
+    protected $event_repo;
 
     /** Class constructor */
     public function __construct($filter = 1) {
@@ -20,6 +21,7 @@ class admin_home_table extends WP_List_Table {
             require_once(ER_PLUGIN_DIR . '/includes/tools.php');
         }
         $this->tools = new training_registration_tools();
+        $this->event_repo = new EventRepository();
     }
 
     /** No Items */
@@ -126,49 +128,34 @@ class admin_home_table extends WP_List_Table {
     }
 
     public function prepare_items() {
-        global $wpdb;
-        $time = current_time('mysql');
-
         $per_page = 20;
         $current_page = $this->get_pagenum();
-        if ( 1 < $current_page ) {
-            $offset = $per_page * ( $current_page - 1 );
-        } else {
-            $offset = 0;
-        }
+        $offset = ( $current_page - 1 ) * $per_page;
 
-        // Search and filter
-        $search = '';
-        //Retrieve $customvar for use in query to get items.
-        $customvar = ( isset($_REQUEST['customvar']) ? $_REQUEST['customvar'] : '');
-        if($customvar == '') {
-            $search_custom_vars= "AND end_time > '$time'";
-        } elseif ($customvar == 'all')	{
-            $search_custom_vars = '';
-        } else {
-            $search_custom_vars = "AND end_time < '$time'";
-        }
-        if ( ! empty( $_REQUEST['s'] ) ) {
-            $search = "AND event_name LIKE '%" . esc_sql( $wpdb->esc_like( $_REQUEST['s'] ) ) . "%' OR location LIKE '%" . esc_sql( $wpdb->esc_like( $_REQUEST['s'] ) ) . "%'";
-        }
+        $args = array(
+            'per_page'  => $per_page,
+            'offset'    => $offset,
+            'search'    => ( ! empty( $_REQUEST['s'] ) ? $_REQUEST['s'] : '' ),
+            'customvar' => ( ! empty( $_REQUEST['customvar'] ) ? $_REQUEST['customvar'] : 'current' ),
+            'orderby'   => ( ! empty( $_GET['orderby'] ) ? $_GET['orderby'] : 'id' ),
+            'order'     => ( ! empty( $_GET['order'] ) ? $_GET['order'] : 'desc' )
+        );
+
+        $results = $this->event_repo->search($args);
 
         $columns = $this->get_columns();
         $sortable = $this->get_sortable_columns();
         $hidden = array();
-        $items = $wpdb->get_results( "SELECT * FROM ".ER_EVENT_LIST." WHERE 1=1 {$search} {$search_custom_vars}" . $wpdb->prepare( "ORDER BY id DESC LIMIT %d OFFSET %d;", $per_page, $offset ),ARRAY_A);
-
+        
         $this->_column_headers = array($columns, $hidden, $sortable);
-        usort($items, array(&$this, 'usort_reorder'));
-
-        $count = $wpdb->get_var("SELECT COUNT(*) FROM ".ER_EVENT_LIST." WHERE 1 = 1 {$search} {$search_custom_vars}");
-
-        $this->items = $items;
+        
+        $this->items = $results['items'];
 
         // Set pagination
         $this->set_pagination_args( array(
-            'total_items'   =>  $count,
+            'total_items'   =>  $results['total'],
             'per_page'      =>  $per_page,
-            'total_pages'   =>  ceil($count/$per_page)
+            'total_pages'   =>  ceil($results['total']/$per_page)
         ));
     }
 }

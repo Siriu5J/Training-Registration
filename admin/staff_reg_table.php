@@ -20,10 +20,18 @@ class StaffRegTableCN extends WP_List_Table {
     protected $tools;
     private $event_id;  // The Training ID that the table would show
 
+    protected $staff_repo;
+    protected $event_repo;
+    protected $registration_repo;
+
 
     function __construct($tools){
         global $status, $page;
         $this->tools = $tools;
+
+        $this->staff_repo = new StaffRepository();
+        $this->event_repo = new EventRepository();
+        $this->registration_repo = new RegistrationRepository();
 
         //Set parent defaults
         parent::__construct( array(
@@ -80,9 +88,8 @@ class StaffRegTableCN extends WP_List_Table {
 
     function column_staff_name($item) {
         $staff_id = $item['staff'];
-        global $wpdb;
-        $staff_table = ER_STAFF_PROFILE;
-        $cn_name = $wpdb->get_var("SELECT `cn_name` FROM $staff_table WHERE `id` = $staff_id");
+        $staff_profile = $this->staff_repo->get_by_id($staff_id);
+        $cn_name = $staff_profile ? $staff_profile->cn_name : "";
 
         // Only show Chinese name when it exists
         if ($cn_name != "") {
@@ -96,9 +103,9 @@ class StaffRegTableCN extends WP_List_Table {
 
     function column_staff_position($item) {
         $staff_id = $item['staff'];
-        global $wpdb;
-        $staff_table = ER_STAFF_PROFILE;
-        $staff_profile = $wpdb->get_row("SELECT * FROM $staff_table WHERE `id` = $staff_id");
+        $staff_profile = $this->staff_repo->get_by_id($staff_id);
+
+        if (!$staff_profile) return '';
 
         // Don't show "Not in LC"
         if ($staff_profile->lc == "Not in LC") {
@@ -112,33 +119,30 @@ class StaffRegTableCN extends WP_List_Table {
 
     function column_staff_comment($item) {
         $staff_id = $item['staff'];
-        global $wpdb;
-        $staff_table = ER_STAFF_PROFILE;
+        $staff_profile = $this->staff_repo->get_by_id($staff_id);
 
-        return $wpdb->get_var("SELECT `comment` FROM $staff_table WHERE `id` = $staff_id");
+        return $staff_profile ? $staff_profile->comment : '';
     }
 
     function column_staff_sex($item) {
         $staff_id = $item['staff'];
-        global $wpdb;
-        $staff_table = ER_STAFF_PROFILE;
+        $staff_profile = $this->staff_repo->get_by_id($staff_id);
 
-        return $wpdb->get_var("SELECT `sex` FROM $staff_table WHERE `id` = $staff_id");
+        return $staff_profile ? $staff_profile->sex : '';
     }
 
     function column_staff_age($item) {
         $staff_id = $item['staff'];
-        global $wpdb;
-        $staff_table = ER_STAFF_PROFILE;
+        $staff_profile = $this->staff_repo->get_by_id($staff_id);
 
-        return $wpdb->get_var("SELECT `age` FROM $staff_table WHERE `id` = $staff_id");
+        return $staff_profile ? $staff_profile->age : '';
     }
 
     function column_contact($item) {
         $staff_id = $item['staff'];
-        global $wpdb;
-        $staff_table = ER_STAFF_PROFILE;
-        $staff_profile = $wpdb->get_row("SELECT * FROM $staff_table WHERE `id` = $staff_id");
+        $staff_profile = $this->staff_repo->get_by_id($staff_id);
+
+        if (!$staff_profile) return '';
 
         return '<b>Phone:</b><br>'.$staff_profile->phone.'<br/><b>Email:</b><br>'.$staff_profile->email;
     }
@@ -179,26 +183,19 @@ class StaffRegTableCN extends WP_List_Table {
 
         //Detect when a bulk action is being triggered...
         if( 'delete'===$this->current_action()) {
-            global $wpdb;
-            $reg_table = ER_REGISTRATION_LIST;
-            $event_table = ER_EVENT_LIST;
-
             $record_to_remove = $_GET['id'];
 
             foreach($record_to_remove as $record) {
 
                 // STEP 1: remove from registration list
-                $wpdb->delete($reg_table, array(
+                global $wpdb;
+                $wpdb->delete(ER_REGISTRATION_LIST, array(
                     'event_id' => $this->event_id,
                     'id'    => $record
                 ));
 
                 // STEP 2: free up space in event record
-                $wpdb->update($event_table, array(
-                    'num_reg' => $wpdb->get_var("SELECT `num_reg` FROM $event_table WHERE `id` = $this->event_id") - 1,
-                ), array (
-                    'id' => $this->event_id,
-                ));
+                $this->event_repo->decrement_registration_count($this->event_id);
 
             }
         }
@@ -206,9 +203,6 @@ class StaffRegTableCN extends WP_List_Table {
     }
 
     function prepare_items() {
-        global $wpdb;
-        $reg_table = ER_REGISTRATION_LIST;
-
         $per_page = 50;
 
         $columns = $this->get_columns();
@@ -223,7 +217,8 @@ class StaffRegTableCN extends WP_List_Table {
         $orderby = ( ! empty( $_GET['orderby'] ) ) ? $_GET['orderby'] : 'reg_time';
         $order = ( ! empty($_GET['order'] ) ) ? $_GET['order'] : 'desc';
 
-        $data = $wpdb->get_results($wpdb->prepare("SELECT * FROM $reg_table WHERE `event_id` = $this->event_id ORDER BY $orderby $order"),ARRAY_A);
+        global $wpdb;
+        $data = $wpdb->get_results($wpdb->prepare("SELECT * FROM ".ER_REGISTRATION_LIST." WHERE `event_id` = %d ORDER BY $orderby $order", $this->event_id),ARRAY_A);
 
         $current_page = $this->get_pagenum();
 
@@ -250,9 +245,17 @@ class StaffRegTableMY extends WP_List_Table {
     private $event_id;  // The Training ID that the table would show
     protected $tools;
 
+    protected $staff_repo;
+    protected $event_repo;
+    protected $registration_repo;
+
     function __construct($tools){
         global $status, $page;
         $this->tools = $tools;
+
+        $this->staff_repo = new StaffRepository();
+        $this->event_repo = new EventRepository();
+        $this->registration_repo = new RegistrationRepository();
 
         //Set parent defaults
         parent::__construct( array(
@@ -288,47 +291,40 @@ class StaffRegTableMY extends WP_List_Table {
 
     function column_staff_name($item) {
         $staff_id = $item['staff'];
-        global $wpdb;
-
         return $this->tools->idtoName($staff_id);
     }
 
     function column_staff_position($item) {
         $staff_id = $item['staff'];
-        global $wpdb;
-        $staff_table = ER_STAFF_PROFILE;
-        $staff_profile = $wpdb->get_row("SELECT * FROM $staff_table WHERE `id` = $staff_id");
+        $staff_profile = $this->staff_repo->get_by_id($staff_id);
 
-        return $staff_profile->pos;
+        return $staff_profile ? $staff_profile->pos : '';
     }
 
     function column_staff_comment($item) {
         $staff_id = $item['staff'];
-        global $wpdb;
-        $staff_table = ER_STAFF_PROFILE;
+        $staff_profile = $this->staff_repo->get_by_id($staff_id);
 
-        return $wpdb->get_var("SELECT `comment` FROM $staff_table WHERE `id` = $staff_id");
+        return $staff_profile ? $staff_profile->comment : '';
     }
 
     function column_staff_sex($item) {
         $staff_id = $item['staff'];
-        global $wpdb;
-        $staff_table = ER_STAFF_PROFILE;
+        $staff_profile = $this->staff_repo->get_by_id($staff_id);
 
-        return $wpdb->get_var("SELECT `sex` FROM $staff_table WHERE `id` = $staff_id");
+        return $staff_profile ? $staff_profile->sex : '';
     }
 
     function column_contact($item) {
         $staff_id = $item['staff'];
-        global $wpdb;
-        $staff_table = ER_STAFF_PROFILE;
-        $staff_profile = $wpdb->get_row("SELECT * FROM $staff_table WHERE `id` = $staff_id");
+        $staff_profile = $this->staff_repo->get_by_id($staff_id);
 
-        return '<b>Phone:</b><br>'.$staff_profile->phone;
+        return $staff_profile ? '<b>Phone:</b><br>'.$staff_profile->phone : '';
     }
 
     function column_school($item) {
-        return get_user_by('login',$item['school'])->nickname;
+        $user = get_user_by('login',$item['school']);
+        return $user ? $user->nickname : $item['school'];
     }
 
     function get_columns(){
@@ -365,25 +361,18 @@ class StaffRegTableMY extends WP_List_Table {
 
         //Detect when a bulk action is being triggered...
         if( 'delete'===$this->current_action()) {
-            global $wpdb;
-            $reg_table = ER_REGISTRATION_LIST;
-            $event_table = ER_EVENT_LIST;
-
             $record_to_remove = $_GET['id'];
 
             foreach($record_to_remove as $record) {
                 // STEP 1: remove from registration list
-                $wpdb->delete($reg_table, array(
+                global $wpdb;
+                $wpdb->delete(ER_REGISTRATION_LIST, array(
                     'event_id' => $this->event_id,
                     'id'    => $record
                 ));
 
                 // STEP 2: free up space in event record
-                $wpdb->update($event_table, array(
-                    'num_reg' => $wpdb->get_var("SELECT `num_reg` FROM $event_table WHERE `id` = $this->event_id") - 1,
-                ), array (
-                    'id' => $this->event_id,
-                ));
+                $this->event_repo->decrement_registration_count($this->event_id);
 
             }
         }
@@ -391,9 +380,6 @@ class StaffRegTableMY extends WP_List_Table {
     }
 
     function prepare_items() {
-        global $wpdb;
-        $reg_table = ER_REGISTRATION_LIST;
-
         $per_page = 50;
 
         $columns = $this->get_columns();
@@ -408,7 +394,8 @@ class StaffRegTableMY extends WP_List_Table {
         $orderby = ( ! empty( $_GET['orderby'] ) ) ? $_GET['orderby'] : 'reg_time';
         $order = ( ! empty($_GET['order'] ) ) ? $_GET['order'] : 'desc';
 
-        $data = $wpdb->get_results($wpdb->prepare("SELECT * FROM $reg_table WHERE `event_id` = $this->event_id ORDER BY $orderby $order"),ARRAY_A);
+        global $wpdb;
+        $data = $wpdb->get_results($wpdb->prepare("SELECT * FROM ".ER_REGISTRATION_LIST." WHERE `event_id` = %d ORDER BY $orderby $order", $this->event_id),ARRAY_A);
 
         $current_page = $this->get_pagenum();
 

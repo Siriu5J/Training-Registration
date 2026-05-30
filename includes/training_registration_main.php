@@ -24,6 +24,20 @@ class training_registration_main {
     // Requires all the classes and files. It also instantiates $loader
     private function load_dependencies() {
 
+        // Repositories
+        require_once(ER_PLUGIN_DIR . '/includes/repositories/EventRepository.php');
+        require_once(ER_PLUGIN_DIR . '/includes/repositories/StaffRepository.php');
+        require_once(ER_PLUGIN_DIR . '/includes/repositories/RegistrationRepository.php');
+
+        // Traits
+        require_once(ER_PLUGIN_DIR . '/includes/TemplateRenderer.php');
+
+        // Strategies
+        require_once(ER_PLUGIN_DIR . '/includes/strategies/RegistrationModeInterface.php');
+        require_once(ER_PLUGIN_DIR . '/includes/strategies/DefaultRegistrationMode.php');
+        require_once(ER_PLUGIN_DIR . '/includes/strategies/SotamRegistrationMode.php');
+        require_once(ER_PLUGIN_DIR . '/includes/strategies/RegistrationModeFactory.php');
+
         // UI
         require_once(ER_PLUGIN_DIR . '/ui/ui.php');
 
@@ -51,6 +65,7 @@ class training_registration_main {
         $messages = new admin_messages();
         $this->loader->er_add_action('admin_notices', $messages, 'invalidTheme');
         $this->loader->er_add_action('admin_menu', $admin, 'adminSettingsPageRegistration');
+        $this->loader->er_add_action('admin_init', $admin, 'exportRegistrationsToExcel');
     }
 
     public function run() {

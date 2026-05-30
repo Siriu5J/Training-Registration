@@ -3,23 +3,33 @@
 /**
  * Class training_registration_ui
  *
- * This class contains all the fallback functions for the shortcodes.
+ * This class handles the frontend shortcode logic using templates.
  *
  * @since 2019-12
- * @version 2.0
+ * @version 2.2
  *
  * @package training-registration
  */
 class training_registration_ui {
+    use TemplateRenderer;
+
     // Helpful tools
     protected $tools;
     protected $ui_content;
+
+    protected $event_repo;
+    protected $staff_repo;
+    protected $registration_repo;
 
     public function __construct() {
         require_once(ER_PLUGIN_DIR . '/includes/tools.php');
         require_once(ER_PLUGIN_DIR . '/ui/ui_content.php');
         $this->tools = new training_registration_tools();
         $this->ui_content = new ui_content();
+
+        $this->event_repo = new EventRepository();
+        $this->staff_repo = new StaffRepository();
+        $this->registration_repo = new RegistrationRepository();
 
         // Add CSS
         add_action('wp_enqueue_scripts', array($this, 'enqueue_ui_css'));
@@ -35,574 +45,138 @@ class training_registration_ui {
      */
     public function staffFormCreation() {
         $username = wp_get_current_user()->user_login;  // Get Current username for school name
-        $my_mode = get_option('my_mode');
+        $mode_strategy = RegistrationModeFactory::get_current_mode();
 
-        // Check if MY mode is on
-        if ($my_mode == 1) {
-            if (isset($_POST['create_staff']) && wp_verify_nonce($_POST['staff_nonce_field'], 'create_staff_nonce')) {
-                global $wpdb;
+        // Handle staff creation
+        if (isset($_POST['create_staff']) && wp_verify_nonce($_POST['staff_nonce_field'], 'create_staff_nonce')) {
+            $result = $mode_strategy->handle_staff_creation($_POST);
 
-                $staff_table = ER_STAFF_PROFILE;
+            if (is_wp_error($result)) {
+                $this->render('ui/notice', array('type' => 'red', 'message' => $result->get_error_message()));
+            } elseif ($result) {
                 $first_name = sanitize_text_field($_POST['first_name']);
                 $last_name  = sanitize_text_field($_POST['last_name']);
-                $mid_name   = sanitize_text_field($_POST['mid_name']);   // Used as Full name
-                $cn_name    = sanitize_text_field($_POST['cn_name']);    // Used as religion
-                $sex        = sanitize_text_field($_POST['sex']);
-
-                $phone      = sanitize_text_field($_POST['phone']);      // Used
-
-                $position   = sanitize_text_field($_POST['position']);   // Used
-                $lc         = sanitize_text_field($_POST['lc']);         // Used as training attended
-
-                $t_exp      = sanitize_text_field($_POST['t-exp']);      // Used as year of last training
-
-                $degree     = sanitize_text_field($_POST['degree']);     // Used
-
-                $comment    = sanitize_textarea_field($_POST['comment']);
-                $school     = sanitize_text_field($_POST['school']);
-
-                // Check Duplicate
-                if ($wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $staff_table WHERE `first_name` = %s AND `last_name` = %s AND `school` = %s AND `phone` = %s", $first_name, $last_name, $school, $phone)) == 0) {
-                    $success = $wpdb->insert($staff_table, array(
-                        "first_name" => $first_name,
-                        "last_name" => $last_name,
-                        "cn_name" => $cn_name,
-                        "mid_name" => $mid_name,
-                        "sex" => $sex,
-                        "school" => $school,
-                        "phone" => $phone,
-
-                        "pos" => $position,
-                        "lc" => $lc,
-                        "grad_year" => $t_exp,
-
-                        "degree" => $degree,
-
-                        "comment" => $comment,
-                    ));
-
-                    if ($success) {
-                        ?>
-                        <div class="er-notice-green">
-                            Profile for <?php echo $first_name.' '.$last_name ?> created
-                            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-                        </div>
-                        <?php
-                    } else {
-                        ?>
-                        <div class="er-notice-red">
-                            Cannot create staff profile. Please contact the Site Admin for support.
-                            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-                        </div>
-                        <?php
-                    }
-                }else {
-                    ?>
-                    <div class="er-notice-red">
-                        Staff, <?php echo $first_name.' '.$last_name; ?>, already exist in record!
-                        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-                    </div>
-                    <?php
-                }
+                $this->render('ui/notice', array('type' => 'green', 'message' => "Profile for {$first_name} {$last_name} created"));
+            } else {
+                $this->render('ui/notice', array('type' => 'red', 'message' => 'Cannot create staff profile. Please contact the Site Admin for support.'));
             }
-
-            $this->ui_content->create_staff_my($username);
-        } else {
-            // Insert information to database for staff registration
-            if (isset($_POST['create_staff']) && wp_verify_nonce($_POST['staff_nonce_field'], 'create_staff_nonce')) {
-                global $wpdb;
-
-                $staff_table = ER_STAFF_PROFILE;
-                $first_name = sanitize_text_field($_POST['first_name']);
-                $last_name  = sanitize_text_field($_POST['last_name']);
-                $cn_name    = sanitize_text_field($_POST['cn_name']);
-                $sex        = sanitize_text_field($_POST['sex']);
-                $age        = intval($_POST['age']);
-                $email      = sanitize_email($_POST['email']);
-                $phone      = sanitize_text_field($_POST['phone']);
-
-                $position   = sanitize_text_field($_POST['position']);
-                $lc         = sanitize_text_field($_POST['lc']);
-
-                $t_exp      = sanitize_text_field($_POST['t-exp']);
-                $cec_exp    = sanitize_text_field($_POST['cec-exp']);
-
-                $degree     = sanitize_text_field($_POST['degree']);
-                $grad_year  = sanitize_text_field($_POST['grad-year']);
-                $major      = sanitize_text_field($_POST['major']);
-                $minor      = sanitize_text_field($_POST['minor']);
-                $institution= sanitize_text_field($_POST['institution']);
-
-                $comment    = sanitize_textarea_field($_POST['comment']);
-                $school     = sanitize_text_field($_POST['school']);
-
-                // Check Duplicate
-                if ($wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $staff_table WHERE `first_name` = %s AND `last_name` = %s AND `school` = %s AND `phone` = %s", $first_name, $last_name, $school, $phone)) == 0) {
-                    $success = $wpdb->insert($staff_table, array(
-                        "first_name" => $first_name,
-                        "last_name" => $last_name,
-                        "cn_name" => $cn_name,
-                        "sex" => $sex,
-                        "age" => $age,
-                        "school" => $school,
-                        "email" => $email,
-                        "phone" => $phone,
-
-                        "pos" => $position,
-                        "lc" => $lc,
-                        "training_exp" => $t_exp,
-                        "cec_exp" => $cec_exp,
-
-                        "degree" => $degree,
-                        "grad_year" => $grad_year,
-                        "major" => $major,
-                        "minor" => $minor,
-                        "institution" => $institution,
-
-                        "comment" => $comment,
-                    ));
-
-                    if ($success) {
-                        ?>
-                        <div class="er-notice-green">
-                            Profile for <?php echo $first_name.' '.$last_name ?> created
-                            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-                        </div>
-                        <?php
-                    } else {
-                        ?>
-                        <div class="er-notice-red">
-                            Cannot create staff profile. Please contact the Site Admin for support.
-							<br />
-							<?php echo 'Last query:' . $wpdb->last_query; ?>
-                            <br />
-							<?php echo 'Last error:' . $wpdb->last_error; ?>
-							<span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-                        </div>
-                        <?php
-                    }
-                }else {
-                    ?>
-                    <div class="er-notice-red">
-                        Staff, <?php echo $first_name.' '.$last_name; ?>, already exist in record!
-                        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-                    </div>
-                    <?php
-                }
-            }
-
-            $this->ui_content->create_staff_cn($username);
         }
 
+        $mode_strategy->render_staff_creation_form($username, $this->ui_content);
     }
 
     /*
     REGISTER TO TRAINING
      */
     public function eventRegistration() {
-        global $wpdb;
-        $event_table = ER_EVENT_LIST;
-        $staff_table = ER_STAFF_PROFILE;
-        $reg_table = ER_REGISTRATION_LIST;
         $time_now = current_time('mysql');
 
         // Take care of the form
         if (isset($_POST['reg-training']) && wp_verify_nonce($_POST['reg_nonce_field'], 'reg_nonce')) {
-            $event = intval($_POST['training']);
-            $staff = intval($_POST['staff']);
+            $event_id = intval($_POST['training']);
+            $staff_id = intval($_POST['staff']);
 
-            // Make sure people don't try to submit "--"
-            if ($event != 0 && $staff != 0) {
+            if ($event_id != 0 && $staff_id != 0) {
+                $training = $this->event_repo->get_by_id($event_id);
+                if ($training && $training->open_time < $time_now && $training->close_time > $time_now && ($training->limit_max == 0 || $training->max == -999 || $training->max - $training->num_reg > 0)) {
 
-                // Double-check the availability of the training
-                $training = $wpdb->get_row($wpdb->prepare("SELECT * FROM $event_table WHERE id = %d", $event));
-                if ($training->open_time < $time_now && $training->close_time > $time_now && ($training->limit_max == 0 || $training->max == -999 || $training->max - $training->num_reg > 0)) {
-
-                    // check for duplicate entries
-                    if ($wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $reg_table WHERE `staff` = %d AND `event_id` = %d", $staff, $event)) == 0) {
-                        $wpdb->insert($reg_table, array(
-                            "event_id" => $event,
-                            "staff"    => $staff,
+                    if ($this->registration_repo->check_duplicate($staff_id, $event_id) == 0) {
+                        $this->registration_repo->insert(array(
+                            "event_id" => $event_id,
+                            "staff"    => $staff_id,
                             "reg_time" => $time_now,
                             "school"   => $_POST['school'],
                             "comment"  => $_POST['comment'],
                         ));
-                        $wpdb->update($event_table, array(
-                            "num_reg" => $training->num_reg + 1,
-                        ), array(
-                            "id" => $event,
-                        ));
-                        ?>
-                        <div class="er-notice-green">
-                            <?php echo $this->tools->idtoName($staff) ?> is successfully registered to <?php echo $training->event_name.' at '.$training->location ?>
-                            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-                        </div>
-                        <?php
+                        $this->event_repo->increment_registration_count($event_id);
+                        $this->render('ui/notice', array('type' => 'green', 'message' => $this->tools->idtoName($staff_id) . ' is successfully registered to ' . $training->event_name . ' at ' . $training->location));
                     } else {
-                        ?>
-                        <div class="er-notice-red">
-                            <?php echo $this->tools->idtoName($staff) ?> has already been registered to <?php echo $training->event_name.' at '.$training->location ?>.
-                            <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-                        </div>
-                        <?php
+                        $this->render('ui/notice', array('type' => 'red', 'message' => $this->tools->idtoName($staff_id) . ' has already been registered to ' . $training->event_name . ' at ' . $training->location));
                     }
                 } else {
-                    ?>
-                    <div class="er-notice-red">
-                        Staff cannot be registered. Try to refresh the page and try again.
-                        <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-                    </div>
-                    <?php
+                    $this->render('ui/notice', array('type' => 'red', 'message' => 'Staff cannot be registered. Try to refresh the page and try again.'));
                 }
             } else {
-                ?>
-                <div class="er-notice-red">
-                    You must select a training AND a staff to register.
-                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-                </div>
-                <?php
+                $this->render('ui/notice', array('type' => 'red', 'message' => 'You must select a training AND a staff to register.'));
             }
-
-
         }
 
         $username = wp_get_current_user()->user_login;
+        $trainings_to_show = $this->event_repo->get_all_upcoming($time_now);
+        $staff_available = $this->staff_repo->get_all_by_school($username);
 
-        // Only show trainings that are not started
-        $trainings_to_show = $wpdb->get_results($wpdb->prepare("SELECT * FROM $event_table WHERE `start_time` > '$time_now' AND `activated` = 1"));
-
-        if (count($trainings_to_show) != 0) {
-
-            // Get preference on whether to show available seats
-            $show_available = get_option( 'show_availability', 0 );
-
-            ?>
-            <div>
-                <!-- Show all trainings that has not yet been started -->
-                <table>
-                    <?php
-                    foreach ($trainings_to_show as $training) {
-                        ?>
-                        <tr>
-                            <th colspan="3"><?php echo $training->event_name.' ('.$this->tools->availability($training).')' ?></th>
-                            <th style="width: 20%">Location</th>
-                            <td style="width: fit-content" colspan="2"><?php echo $training->location ?></td>
-                        </tr>
-                        <tr>
-                            <td></td>
-                            <th>Registration Date</th>
-                            <td><?php echo date("Y-m-d", strtotime($training->open_time)).' to '. date("Y-m-d", strtotime($training->close_time))?></td>
-                            <th style="width: 20%">Training Date</th>
-                            <td><?php echo date("Y-m-d", strtotime($training->start_time)).' to '. date("Y-m-d", strtotime($training->end_time))?></td>
-                        </tr>
-                        <?php
-                        // Reflect user settings
-                        if ($show_available == 1) {
-                            ?>
-                            <tr>
-                                <td></td>
-                                <th>Available Seats</th>
-                                <td colspan="3"><?php echo $this->tools->spotsOpen($training->id); ?></td>
-                            </tr>
-                            <?php
-                        }
-                        ?>
-                        <tr>
-                            <td></td>
-                            <th>Information</th>
-                            <td colspan="3"><?php echo esc_html($training->comment); ?></td>
-                        </tr>
-                        <?php
-                    }
-                    ?>
-                </table>
-            </div>
-
-            <!-- Form for registering into training -->
-            <form id="reg-event" name="reg-event" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']);?>">
-                <?php wp_nonce_field('reg_nonce', 'reg_nonce_field'); ?>
-			<div style="display: flex; align-items: center; margin-bottom: 10px;">
-                <label for="training" style="width: 20%;">Select Training:</label>
-                <select id="training" name="training" required>
-                    <option selected disabled>Select a training</option>
-                    <?php
-                    foreach($trainings_to_show as $training) {
-                        // Only trainings that are within registration time slot AND (isn't full OR allows overflow OR has no cap) can be selected.
-                        if ($training->open_time < $time_now && $training->close_time > $time_now && ($training->limit_max == 0 || $training->max == -999 || $training->max - $training->num_reg > 0)) {
-
-                            echo '<option value="'.$training->id.'">'.$training->event_name.' at '.$training->location.'</option>';
-                        }
-                    }
-                    ?>
-                </select>
-			</div>
-                <br>
-			<div style="display: flex; align-items: center; margin-bottom: 10px;">
-                <label for="staff" style="width: 20%;">Staff List:</label>
-                <select id="staff" name="staff">
-                    <option selected disabled>Select a staff</option>
-                    <?php
-                    // Get all staff profiles of a school
-                    $staff_available = $wpdb->get_results($wpdb->prepare("SELECT * FROM $staff_table  WHERE school = %s", $username));
-
-                    foreach ($staff_available as $staff) {
-                        echo '<option value="'.$staff->id.'">'. esc_html($this->tools->idtoName($staff->id)).'</option>';
-                    }
-                    ?>
-                </select>
-				</div>
-                <br>
-			<div style="display: flex; margin-bottom: 10px;">
-                <label for="comment" style="width: 20%">Comment: </label><textarea name="comment" id="comment"></textarea>
-			</div>
-                <input type="hidden" name="school" value="<?php echo $username; ?>">
-                <br><br><input type="submit" name="reg-training" id="reg-training" value="Register"/><br><br>
-            </form>
-            <?php
-
-        } else {    // Show a different message if there are no trainings to register
-            ?>
-            <div style="text-align: center;">
-                <h3 style="text-align: center;">No trainings are available now. Check again later.</h3>
-            </div>
-            <?php
-        }
-
+        $this->render('ui/event-registration', array(
+            'time_now'          => $time_now,
+            'trainings_to_show' => $trainings_to_show,
+            'staff_available'   => $staff_available,
+            'username'          => $username,
+            'tools'             => $this->tools,
+            'show_available'    => get_option('show_availability', 0)
+        ));
     }
 
     /**
     *MANAGE STAFF PROFILES
     */
     function viewEditStaff() {
-        global $wpdb;
-        $staff_table = ER_STAFF_PROFILE;
-        $reg_table = ER_REGISTRATION_LIST;
-        $event_table = ER_EVENT_LIST;
         $username = wp_get_current_user()->user_login;
         $time_now = current_time('mysql');
         $my_mode = get_option('my_mode');
+        $mode_strategy = RegistrationModeFactory::get_current_mode();
 
         // Update the database after editing profile
-        if ($my_mode == 1) {
-            if (isset($_POST['update-profile']) && wp_verify_nonce($_POST['staff_nonce_field'], 'create_staff_nonce')) {
-                $wpdb->update($staff_table, array(
-                    "first_name"    =>  sanitize_text_field($_POST['first_name']),
-                    "last_name"     =>  sanitize_text_field($_POST['last_name']),
-                    "mid_name"      =>  sanitize_text_field($_POST['mid_name']),
-                    "cn_name"       =>  sanitize_text_field($_POST['cn_name']),
-                    "sex"           =>  sanitize_text_field($_POST['sex']),
-                    "school"        =>  sanitize_text_field($_POST['school']),
-                    "phone"         =>  sanitize_text_field($_POST['phone']),
+        if (isset($_POST['update-profile']) && wp_verify_nonce($_POST['staff_nonce_field'], 'create_staff_nonce')) {
+            $staff_id = intval($_POST['id']);
+            $success = $mode_strategy->handle_staff_update($staff_id, $_POST);
 
-                    "pos"           =>  sanitize_text_field($_POST['position']),
-                    "lc"            =>  sanitize_text_field($_POST['lc']),
-
-                    "degree"        =>  sanitize_text_field($_POST['degree']),
-                    "grad_year"     =>  sanitize_text_field($_POST['t-exp']),
-
-                    "comment"       =>  sanitize_textarea_field($_POST['comment']),
-                ), array(
-                    "id"            =>  intval($_POST['id']),
-                ));
-
-                ?>
-                <div class="er-notice-green">
-                    Staff Profile Updated
-                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-                </div>
-                <?php
-            }
-        } else {
-            if (isset($_POST['update-profile']) && wp_verify_nonce($_POST['staff_nonce_field'], 'create_staff_nonce')) {
-                $wpdb->update($staff_table, array(
-                    "first_name"    =>  sanitize_text_field($_POST['first_name']),
-                    "last_name"     =>  sanitize_text_field($_POST['last_name']),
-                    "cn_name"       =>  sanitize_text_field($_POST['cn_name']),
-                    "sex"           =>  sanitize_text_field($_POST['sex']),
-                    "age"           =>  intval($_POST['age']),
-                    "school"        =>  sanitize_text_field($_POST['school']),
-                    "email"         =>  sanitize_email($_POST['email']),
-                    "phone"         =>  sanitize_text_field($_POST['phone']),
-
-                    "pos"           =>  sanitize_text_field($_POST['position']),
-                    "lc"            =>  sanitize_text_field($_POST['lc']),
-                    "training_exp"  =>  sanitize_text_field($_POST['t-exp']),
-                    "cec_exp"       =>  sanitize_text_field($_POST['cec-exp']),
-
-                    "degree"        =>  sanitize_text_field($_POST['degree']),
-                    "grad_year"     =>  sanitize_text_field($_POST['grad-year']),
-                    "major"         =>  sanitize_text_field($_POST['major']),
-                    "minor"         =>  sanitize_text_field($_POST['minor']),
-                    "institution"   =>  sanitize_text_field($_POST['institution']),
-
-                    "comment"       =>  sanitize_textarea_field($_POST['comment']),
-                ), array(
-                    "id"            =>  intval($_POST['id']),
-                ));
-
-                ?>
-                <div class="er-notice-green">
-                    Staff Profile Updated
-                    <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-                </div>
-                <?php
+            if ($success) {
+                $this->render('ui/notice', array('type' => 'green', 'message' => 'Staff Profile Updated'));
             }
         }
 
         // Withdraw from a training
         if (isset($_POST['confirm-remove']) && wp_verify_nonce($_POST['staff_nonce_field'], 'create_staff_nonce')) {
             $trainings_to_remove = $_POST['training-id'];
+            $staff_id = intval($_POST['staff_id']);
 
-            foreach($trainings_to_remove as $training) {
-                // Remove staff from the registration record
-                $wpdb->delete($reg_table, array(
-                    'event_id' => $training,
-                    'staff'    => $_POST['staff_id'],
-                ));
-
-                // Open up spots in event list available numbers
-                $wpdb->update(ER_EVENT_LIST, array(
-                    'num_reg' => $wpdb->get_var($wpdb->prepare("SELECT `num_reg` FROM $event_table WHERE `id` = %d", $training)) - 1,
-                ), array (
-                    'id' => $training,
-                ));
+            foreach($trainings_to_remove as $training_id) {
+                $this->registration_repo->delete_by_event_and_staff($training_id, $staff_id);
+                $this->event_repo->decrement_registration_count($training_id);
             }
-            ?>
-            <div class="er-notice-green">
-                Registration(s) Cancelled
-                <span class="closebtn" onclick="this.parentElement.style.display='none';">&times;</span>
-            </div>
-            <?php
+            $this->render('ui/notice', array('type' => 'green', 'message' => 'Registration(s) Cancelled'));
         }
 
-        // Don't show table if there are no staffs
-        if ($wpdb->get_var("SELECT COUNT(*) FROM $staff_table WHERE `school` = '$username'") != 0) {
-            ?>
-            <form id="select-staff" name="select-staff" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']);?>">
-                <?php wp_nonce_field('create_staff_nonce', 'staff_nonce_field'); ?>
-                <table>
-                    <tr>
-                        <th style="width: fit-content"></th>
-                        <th style="width: fit-content">Name</th>
-                        <th style="width: fit-content">Sex</th>
-                        <th style="width: fit-content">Position</th>
-                        <!-- only show email on non-my mode -->
-                        <?php if ($my_mode == 0) {echo "<th style=\"width: fit-content\">Email</th>";} ?>
-                        <th style="width: max-content">Upcoming Training(s) Registered</th>
-                    </tr>
-                        <?php
-                        // List staff
-                        $all_staff = $wpdb->get_results($wpdb->prepare("SELECT * FROM $staff_table WHERE `school` = %s", $username));
-                        foreach ($all_staff as $staff) {
+        $all_staff = $this->staff_repo->get_all_by_school($username);
 
-                            // List the upcoming trainings that this staff is registered to (don't include past trainings
-                            $trainings = $wpdb->get_results($wpdb->prepare("SELECT `event_id` FROM $reg_table WHERE `staff` = $staff->id")); // List all trainings related to the staff then filter
-
-                            $training_registered = "<ul style='margin:0'>"; // The string we are going to work on
-
-                            foreach ($trainings as $training) { // add each event name to $training_registered as list item
-                                // Only show the training if it is upcoming
-                                if ($time_now < $wpdb->get_var($wpdb->prepare("SELECT `start_time` FROM $event_table WHERE `id` = %d", $training->event_id))) {
-                                    $training_registered .= '<li>'.$wpdb->get_var($wpdb->prepare("SELECT `event_name` FROM $event_table WHERE `id` = %d", $training->event_id)).'</li>';
-                                }
-                            }
-
-                            $training_registered .= '</ul>';
-
-                            ?>
-                            <tr>
-                                <td><label>
-                                        <input type="radio" name="select" value="<?php echo $staff->id ?>" required/>
-                                    </label></td>
-                                <td><?php echo esc_html($this->tools->idtoName($staff->id)); ?></td>
-                                <td><?php echo $staff->sex; ?></td>
-                                <td><?php echo $staff->pos; ?></td>
-                                <?php if ($my_mode == 0) {echo "<td>$staff->email</td>";} ?>
-                                <td><?php if ($training_registered != "<ul style='margin:0'></ul>") {echo $training_registered;} else {echo "No Trainings Registered";} ?></td>   <!--show no trainings registered when appropriate -->
-                            </tr>
-                            <?php
-                        }
-                        ?>
-                </table>
-                <br>
-                <div style="text-align: center;">
-                    <input style="float: left; width: fit-content" type="submit" name="edit-reg" id="edit-reg" value="Cancel Staff Registration" />
-                    <input style="float: right; width: fit-content" type="submit" name="edit-profile" id="edit-profile" value="Edit Staff Profile" />
-                </div>
-            </form>
-            <?php
-        } else {
-            ?>
-            <div style="text-align: center;">
-                <h3 style="text-align: center;">No Staff Found</h3>
-            </div>
-            <?php
-        }
+        $this->render('ui/manage-staff', array(
+            'username'      => $username,
+            'all_staff'     => $all_staff,
+            'my_mode'       => $my_mode,
+            'time_now'      => $time_now,
+            'tools'         => $this->tools,
+            'event_repo'    => $this->event_repo,
+            'registration_repo' => $this->registration_repo
+        ));
 
         // Edit Staff profile
         if (isset($_POST['edit-profile']) && wp_verify_nonce($_POST['staff_nonce_field'], 'create_staff_nonce')) {
             $staff_id = intval($_POST['select']);
-            $profile = $wpdb->get_row($wpdb->prepare("SELECT * FROM $staff_table WHERE `id` = %d", $staff_id));
-            // Determine which form to show
-            if ($my_mode == 1) {
-                $this->ui_content->edit_staff_my($username, $profile, $staff_id);
-            } else {
-                $this->ui_content->edit_staff_cn($username, $profile, $staff_id);
-            }
-
+            $profile = $this->staff_repo->get_by_id($staff_id);
+            $mode_strategy->render_staff_edit_form($username, $profile, $staff_id, $this->ui_content);
         }
 
         // Edit Staff Registration
         if (isset($_POST['edit-reg']) && wp_verify_nonce($_POST['staff_nonce_field'], 'create_staff_nonce')) {
             $staff_id = intval($_POST['select']);
-            $trainings_registered = $wpdb->get_results($wpdb->prepare("SELECT `event_id` FROM $reg_table WHERE `staff` = %d", $staff_id)); // All trainings the user registered to
-            ?>
-            <br>
-            <hr>
-            <?php
-            if ($this->tools->hasRemovables($staff_id)) {
-                ?>
-                <h4>Cancel Registrations for <?php echo $this->tools->idtoName($staff_id) ?>:</h4>
-                <p><b>Important Notice:</b><br>Although it is possible to withdraw from a training here even after the training registration is closed, please <b>ALWAYS</b> notify the training organizer before doing so. To withdraw from a training, select the training(s) and click withdraw.</p>
-                <div style="text-align: center;">
-                    <form id="staff-profile" name="staff-profile" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']);?>">
-                        <?php wp_nonce_field('create_staff_nonce', 'staff_nonce_field'); ?>
-                        <label for="training-id">Select from list</label><select name="training-id[]" id="training-id" required multiple="multiple">
-                            <?php
-                            foreach ($trainings_registered as $training) {
-                                // Only show open if it also shows on the list above, which are upcoming trainings
-                                if ($wpdb->get_var("SELECT `start_time` FROM $event_table WHERE `id` = $training->event_id") > $time_now) {
-                                    // Get information about the Training
-                                    $training_info = $wpdb->get_row("SELECT * FROM $event_table WHERE `id` = $training->event_id");
-                                    ?>
-                                    <option value="<?php echo esc_attr($training->event_id) ?>"><?php echo esc_html($training_info->event_name.' at '.$training_info->location) ?></option>
-                                    <?php
-                                }
-                            }
-                            ?>
-                        </select>
-                        <br>
-                        <input type="hidden" name="staff_id" value="<?php echo $staff_id ?>">
-                        <input type="submit" name="confirm-remove" id="confirm-remove" value="Withdraw" /><br><br>
-                    </form>
-                    <form id="cancel" name="cancel" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']);?>">
-                        <input type="submit" name="cancel" id="cancel" value="Cancel" />
-                    </form>
-                </div>
-                <?php
-            } else {
-                ?>
-                <h4>No registrations available for cancelling for <?php echo $this->tools->idtoName($staff_id) ?></h4>
-                <?php
-            }
-
+            $trainings_registered = $this->registration_repo->get_by_staff($staff_id);
+            
+            $this->render('ui/cancel-registration', array(
+                'staff_id'              => $staff_id,
+                'trainings_registered'  => $trainings_registered,
+                'time_now'              => $time_now,
+                'tools'                 => $this->tools,
+                'event_repo'            => $this->event_repo
+            ));
         }
     }
 }
-
-
-
-
-
-
-

@@ -11,10 +11,16 @@
  */
 
 class training_registration_tools {
+    protected $event_repo;
+    protected $registration_repo;
+
+    public function __construct() {
+        $this->event_repo = new EventRepository();
+        $this->registration_repo = new RegistrationRepository();
+    }
+
     public function isValidEvent($name, $location, $start_date, $id) {
-        global $wpdb;
-        $table = ER_EVENT_LIST;
-        $duplicates = $wpdb->get_results($wpdb->prepare("SELECT * FROM $table WHERE `event_name` = %s", $name));   // Get all trainings that has the same name
+        $duplicates = $this->event_repo->get_duplicates($name);
 
         if (empty($duplicates)) {
             return true;    // No duplicated names, training name is valid
@@ -34,14 +40,10 @@ class training_registration_tools {
 
     // Translate the available slot from number to useful information
     public function spotsOpen ($id) {
-        global $wpdb;
-        $table = ER_EVENT_LIST;
-        $registration = ER_REGISTRATION_LIST;
-
         // Query for the number of users
-        $training = $wpdb->get_row($wpdb->prepare("SELECT * FROM $table WHERE `id` = %d", $id));
+        $training = $this->event_repo->get_by_id($id);
         $max = $training->max;
-        $occupied = $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $registration WHERE `event_id` = %d", $id));
+        $occupied = count($this->registration_repo->get_by_event($id));
 
         if ($max == -999) {
             return "Unlimited, ".$occupied." registered";
@@ -79,17 +81,15 @@ class training_registration_tools {
 
 // Check to see if the removal list at manage my staff should show
     public function hasRemovables($id) {
-        global $wpdb;
-        $event_table = ER_EVENT_LIST;
-        $reg_table = ER_REGISTRATION_LIST;
         $time_now = current_time('mysql');
 
-        $trainings_registered = $wpdb->get_results($wpdb->prepare("SELECT * FROM $reg_table WHERE `staff` = %d", $id));
+        $trainings_registered = $this->registration_repo->get_by_staff($id);
         if (!empty($trainings_registered)) {
             $valid_count = 0;   // Counts the number of trainings the staff registered that are currently upcoming
             foreach ($trainings_registered as $training) {
                 // Count increments when the the start time of a training is greater than the current time, hence upcoming
-                if ($wpdb->get_var($wpdb->prepare("SELECT `start_time` FROM $event_table WHERE `id` = %d", $training->event_id)) > $time_now) {
+                $event = $this->event_repo->get_by_id($training->event_id);
+                if ($event && $event->start_time > $time_now) {
                     $valid_count++;
                 }
             }
@@ -107,11 +107,10 @@ class training_registration_tools {
 
     // Tags staff id to name
     public function idtoName($id) {
-        global $wpdb;
-        $staff_profile = $wpdb->prefix . 'er_staff_profile';
-        $row = $wpdb->get_row($wpdb->prepare("SELECT `first_name`, `last_name` FROM $staff_profile WHERE id = %d", $id));
+        $staff_repo = new StaffRepository();
+        $row = $staff_repo->get_by_id($id);
 
-        return esc_html($row->first_name . ' ' . $row->last_name);
+        return $row ? esc_html($row->first_name . ' ' . $row->last_name) : '';
     }
 
     // Find a field with the ID, table, and field name given
