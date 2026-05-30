@@ -208,7 +208,7 @@ class training_registration_acp {
         global $wpdb;
 
         if (isset($_GET['event-id'])) {
-            $this->content->view_event($this->tools, get_option('my_mode'), $_GET['event-id']);
+            $this->content->view_event($this->tools, get_option('my_mode'), intval($_GET['event-id']));
         } else {
             $this->content->manage_reg($this->tools, get_option('my_mode'));
         }
@@ -225,15 +225,15 @@ class training_registration_acp {
             wp_die(__('You do not have sufficient permissions to access this page.'));
         }
 
-        if ($_POST['save-settings']) {
+        if (isset($_POST['save-settings']) && wp_verify_nonce($_POST['settings_nonce_field'], 'save_settings_nonce')) {
             // Update show available
-            if ($_POST['show-available'] == 1) {
+            if (isset($_POST['show-available']) && $_POST['show-available'] == 1) {
                 update_option( 'show_availability', 1);
             } else {
                 update_option( 'show_availability', 0);
             }
             // Update MY mode
-            if ($_POST['enable-my'] == 1) {
+            if (isset($_POST['enable-my']) && $_POST['enable-my'] == 1) {
                 update_option('my_mode', 1);
             } else {
                 update_option('my_mode', 0);
@@ -242,7 +242,7 @@ class training_registration_acp {
             add_action('admin_notices', $this->admin_notice->settingsUpdated());
         }
 
-        if ($_POST['create-page']) {
+        if (isset($_POST['create-page']) && wp_verify_nonce($_POST['create_page_nonce_field'], 'create_page_nonce')) {
             require_once(ER_PLUGIN_DIR . '/includes/create_page.php');
             $creator = new create_page();
             $creator->run();

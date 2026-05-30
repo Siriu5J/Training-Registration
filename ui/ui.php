@@ -319,7 +319,7 @@ class training_registration_ui {
             </div>
 
             <!-- Form for registering into training -->
-            <form id="reg-event" name="reg-event" method="post" action="<?php echo $_SERVER['REQUEST_URI'];?>">
+            <form id="reg-event" name="reg-event" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']);?>">
                 <?php wp_nonce_field('reg_nonce', 'reg_nonce_field'); ?>
 			<div style="display: flex; align-items: center; margin-bottom: 10px;">
                 <label for="training" style="width: 20%;">Select Training:</label>
@@ -478,7 +478,7 @@ class training_registration_ui {
         // Don't show table if there are no staffs
         if ($wpdb->get_var("SELECT COUNT(*) FROM $staff_table WHERE `school` = '$username'") != 0) {
             ?>
-            <form id="select-staff" name="select-staff" method="post" action="<?php echo $_SERVER['REQUEST_URI'];?>">
+            <form id="select-staff" name="select-staff" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']);?>">
                 <?php wp_nonce_field('create_staff_nonce', 'staff_nonce_field'); ?>
                 <table>
                     <tr>
@@ -540,9 +540,9 @@ class training_registration_ui {
         }
 
         // Edit Staff profile
-        if ($_POST['edit-profile']) {
-            $staff_id = $_POST['select'];
-            $profile = $wpdb->get_row("SELECT * FROM $staff_table WHERE `id` = $staff_id");
+        if (isset($_POST['edit-profile']) && wp_verify_nonce($_POST['staff_nonce_field'], 'create_staff_nonce')) {
+            $staff_id = intval($_POST['select']);
+            $profile = $wpdb->get_row($wpdb->prepare("SELECT * FROM $staff_table WHERE `id` = %d", $staff_id));
             // Determine which form to show
             if ($my_mode == 1) {
                 $this->ui_content->edit_staff_my($username, $profile, $staff_id);
@@ -553,9 +553,9 @@ class training_registration_ui {
         }
 
         // Edit Staff Registration
-        if ($_POST['edit-reg']) {
-            $staff_id = $_POST['select'];
-            $trainings_registered = $wpdb->get_results($wpdb->prepare("SELECT `event_id` FROM $reg_table WHERE `staff` = $staff_id")); // All trainings the user registered to
+        if (isset($_POST['edit-reg']) && wp_verify_nonce($_POST['staff_nonce_field'], 'create_staff_nonce')) {
+            $staff_id = intval($_POST['select']);
+            $trainings_registered = $wpdb->get_results($wpdb->prepare("SELECT `event_id` FROM $reg_table WHERE `staff` = %d", $staff_id)); // All trainings the user registered to
             ?>
             <br>
             <hr>
@@ -565,7 +565,7 @@ class training_registration_ui {
                 <h4>Cancel Registrations for <?php echo $this->tools->idtoName($staff_id) ?>:</h4>
                 <p><b>Important Notice:</b><br>Although it is possible to withdraw from a training here even after the training registration is closed, please <b>ALWAYS</b> notify the training organizer before doing so. To withdraw from a training, select the training(s) and click withdraw.</p>
                 <div style="text-align: center;">
-                    <form id="staff-profile" name="staff-profile" method="post" action="<?php echo $_SERVER['REQUEST_URI'];?>">
+                    <form id="staff-profile" name="staff-profile" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']);?>">
                         <?php wp_nonce_field('create_staff_nonce', 'staff_nonce_field'); ?>
                         <label for="training-id">Select from list</label><select name="training-id[]" id="training-id" required multiple="multiple">
                             <?php
@@ -585,7 +585,7 @@ class training_registration_ui {
                         <input type="hidden" name="staff_id" value="<?php echo $staff_id ?>">
                         <input type="submit" name="confirm-remove" id="confirm-remove" value="Withdraw" /><br><br>
                     </form>
-                    <form id="cancel" name="cancel" method="post" action="<?php echo $_SERVER['REQUEST_URI'];?>">
+                    <form id="cancel" name="cancel" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']);?>">
                         <input type="submit" name="cancel" id="cancel" value="Cancel" />
                     </form>
                 </div>

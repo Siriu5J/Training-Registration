@@ -64,19 +64,20 @@ class settings_page_content {
             <h1 class="wp-heading-inline"><?php echo $header ?></h1>
             <hr class="wp-header-end">
             <br />
-            <form id="new-event" name="new-event" method="post" action="<?php echo $_SERVER['REQUEST_URI'];?>">
-                <input type="hidden" name="event-id" value="<?php echo $data->id ?>" />
+            <form id="new-event" name="new-event" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']);?>">
+                <?php wp_nonce_field('edit_training_nonce', 'training_nonce_field'); ?>
+                <input type="hidden" name="event-id" value="<?php echo esc_attr($data->id) ?>" />
                 <div id="er-display-two-columns">
                     <div id="er-main-content">
                         <div id="er-title">
-                            <input type="text" name="event-name" placeholder="Enter Training Name Here" id="event-name" spellcheck="true" value="<?php echo $data->event_name ?>" required/>
+                            <input type="text" name="event-name" placeholder="Enter Training Name Here" id="event-name" spellcheck="true" value="<?php echo esc_attr($data->event_name) ?>" required/>
                         </div>
                         <div id="er-information">
                             <label for="location">Location:<br></label>
-                            <input class="er_input" type="text" name="location" id="location" value="<?php echo $data->location ?>" required/>
+                            <input class="er_input" type="text" name="location" id="location" value="<?php echo esc_attr($data->location) ?>" required/>
                             <br/>
                             <label for="comment">Training Information:<br></label>
-                            <textarea name="comment" id="comment" cols="45" rows="5" spellcheck="true"><?php echo $data->comment ?></textarea>
+                            <textarea name="comment" id="comment" cols="45" rows="5" spellcheck="true"><?php echo esc_textarea($data->comment) ?></textarea>
                         </div>
                         <div>
                             <br />
@@ -98,11 +99,11 @@ class settings_page_content {
                                     <table>
                                         <tr>
                                             <td class="er-tb-cell"><b>Registration status:</b></td>
-                                            <td class="er-tb-cell"><?php echo $tools->availability($data) ?></td>
+                                            <td class="er-tb-cell"><?php echo esc_html($tools->availability($data)) ?></td>
                                         </tr>
                                         <tr>
                                             <td class="er-tb-cell"><b>Currently registered:</b></td>
-                                            <td class="er-tb-cell"><?php echo $data->num_reg ?></td>
+                                            <td class="er-tb-cell"><?php echo esc_html($data->num_reg) ?></td>
                                         </tr>
                                         <tr>
                                             <td class="er-tb-cell"><b>Activated?</b></td>
@@ -117,7 +118,7 @@ class settings_page_content {
 
                         <div class="er-sidebar-block">
                             <div class="er-block-title">
-                                <h3>Registration Dates <span class="dashicons dashicons-warning" title="<?php echo $warning_text_registration ?>"></span></h3>
+                                <h3>Registration Dates <span class="dashicons dashicons-warning" title="<?php echo esc_attr($warning_text_registration) ?>"></span></h3>
                             </div>
                             <div class="er-block-content">
                                 <label for="open-date">Registration Open Date:<br></label><input class="er_input" type="datetime-local" name="open-date" id="open-date" value="<?php echo date( "Y-m-d\TH:i:s", strtotime($data->open_time)); ?>" required/>
@@ -132,10 +133,10 @@ class settings_page_content {
 
                         <div class="er-sidebar-block">
                             <div class="er-block-title">
-                                <h3>Capacity and Status <span class="dashicons dashicons-warning" title="<?php echo $warning_text_cap ?>"></span></h3>
+                                <h3>Capacity and Status <span class="dashicons dashicons-warning" title="<?php echo esc_attr($warning_text_cap) ?>"></span></h3>
                             </div>
                             <div class="er-block-content">
-                                <label for="max">Max Registration:<br></label><input class="er_input" type="number" name="max" id="max" min="0" step="1" value="<?php echo $data->max ?>"/>
+                                <label for="max">Max Registration:<br></label><input class="er_input" type="number" name="max" id="max" min="0" step="1" value="<?php echo esc_attr($data->max) ?>"/>
                                 <br /><br />
                                 <table>
                                     <tr>
@@ -144,7 +145,7 @@ class settings_page_content {
                                     </tr>
                                     <tr>
                                         <td><input type="checkbox" name="activated" id="activated" value="1" <?php echo ($data->activated == 1 ? 'checked' : '') ?>/></td>
-                                        <td><label for="activated">Activation <span class="dashicons dashicons-editor-help" title="<?php echo $question_mark ?>"></span></label></td>
+                                        <td><label for="activated">Activation <span class="dashicons dashicons-editor-help" title="<?php echo esc_attr($question_mark) ?>"></span></label></td>
                                     </tr>
                                 </table>
                             </div>
@@ -164,7 +165,8 @@ class settings_page_content {
                                         Warning! Doing this will remove the training event and registration records from the database. Type "remove training" in the box below and click remove to remove the training.
                                     </p>
                                     <form id="confirm-remove-event" name="confirm-remove-event" method="post" action="<?php echo get_site_url() . '/wp-admin/admin.php?page=er_gen_set';?>">
-                                        <input type="hidden" name="removal-id" id="removal-id" value="<?php echo $data->id ?>" />
+                                        <?php wp_nonce_field('remove_training_nonce', 'remove_training_nonce_field'); ?>
+                                        <input type="hidden" name="removal-id" id="removal-id" value="<?php echo esc_attr($data->id) ?>" />
                                         <br />
                                         <input type="text" class="er_input" name="confirm" required pattern="remove training" autocomplete="off" />
                                         <br />
@@ -199,14 +201,15 @@ class settings_page_content {
 
         ?>
         <div class="wrap">
-            <h1 class="wp-heading-inline">Registrations for <?php echo $tools->getFieldById(ER_EVENT_LIST, 'event_name', $id).' at '. $tools->getFieldById(ER_EVENT_LIST, 'location', $id) ?></h1>
+            <h1 class="wp-heading-inline">Registrations for <?php echo esc_html($tools->getFieldById(ER_EVENT_LIST, 'event_name', $id).' at '. $tools->getFieldById(ER_EVENT_LIST, 'location', $id)) ?></h1>
             <p>Please use the browser search feature to search this list (Press Ctrl+f or Command+f). You can use the bulk action to remove trainee(s) from a training.</p>
             <hr class="wp-header-end">
 
-            <form id="staff-reg" method="GET" action="<?php echo $_SERVER['REQUEST_URI']?>">
+            <form id="staff-reg" method="GET" action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>">
+                <?php wp_nonce_field('staff_reg_nonce', 'reg_nonce_field'); ?>
                 <!-- For plugins, we also need to ensure that the form posts back to our current page -->
-                <input type="hidden" name="event-id" value="<?php echo $id ?>" />
-                <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
+                <input type="hidden" name="event-id" value="<?php echo esc_attr($id) ?>" />
+                <input type="hidden" name="page" value="<?php echo esc_attr($_REQUEST['page']) ?>" />
                 <!-- Now we can render the completed list table -->
                 <?php
                 $reg_table->display()
@@ -253,12 +256,12 @@ class settings_page_content {
                         <tr <?php if ($trainingNumber % 2 == 0) {
                             echo "bgcolor=\"#A9A9A9\"";
                         } ?> style="height: 25pt; ">
-                            <td><a href="#<?php echo $training->id; ?>"><?php echo $training->event_name ?></a></td>
-                            <td><?php echo $training->location ?></td>
-                            <td><?php echo date("Y-m-d", strtotime($training->start_time)) ?></td>
-                            <td><?php echo date("Y-m-d", strtotime($training->end_time)) ?></td>
-                            <td><?php echo $tools->spotsOpen($training->id) ?></td>
-                            <td><?php echo $tools->availability($training) ?></td>
+                            <td><a href="#<?php echo esc_attr($training->id); ?>"><?php echo esc_html($training->event_name) ?></a></td>
+                            <td><?php echo esc_html($training->location) ?></td>
+                            <td><?php echo esc_html(date("Y-m-d", strtotime($training->start_time))) ?></td>
+                            <td><?php echo esc_html(date("Y-m-d", strtotime($training->end_time))) ?></td>
+                            <td><?php echo esc_html($tools->spotsOpen($training->id)) ?></td>
+                            <td><?php echo esc_html($tools->availability($training)) ?></td>
                         </tr>
                         <?php
                     }
@@ -284,11 +287,12 @@ class settings_page_content {
                     // This will be a two dimensional array which contains all
 
                     ?>
-                    <div class="wrap" id="<?php echo $training->id; ?>">
-                        <h3>Registrations for <?php echo $training->event_name . ' at ' . $training->location; ?></h3>
-                        <form id="staff-reg" method="GET" action="<?php echo $_SERVER['REQUEST_URI'] ?>">
+                    <div class="wrap" id="<?php echo esc_attr($training->id); ?>">
+                        <h3>Registrations for <?php echo esc_html($training->event_name . ' at ' . $training->location); ?></h3>
+                        <form id="staff-reg" method="GET" action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>">
+                            <?php wp_nonce_field('staff_reg_nonce', 'reg_nonce_field'); ?>
                             <!-- For plugins, we also need to ensure that the form posts back to our current page -->
-                            <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
+                            <input type="hidden" name="page" value="<?php echo esc_attr($_REQUEST['page']) ?>" />
                             <!-- Now we can render the completed list table -->
                             <?php $reg_table->display() ?>
                         </form>
@@ -313,7 +317,8 @@ class settings_page_content {
         public function view_settings($show_available, $my_enabled) {
             ?>
             <h1>Settings</h1>
-            <form id="update-settings" name="update-settings" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+            <form id="update-settings" name="update-settings" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>">
+                <?php wp_nonce_field('save_settings_nonce', 'settings_nonce_field'); ?>
                 <table class="form-table">
                     <tbody>
                     <tr>
@@ -339,7 +344,8 @@ class settings_page_content {
                 </p>
             </form>
             <hr>
-            <form id="create" name="create" method="post" action="<?php echo $_SERVER['REQUEST_URI']; ?>">
+            <form id="create" name="create" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>">
+                <?php wp_nonce_field('create_page_nonce', 'create_page_nonce_field'); ?>
                 <table class="form-table">
                     <tbody>
                     <tr>

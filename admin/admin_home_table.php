@@ -76,7 +76,8 @@ class admin_home_table extends WP_List_Table {
 
     function column_print_sheet($item) {
         $mode = get_option('my_mode');
-        $download = '<a href="' . $_SERVER['REQUEST_URI'] . '&id=' . $item['id'] . '&print-excel=true&mode='. $mode . '">Download</a>';
+        $nonce = wp_create_nonce('excel_export_nonce');
+        $download = '<a href="' . esc_url($_SERVER['REQUEST_URI'] . '&id=' . $item['id'] . '&print-excel=true&mode='. $mode . '&nonce=' . $nonce) . '">Download</a>';
         $view     = '<a href="'. get_admin_url(get_current_blog_id(), 'admin.php?page=er_view_reg_set') . '&event-id=' . $item['id'] .'">View</a>';
         return $download . '<br />' . $view;
     }
