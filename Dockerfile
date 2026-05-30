@@ -1,14 +1,18 @@
-FROM wordpress:latest
+FROM wordpress:7.0
 LABEL authors="Samuel Jiang"
 
-# Install dependencies for composer
-RUN apt-get update && apt-get install -y curl unzip
+# Install dependencies for composer and Node.js
+RUN apt-get update && apt-get install -y \
+    curl \
+    unzip \
+    nodejs \
+    npm \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Install Gemini CLI
-RUN apt-get update && apt-get install -y nodejs npm
 RUN npm install -g @google/gemini-cli
 
 # Set working directory for the plugin

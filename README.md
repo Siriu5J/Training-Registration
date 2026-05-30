@@ -19,59 +19,22 @@ The Training Registration Plugin is a WordPress plugin created to allow SOT trai
 2. Download the plugin .zip from the [release page](https://github.com/Siriu5J/Training-Registration/releases).
 3. Install the plugin to WordPress by using local upload.
 
-**Customize Site**
-1. Make sure you are using the default Twenty Twenty Theme
-2. Go to `Admin Control Panel` > `Appearance` > `Customization`.
-3. Go to `Site Identity` and change the Site Title and Tagline to something related to training registration
-4. Go to `Colors` and set Background Color to `#f8f8f8` and Header & Footer Background Color to `#012552`
-5. Go to `Cover Template` and set Overlay Background Color to `#fecc00` and Overlay Text Color to `#ffffff`
-6. Remove all menues and widgets
-7. Add the following CSS code to `Additional CSS`:
-```
-button:not(.toggle),
-.button,
-.faux-button,
-.wp-block-button__link,
-.wp-block-file .wp-block-file__button,
-input[type=”button”], input[type=”reset”], input[type=”submit”],
-input[type="Submit"],
-.bg-accent,
-.bg-accent-hover:hover,
-.bg-accent-hover:focus,
-:root .has-accent-background-color, .comment-reply-link {
-background-color: #fecc00;
-color: #012552 !important;
-}
-a:not(.wp-block-button__link){
-	color:#fecc00 !important;
-	color:#012552;
-}
-.wp-block-button__link:hover{
-	color: #012552;
-}
-.entry-title {
-	font-size: 35pt;
-}
-.singular .entry-header{
-	padding-top: 0;
-	padding-bottom: 1.5rem;
-}
-}
-html, body {
-	height: 100%;
-}
-.home #site-footer {
-	position: fixed;
-	bottom: 0;
-	width: 100%;
-}
-.header-navigation-wrapper {
-	display: none;
-}
-.header-inner {
-	padding-bottom: 0px;
-}
-```
+**Customize Site (Twenty Twenty-Five)**
+1. Activate the **Twenty Twenty-Five** theme.
+2. Go to `Appearance` > `Editor` (this opens the WordPress Site Editor).
+3. Click on the **Styles** icon (top right circle icon) and select **Colors**.
+4. Define the following **Palette** for a professional and integrated look:
+    *   **Base (Background):** `#f8f8f8`
+    *   **Contrast (Text):** `#1d2327`
+    *   **Primary (Accent):** `#012552` (Deep Blue)
+    *   **Secondary (Highlight):** `#fecc00` (Gold/Yellow)
+5. Under **Elements**, set the following:
+    *   **Buttons:** Set the background to **Secondary** (`#fecc00`) and the text to **Primary** (`#012552`).
+    *   **Links:** Set the color to **Primary** (`#012552`) with a hover effect using **Secondary** (`#fecc00`).
+6. The plugin's UI now uses standard WordPress block classes (like `.wp-block-table` and `.button`), meaning it will automatically inherit these global styles without requiring large blocks of custom CSS.
+
+**Important**: Ensure Permalinks are set to **"Post Name"** in `Settings` > `Permalinks` for the registration pages to function correctly.
+
 
 ## Folder Structure
 The plugin follows a modern PHP structure with PSR-4 autoloading and a clear separation of concerns:

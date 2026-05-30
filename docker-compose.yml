@@ -15,7 +15,10 @@ services:
       - wordpress_net
 
   wordpress:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: wordpress-custom:7.0  # Gives your local build a distinct name/tag
     container_name: wordpress_site
     ports:
       - "8080:80"

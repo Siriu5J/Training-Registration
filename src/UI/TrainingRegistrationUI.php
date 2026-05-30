@@ -34,9 +34,6 @@ class TrainingRegistrationUI {
         $this->event_repo = new EventRepository();
         $this->staff_repo = new StaffRepository();
         $this->registration_repo = new RegistrationRepository();
-
-        // Add CSS
-        add_action('wp_enqueue_scripts', array($this, 'enqueue_ui_css'));
     }
 
     public function enqueue_ui_css() {

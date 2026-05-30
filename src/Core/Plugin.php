@@ -28,6 +28,7 @@ class Plugin {
     private function define_hooks() {
         // UI Controllers
         $ui = new TrainingRegistrationUI();
+        $this->loader->er_add_action('wp_enqueue_scripts', $ui, 'enqueue_ui_css');
         $this->loader->er_add_shortcode('staff_form', $ui, 'staffFormCreation');
         $this->loader->er_add_shortcode('view_staff', $ui, 'viewEditStaff');
         $this->loader->er_add_shortcode('register_training', $ui, 'eventRegistration');
