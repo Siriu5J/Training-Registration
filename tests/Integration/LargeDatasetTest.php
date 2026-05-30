@@ -2,6 +2,10 @@
 
 require_once __DIR__ . '/WP_Integration_TestCase.php';
 
+use SOT\TrainingRegistration\Data\Repositories\EventRepository;
+use SOT\TrainingRegistration\Data\Repositories\StaffRepository;
+use SOT\TrainingRegistration\Data\Repositories\RegistrationRepository;
+
 class LargeDatasetTest extends WP_Integration_TestCase {
     protected $event_repo;
     protected $staff_repo;

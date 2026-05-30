@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var object $data
+ * @var \SOT\TrainingRegistration\Core\Tools $tools
+ */
+?>
 <?php $show_stat = ($data->id != -1); ?>
 <div class="wrap">
     <?php

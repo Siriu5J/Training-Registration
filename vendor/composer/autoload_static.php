@@ -23,6 +23,10 @@ class ComposerStaticInit62e10e6c8df9afc192311b196c75bb33
         array (
             'WP_Mock\\' => 8,
         ),
+        'S' =>
+        array (
+            'SOT\\TrainingRegistration\\' => 25,
+        ),
         'P' =>
         array (
             'Psr\\SimpleCache\\' => 16,
@@ -54,6 +58,10 @@ class ComposerStaticInit62e10e6c8df9afc192311b196c75bb33
         'WP_Mock\\' =>
         array (
             0 => __DIR__ . '/..' . '/10up/wp_mock/php/WP_Mock',
+        ),
+        'SOT\\TrainingRegistration\\' =>
+        array (
+            0 => __DIR__ . '/../..' . '/src',
         ),
         'Psr\\SimpleCache\\' =>
         array (

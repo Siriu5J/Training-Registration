@@ -1,12 +1,17 @@
 <?php
+
+namespace SOT\TrainingRegistration\Data\Strategies;
+
+use SOT\TrainingRegistration\Data\Repositories\StaffRepository;
+use WP_Error;
+
 /**
  * Class SotamRegistrationMode
  *
  * Implementation for the SOTAM (MY) registration mode.
  *
- * @package training-registration
+ * @package SOT\TrainingRegistration\Data\Strategies
  */
-
 class SotamRegistrationMode implements RegistrationModeInterface {
     protected $staff_repo;
 

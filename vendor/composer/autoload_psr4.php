@@ -8,6 +8,7 @@ $baseDir = dirname($vendorDir);
 return array(
     'ZipStream\\' => array($vendorDir . '/maennchen/zipstream-php/src'),
     'WP_Mock\\' => array($vendorDir . '/10up/wp_mock/php/WP_Mock'),
+    'SOT\\TrainingRegistration\\' => array($baseDir . '/src'),
     'Psr\\SimpleCache\\' => array($vendorDir . '/psr/simple-cache/src'),
     'PhpParser\\' => array($vendorDir . '/nikic/php-parser/lib/PhpParser'),
     'PhpOffice\\PhpSpreadsheet\\' => array($vendorDir . '/phpoffice/phpspreadsheet/src/PhpSpreadsheet'),

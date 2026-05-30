@@ -1,12 +1,17 @@
 <?php
+
+namespace SOT\TrainingRegistration\Data\Strategies;
+
+use SOT\TrainingRegistration\Data\Repositories\StaffRepository;
+use WP_Error;
+
 /**
  * Class DefaultRegistrationMode
  *
  * Implementation for the default (CN) registration mode.
  *
- * @package training-registration
+ * @package SOT\TrainingRegistration\Data\Strategies
  */
-
 class DefaultRegistrationMode implements RegistrationModeInterface {
     protected $staff_repo;
 

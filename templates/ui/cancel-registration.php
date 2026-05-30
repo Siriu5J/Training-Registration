@@ -1,3 +1,12 @@
+<?php
+/**
+ * @var int $staff_id
+ * @var array $trainings_registered
+ * @var string $time_now
+ * @var \SOT\TrainingRegistration\Core\Tools $tools
+ * @var \SOT\TrainingRegistration\Data\Repositories\EventRepository $event_repo
+ */
+?>
 <br><hr>
 <?php if ($tools->hasRemovables($staff_id)) : ?>
     <h4>Cancel Registrations for <?php echo $tools->idtoName($staff_id) ?>:</h4>

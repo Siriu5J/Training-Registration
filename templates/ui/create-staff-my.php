@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var string $username
+ * @var int $this_year
+ */
+?>
 <form id="staff-profile" name="staff-profile" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']);?>">
     <?php wp_nonce_field('create_staff_nonce', 'staff_nonce_field'); ?>
     <p>Fill out all fields marked with *</p>

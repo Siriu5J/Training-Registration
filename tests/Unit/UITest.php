@@ -1,5 +1,6 @@
 <?php
 
+use SOT\TrainingRegistration\UI\TrainingRegistrationUI;
 use PHPUnit\Framework\TestCase;
 
 class UITest extends TestCase {
@@ -39,13 +40,11 @@ class UITest extends TestCase {
             'return' => (object)['user_login' => 'test_school']
         ]);
 
-        // Mock the ui_content class BEFORE it gets loaded by ui.php
-        $ui_content_mock = Mockery::mock('overload:ui_content');
+        // Mock the UIContent class BEFORE it gets loaded
+        $ui_content_mock = Mockery::mock('overload:SOT\TrainingRegistration\UI\UIContent');
         $ui_content_mock->shouldReceive('create_staff_my')->once()->with('test_school');
 
-        require_once ER_PLUGIN_DIR . '/ui/ui.php';
-        require_once ER_PLUGIN_DIR . '/includes/tools.php';
-        $this->ui = new training_registration_ui();
+        $this->ui = new TrainingRegistrationUI();
 
         $this->ui->staffFormCreation();
         $this->assertTrue(true);
@@ -64,12 +63,10 @@ class UITest extends TestCase {
             'return' => (object)['user_login' => 'test_school']
         ]);
 
-        $ui_content_mock = Mockery::mock('overload:ui_content');
+        $ui_content_mock = Mockery::mock('overload:SOT\TrainingRegistration\UI\UIContent');
         $ui_content_mock->shouldReceive('create_staff_cn')->once()->with('test_school');
 
-        require_once ER_PLUGIN_DIR . '/ui/ui.php';
-        require_once ER_PLUGIN_DIR . '/includes/tools.php';
-        $this->ui = new training_registration_ui();
+        $this->ui = new TrainingRegistrationUI();
 
         $this->ui->staffFormCreation();
         $this->assertTrue(true);

@@ -1,3 +1,10 @@
+<?php
+/**
+ * @var object $profile
+ * @var int $staff_id
+ * @var string $username
+ */
+?>
 <form id="staff-profile" name="staff-profile" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']);?>">
     <?php wp_nonce_field('create_staff_nonce', 'staff_nonce_field'); ?>
     <br>

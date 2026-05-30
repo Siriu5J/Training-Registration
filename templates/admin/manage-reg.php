@@ -1,3 +1,10 @@
+<?php
+/**
+ * @var array $trainings
+ * @var int $my_mode
+ * @var \SOT\TrainingRegistration\Core\Tools $tools
+ */
+?>
 <div class="wrap">
     <h1 class="wp-heading-inline">Manage Registrations</h1>
     <?php if (count($trainings) > 0) : ?>
@@ -33,9 +40,9 @@
     <?php
     foreach ($trainings as $training) {
         if ($my_mode == 1) {
-            $reg_table = new StaffRegTableMY($tools);
+            $reg_table = new \SOT\TrainingRegistration\Admin\StaffRegistrationTableMY($tools);
         } else {
-            $reg_table = new StaffRegTableCN($tools);
+            $reg_table = new \SOT\TrainingRegistration\Admin\StaffRegistrationTableCN($tools);
         }
         $reg_table->set_event_id($training->id);
         $reg_table->prepare_items();

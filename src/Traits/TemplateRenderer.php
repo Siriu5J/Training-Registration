@@ -1,12 +1,14 @@
 <?php
+
+namespace SOT\TrainingRegistration\Traits;
+
 /**
  * Trait TemplateRenderer
  *
  * Provides a simple method to render PHP templates with data.
  *
- * @package training-registration
+ * @package SOT\TrainingRegistration\Traits
  */
-
 trait TemplateRenderer {
     public function render($template, $data = array()) {
         $template_file = ER_PLUGIN_DIR . "/templates/{$template}.php";

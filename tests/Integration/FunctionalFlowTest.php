@@ -2,6 +2,11 @@
 
 require_once __DIR__ . '/WP_Integration_TestCase.php';
 
+use SOT\TrainingRegistration\Data\Repositories\EventRepository;
+use SOT\TrainingRegistration\Data\Repositories\StaffRepository;
+use SOT\TrainingRegistration\Data\Repositories\RegistrationRepository;
+use SOT\TrainingRegistration\Core\Tools;
+
 class FunctionalFlowTest extends WP_Integration_TestCase {
     protected $event_repo;
     protected $staff_repo;
@@ -13,7 +18,7 @@ class FunctionalFlowTest extends WP_Integration_TestCase {
         $this->event_repo = new EventRepository();
         $this->staff_repo = new StaffRepository();
         $this->registration_repo = new RegistrationRepository();
-        $this->tools = new training_registration_tools();
+        $this->tools = new Tools();
     }
 
     public function test_full_registration_lifecycle() {

@@ -1,3 +1,13 @@
+<?php
+/**
+ * @var array $trainings_to_show
+ * @var \SOT\TrainingRegistration\Core\Tools $tools
+ * @var int $show_available
+ * @var string $time_now
+ * @var array $staff_available
+ * @var string $username
+ */
+?>
 <?php if (count($trainings_to_show) != 0) : ?>
     <div>
         <!-- Show all trainings that has not yet been started -->

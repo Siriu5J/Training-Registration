@@ -1,14 +1,13 @@
 <?php
 
-use PHPUnit\Framework\TestCase;
+use SOT\TrainingRegistration\Core\Activator;
 
 class WP_Integration_TestCase extends WP_UnitTestCase {
     public function setUp(): void {
         parent::setUp();
         
         // Ensure plugin tables are created
-        require_once ER_PLUGIN_DIR . '/includes/activation.php';
-        $activator = new activation();
+        $activator = new Activator();
         $activator->activate_plugin();
     }
 }

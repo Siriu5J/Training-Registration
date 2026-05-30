@@ -1,3 +1,9 @@
+<?php
+/**
+ * @var int $show_available
+ * @var int $my_enabled
+ */
+?>
 <h1>Settings</h1>
 <form id="update-settings" name="update-settings" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>">
     <?php wp_nonce_field('save_settings_nonce', 'settings_nonce_field'); ?>

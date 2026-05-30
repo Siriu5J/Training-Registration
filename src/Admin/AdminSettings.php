@@ -1,21 +1,25 @@
 <?php
 
-/**
- * Class training_registration_acp
- *
- * This class contains all the callback functions for the admin menu settings page. However, the HTML contents are not stored here.
- * This class uses the tools library as well
- *
- * @since 2020-5-19
- * @version 1.2
- *
- * @package training-registration
- */
+namespace SOT\TrainingRegistration\Admin;
 
+use SOT\TrainingRegistration\Data\Repositories\EventRepository;
+use SOT\TrainingRegistration\Data\Repositories\StaffRepository;
+use SOT\TrainingRegistration\Data\Repositories\RegistrationRepository;
+use SOT\TrainingRegistration\Data\Strategies\RegistrationModeFactory;
+use SOT\TrainingRegistration\Core\Tools;
+use SOT\TrainingRegistration\Core\PageCreator;
+use SOT\TrainingRegistration\Admin\HomeTable;
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use \PhpOffice\PhpSpreadsheet\Style\NumberFormat;
+use PhpOffice\PhpSpreadsheet\Style\NumberFormat;
 
-class training_registration_acp {
+/**
+ * Class AdminSettings
+ *
+ * This class contains all the callback functions for the admin menu settings page.
+ *
+ * @package SOT\TrainingRegistration\Admin
+ */
+class AdminSettings {
     // Objects
     protected $tools;           // Some helpful tools
     protected $content;         // All the html contents are stored here
@@ -29,13 +33,9 @@ class training_registration_acp {
 
     // Constructor. Instantiates the protected variables
     public function __construct() {
-        require_once(ER_PLUGIN_DIR . '/includes/tools.php');
-        require_once(ER_PLUGIN_DIR . '/admin/settings_page_content.php');
-        require_once(ER_PLUGIN_DIR . '/admin/admin_messages.php');
-
-        $this->tools = new training_registration_tools();
-        $this->content = new settings_page_content();
-        $this->admin_notice = new admin_messages();
+        $this->tools = new Tools();
+        $this->content = new SettingsPageContent();
+        $this->admin_notice = new AdminMessages();
 
         $this->event_repo = new EventRepository();
         $this->staff_repo = new StaffRepository();
@@ -55,11 +55,11 @@ class training_registration_acp {
 
     // Registers the required CSS
     public function enqueue_new_training_CSS() {
-        wp_enqueue_style('new_training_style', plugins_url('stylesheet/add_new_training_styles.css', __FILE__));
+        wp_enqueue_style('new_training_style', plugins_url('../../assets/css/admin/add_new_training_styles.css', __FILE__));
     }
 
-    public function enqueue_home_CSS() {
-        wp_enqueue_style('home_styles', plugins_url('stylesheet/home_styles.css', __FILE__));
+    public function load_home_style() {
+        wp_enqueue_style('home_styles', plugins_url('../../assets/css/admin/home_styles.css', __FILE__));
     }
 
 
@@ -73,9 +73,7 @@ class training_registration_acp {
         }
 
         // Inject CSS
-        add_action('admin_enqueue_scripts', $this->enqueue_home_CSS(), 5);
-
-        //TODO: Add screen options
+        add_action('admin_enqueue_scripts', array($this, 'load_home_style'), 5);
 
         //Handle Training Delete
         if (isset($_POST['confirm_remove']) && wp_verify_nonce($_POST['remove_training_nonce_field'], 'remove_training_nonce')) {
@@ -85,10 +83,7 @@ class training_registration_acp {
         }
 
         // The home table
-        if (!class_exists('admin_home_table')) {
-            require_once(ER_PLUGIN_DIR . '/admin/admin_home_table.php');
-        }
-        $this->home_table = new admin_home_table();
+        $this->home_table = new HomeTable();
 
         $this->content->overview($this->home_table);
     }
@@ -103,7 +98,7 @@ class training_registration_acp {
         }
 
         // Inject CSS
-        add_action('admin_enqueue_scripts', $this->enqueue_new_training_CSS(), 5);
+        add_action('admin_enqueue_scripts', array($this, 'enqueue_new_training_CSS'), 5);
 
         // Create new table for the new event and fill first data
         if((isset($_POST['create_training']) && wp_verify_nonce($_POST['training_nonce_field'], 'create_training_nonce')) ||
@@ -122,7 +117,7 @@ class training_registration_acp {
             $activated      = intval($_POST['activated']);
 
             if($max == 0 && $limit_max == 1) {
-                add_action('admin_notices', $this->admin_notice->createEventNotAllowed());
+                add_action('admin_notices', array($this->admin_notice, 'createEventNotAllowed'));
             } elseif ($this->tools->isValidEvent($event_name, $location, $start_date, $event_id)) { // Check if the training name is valid
                 // If max is unfilled, set as -999
                 if ($max == 0) {
@@ -146,14 +141,14 @@ class training_registration_acp {
                     $event_data["num_reg"] = 0;
                     $success = $this->event_repo->insert($event_data);
 
-                    if ($success) {add_action('admin_notices', $this->admin_notice->tableSuccessCreation());}
-                    else {add_action('admin_notices', $this->admin_notice->tableFailedCreation());}
+                    if ($success) {add_action('admin_notices', array($this->admin_notice, 'tableSuccessCreation'));}
+                    else {add_action('admin_notices', array($this->admin_notice, 'tableFailedCreation'));}
                 } else {
                     $this->event_repo->update($event_id, $event_data);
-                    add_action('admin_notices', $this->admin_notice->tableSuccessUpdate());
+                    add_action('admin_notices', array($this->admin_notice, 'tableSuccessUpdate'));
                 }
             } else {
-                add_action('admin_notices', $this->admin_notice->tableAlreadyExist());
+                add_action('admin_notices', array($this->admin_notice, 'tableAlreadyExist'));
             }
         }
 
@@ -226,12 +221,11 @@ class training_registration_acp {
                 update_option('my_mode', 0);
             }
 
-            add_action('admin_notices', $this->admin_notice->settingsUpdated());
+            add_action('admin_notices', array($this->admin_notice, 'settingsUpdated'));
         }
 
         if (isset($_POST['create-page']) && wp_verify_nonce($_POST['create_page_nonce_field'], 'create_page_nonce')) {
-            require_once(ER_PLUGIN_DIR . '/includes/create_page.php');
-            $creator = new create_page();
+            $creator = new PageCreator();
             $creator->run();
         }
 
@@ -256,12 +250,6 @@ class training_registration_acp {
         // Add capability check for Excel export
         if (!current_user_can('edit_plugins')) {
             wp_die(__('You do not have sufficient permissions to access this page.'));
-        }
-
-        // Load PHP Spreadsheet
-        // Only load our autoloader if the class doesn't already exist.
-        if (!class_exists('PhpOffice\PhpSpreadsheet\IOFactory')) {
-            require_once(ER_PLUGIN_DIR . '/vendor/autoload.php');
         }
 
         $event_id = intval($_GET['id']);
@@ -294,14 +282,14 @@ class training_registration_acp {
         $output_filename = $event_info->event_name . '_' . $event_info->location . '_' . date("Y-m-d", strtotime($event_info->start_time)) . '.xlsx';
 
         // Read the template registration form
-        $registration_sheet = \PhpOffice\PhpSpreadsheet\IOFactory::load($template_file);
+        $registration_sheet = IOFactory::load($template_file);
 
         // Get the first sheet
         $data_sheet = $registration_sheet->getActiveSheet();
 
         // Write data
         $data_sheet->fromArray($data_array, null, 'A2');
-        $data_sheet->getStyle($mode_strategy->get_excel_column_format())->getNumberFormat()->setFormatCode(\PhpOffice\PhpSpreadsheet\Style\NumberFormat::FORMAT_TEXT);
+        $data_sheet->getStyle($mode_strategy->get_excel_column_format())->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_TEXT);
 
         // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
@@ -313,7 +301,7 @@ class training_registration_acp {
         header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
         header ('Pragma: public'); // HTTP/1.0
 
-        $objWriter = \PhpOffice\PhpSpreadsheet\IOFactory::createWriter($registration_sheet, \PhpOffice\PhpSpreadsheet\IOFactory::WRITER_XLSX);
+        $objWriter = IOFactory::createWriter($registration_sheet, 'Xlsx');
         $objWriter->save('php://output');
         exit();
     }

@@ -1,12 +1,14 @@
 <?php
+
+namespace SOT\TrainingRegistration\Data\Repositories;
+
 /**
  * Class RegistrationRepository
  *
  * Handles all database operations for the er_event_reg table.
  *
- * @package training-registration
+ * @package SOT\TrainingRegistration\Data\Repositories
  */
-
 class RegistrationRepository {
     protected $table;
 

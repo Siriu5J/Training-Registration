@@ -1,5 +1,6 @@
 <?php
 
+use SOT\TrainingRegistration\Core\Tools;
 use PHPUnit\Framework\TestCase;
 
 class ToolsTest extends TestCase {
@@ -9,11 +10,7 @@ class ToolsTest extends TestCase {
         parent::setUp();
         WP_Mock::setUp();
         
-        require_once ER_PLUGIN_DIR . '/includes/repositories/EventRepository.php';
-        require_once ER_PLUGIN_DIR . '/includes/repositories/RegistrationRepository.php';
-        require_once ER_PLUGIN_DIR . '/includes/repositories/StaffRepository.php';
-        require_once ER_PLUGIN_DIR . '/includes/tools.php';
-        $this->tools = new training_registration_tools();
+        $this->tools = new Tools();
     }
 
     public function tearDown(): void {

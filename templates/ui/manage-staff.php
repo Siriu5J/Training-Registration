@@ -1,3 +1,13 @@
+<?php
+/**
+ * @var array $all_staff
+ * @var int $my_mode
+ * @var string $time_now
+ * @var \SOT\TrainingRegistration\Core\Tools $tools
+ * @var \SOT\TrainingRegistration\Data\Repositories\EventRepository $event_repo
+ * @var \SOT\TrainingRegistration\Data\Repositories\RegistrationRepository $registration_repo
+ */
+?>
 <?php if (count($all_staff) != 0) : ?>
     <form id="select-staff" name="select-staff" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']);?>">
         <?php wp_nonce_field('create_staff_nonce', 'staff_nonce_field'); ?>

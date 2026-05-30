@@ -1,12 +1,14 @@
 <?php
+
+namespace SOT\TrainingRegistration\Data\Strategies;
+
 /**
  * Interface RegistrationModeInterface
  *
  * Defines the contract for different registration modes (e.g., Default CN vs SOTAM MY).
  *
- * @package training-registration
+ * @package SOT\TrainingRegistration\Data\Strategies
  */
-
 interface RegistrationModeInterface {
     public function get_name();
     

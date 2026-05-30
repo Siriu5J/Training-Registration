@@ -1,12 +1,14 @@
 <?php
+
+namespace SOT\TrainingRegistration\Data\Repositories;
+
 /**
  * Class StaffRepository
  *
  * Handles all database operations for the er_staff_profile table.
  *
- * @package training-registration
+ * @package SOT\TrainingRegistration\Data\Repositories
  */
-
 class StaffRepository {
     protected $table;
 

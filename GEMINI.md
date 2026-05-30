@@ -38,26 +38,30 @@ The Training Registration Plugin is a WordPress plugin designed for SOT training
 ## Development Conventions
 
 ### Architecture
-- **Entry Point**: `Training-registration.php` defines constants and initializes the plugin via `training_registration_main`.
-- **Loader Pattern**: `includes/training_registration_loader.php` handles all `add_action` and `add_shortcode` calls to centralize hook management.
-- **Object-Oriented**: Core logic is encapsulated in classes (e.g., `training_registration_acp`, `training_registration_ui`).
-- **Admin Interface**: Uses `WP_List_Table` (in `admin/admin_home_table.php`) for managing training lists.
-- **Separation of Concerns**:
-    - `admin/`: Admin-side logic and styling.
-    - `ui/`: Public-facing registration forms and styles.
-    - `includes/`: Core functional logic and tools.
-    - `files/`: Static Excel templates.
+- **Namespace**: `SOT\TrainingRegistration`
+- **Autoloading**: PSR-4 via Composer (mapped to `src/`).
+- **Entry Point**: `Training-registration.php` initializes the plugin via `SOT\TrainingRegistration\Core\Plugin`.
+- **Repository Pattern**: Centralized data access in `src/Data/Repositories/`.
+- **Strategy Pattern**: Pluggable registration modes in `src/Data/Strategies/`.
+- **Controllers**:
+    - `src/Admin/`: Admin-side logic (Settings, Tables, Messages).
+    - `src/UI/`: Public-facing registration shortcode handlers.
+- **Traits**: Shared logic (e.g., `TemplateRenderer`) in `src/Traits/`.
+- **Templates**: Pure PHP templates in `templates/`.
+- **Assets**: CSS/JS consolidated in `assets/`.
 
 ### Coding Standards
-- **Naming**: Database tables and constants are prefixed with `er_`.
+- **Naming**: 
+    - Namespaced classes in `PascalCase`.
+    - Database tables and constants are prefixed with `er_`.
 - **Security**: Always use `wp_verify_nonce` for POST requests and `current_user_can('edit_plugins')` for capability checks.
 - **Sanitization**: Use standard WP functions like `sanitize_text_field` and `intval`.
 
 ## Key Files
 - `Training-registration.php`: Main plugin header and initialization.
-- `includes/activation.php`: Database schema and activation logic.
-- `includes/training_registration_main.php`: Orchestrates dependencies and hooks.
-- `admin/admin_settings.php`: Main admin page controller and Excel export logic.
-- `ui/ui.php`: Shortcode handlers for the front-end registration experience.
-- `composer.json`: Dependency definitions.
+- `src/Core/Activator.php`: Database schema and activation logic.
+- `src/Core/Plugin.php`: Orchestrates dependencies and hooks.
+- `src/Admin/AdminSettings.php`: Main admin page controller.
+- `src/UI/TrainingRegistrationUI.php`: Shortcode handlers for front-end.
+- `composer.json`: Dependency and PSR-4 definitions.
 - `README.md`: User-level installation and theme customization guide.
