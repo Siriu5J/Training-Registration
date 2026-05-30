@@ -12,6 +12,7 @@ License: A "Slug" license name e.g. GPL2
 
 // Defined Values
 define('ER_PLUGIN_DIR', dirname(__FILE__));
+global $wpdb;
 define('ER_STAFF_PROFILE', $wpdb->prefix . 'er_staff_profile');
 define('ER_EVENT_LIST', $wpdb->prefix . 'er_event_list');
 define('ER_REGISTRATION_LIST', $wpdb->prefix . 'er_event_reg');

@@ -37,7 +37,8 @@ class RegistrationRepository {
 
     public function insert($data) {
         global $wpdb;
-        return $wpdb->insert($this->table, $data);
+        $result = $wpdb->insert($this->table, $data);
+        return $result ? $wpdb->insert_id : false;
     }
 
     public function delete_by_event_and_staff($event_id, $staff_id) {

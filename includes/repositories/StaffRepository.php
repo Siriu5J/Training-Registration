@@ -37,7 +37,8 @@ class StaffRepository {
 
     public function insert($data) {
         global $wpdb;
-        return $wpdb->insert($this->table, $data);
+        $result = $wpdb->insert($this->table, $data);
+        return $result ? $wpdb->insert_id : false;
     }
 
     public function update($id, $data) {
