@@ -23,8 +23,11 @@ class StaffRegistrationTableCN extends WP_List_Table {
     protected $tools;
     private $event_id;  // The Training ID that the table would show
 
+    /** @var \SOT\TrainingRegistration\Data\Repositories\StaffRepository */
     protected $staff_repo;
+    /** @var \SOT\TrainingRegistration\Data\Repositories\EventRepository */
     protected $event_repo;
+    /** @var \SOT\TrainingRegistration\Data\Repositories\RegistrationRepository */
     protected $registration_repo;
 
 
@@ -167,14 +170,10 @@ class StaffRegistrationTableCN extends WP_List_Table {
 
     function process_bulk_action() {
         if( 'delete'===$this->current_action()) {
-            $record_to_remove = $_GET['id'];
+            $records_to_remove = isset($_GET['id']) ? (array)$_GET['id'] : array();
 
-            foreach($record_to_remove as $record) {
-                global $wpdb;
-                $wpdb->delete(ER_REGISTRATION_LIST, array(
-                    'event_id' => $this->event_id,
-                    'id'    => $record
-                ));
+            foreach($records_to_remove as $record_id) {
+                $this->registration_repo->delete_by_id($record_id);
                 $this->event_repo->decrement_registration_count($this->event_id);
             }
         }
@@ -182,6 +181,8 @@ class StaffRegistrationTableCN extends WP_List_Table {
 
     function prepare_items() {
         $per_page = 50;
+        $current_page = $this->get_pagenum();
+        $offset = ($current_page - 1) * $per_page;
 
         $columns = $this->get_columns();
         $hidden = array();
@@ -191,22 +192,23 @@ class StaffRegistrationTableCN extends WP_List_Table {
 
         $this->process_bulk_action();
 
-        $orderby = ( ! empty( $_GET['orderby'] ) ) ? $_GET['orderby'] : 'reg_time';
-        $order = ( ! empty($_GET['order'] ) ) ? $_GET['order'] : 'desc';
+        $args = array(
+            'event_id' => $this->event_id,
+            'per_page' => $per_page,
+            'offset'   => $offset,
+            'search'   => ( ! empty( $_REQUEST['s'] ) ? $_REQUEST['s'] : '' ),
+            'orderby'  => ( ! empty( $_GET['orderby'] ) ? $_GET['orderby'] : 'reg_time' ),
+            'order'    => ( ! empty( $_GET['order'] ) ? $_GET['order'] : 'desc' )
+        );
 
-        global $wpdb;
-        $data = $wpdb->get_results($wpdb->prepare("SELECT * FROM ".ER_REGISTRATION_LIST." WHERE `event_id` = %d ORDER BY $orderby $order", $this->event_id),ARRAY_A);
+        $results = $this->registration_repo->search($args);
 
-        $current_page = $this->get_pagenum();
-        $total_items = count($data);
-        $data = array_slice($data,(($current_page-1)*$per_page),$per_page);
-
-        $this->items = $data;
+        $this->items = $results['items'];
 
         $this->set_pagination_args( array(
-            'total_items' => $total_items,
+            'total_items' => $results['total'],
             'per_page'    => $per_page,
-            'total_pages' => ceil($total_items/$per_page)
+            'total_pages' => ceil($results['total']/$per_page)
         ) );
     }
 

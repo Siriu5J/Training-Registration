@@ -1,47 +1,25 @@
-<?php
-/**
- * @var int $show_available
- * @var int $my_enabled
- */
-?>
-<h1>Settings</h1>
-<form id="update-settings" name="update-settings" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>">
-    <?php wp_nonce_field('save_settings_nonce', 'settings_nonce_field'); ?>
-    <table class="form-table">
-        <tbody>
-        <tr>
-            <th>Show Available Seats</th>
-            <td>
-                <fieldset>
-                    <label for="show-available"><input type="checkbox" name="show-available" value="1" <?php if ($show_available == 1) {echo 'checked';} ?>> Disabling this option will hide the number of seats remaining in a training to schools.</label>
-                </fieldset>
-            </td>
-        </tr>
-        <tr>
-            <th>Enable SOTAM Forms</th>
-            <td>
-                <fieldset>
-                    <label for="enable-my"><input type="checkbox" name="enable-my" value="1" <?php if ($my_enabled == 1) {echo 'checked';} ?>> Enable SOTAM requested form formats.</label>
-                </fieldset>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <p class="submit">
-        <input type="submit" class="button button-primary" name="save-settings" id="save-settings" value="Save Settings">
-    </p>
-</form>
-<hr>
-<form id="create" name="create" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>">
-    <?php wp_nonce_field('create_page_nonce', 'create_page_nonce_field'); ?>
-    <table class="form-table">
-        <tbody>
-        <tr>
-            <th>Create Necessary Pages</th>
-            <td>
-                <input type="submit" class="button button-primary" name="create-page" id="create-page" value="Create Pages">
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</form>
+<div class="wrap">
+    <h1 class="wp-heading-inline">Settings</h1>
+    <hr class="wp-header-end">
+
+    <?php settings_errors(); ?>
+
+    <form method="post" action="options.php">
+        <?php
+        settings_fields('er_settings_group');
+        do_settings_sections('er_gen_set');
+        submit_button('Save Settings');
+        ?>
+    </form>
+
+    <hr>
+
+    <div class="card">
+        <h2>System Actions</h2>
+        <p>Use the button below to initialize the mandatory pages required for the plugin to function correctly (Staff Management, Event Registration, etc.).</p>
+        <form id="create" name="create" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>">
+            <?php wp_nonce_field('create_page_nonce', 'create_page_nonce_field'); ?>
+            <input type="submit" class="button button-secondary" name="create-page" id="create-page" value="Create Necessary Pages">
+        </form>
+    </div>
+</div>

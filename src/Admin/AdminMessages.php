@@ -48,10 +48,34 @@ class AdminMessages {
         <?php
     }
 
+    public function tableSuccessDeletion() {
+        ?>
+        <div class="notice notice-success is-dismissible">
+            <p>Training and all associated registrations have been removed.</p>
+        </div>
+        <?php
+    }
+
     public function tableAlreadyExist() {
         ?>
         <div class="notice notice-error is-dismissible">
-            <p>Event already exist!</p>
+            <p>Event already exists!</p>
+        </div>
+        <?php
+    }
+
+    public function invalidTimeOrder() {
+        ?>
+        <div class="notice notice-error is-dismissible">
+            <p>Invalid time range! Ensure end times are later than start times.</p>
+        </div>
+        <?php
+    }
+
+    public function invalidMaxTrainee() {
+        ?>
+        <div class="notice notice-error is-dismissible">
+            <p>Max number of trainees cannot be negative!</p>
         </div>
         <?php
     }
@@ -60,6 +84,14 @@ class AdminMessages {
         ?>
         <div class="notice notice-success is-dismissible">
             <p>Settings Updated!</p>
+        </div>
+        <?php
+    }
+
+    public function pagesCreated() {
+        ?>
+        <div class="notice notice-success is-dismissible">
+            <p>Necessary plugin pages have been created successfully!</p>
         </div>
         <?php
     }

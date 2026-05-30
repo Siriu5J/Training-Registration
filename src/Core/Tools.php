@@ -22,7 +22,7 @@ class Tools {
         $this->registration_repo = new RegistrationRepository();
     }
 
-    public function isValidEvent($name, $location, $start_date, $id) {
+    public function isValidEvent($name, $location, $start_date, $end_date, $id) {
         $duplicates = $this->event_repo->get_duplicates($name);
 
         if (empty($duplicates)) {
@@ -30,14 +30,14 @@ class Tools {
         } else {
             foreach ($duplicates as $training) {
                 if ($training->location == $location) { // check location
-                    if ($training->start_time == $start_date) { // Check time
-                        if ($id == $training->id) { // is actually the same event
+                    if ($training->start_time == $start_date && $training->end_time == $end_date) { // Check times
+                        if ($id != $training->id) { // is a different event with same details
                             return false;
                         }
                     }
                 }
             }
-            return true;    // Checked through all name duplicates, no location duplicate, training name valid
+            return true;
         }
     }
 

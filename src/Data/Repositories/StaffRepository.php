@@ -14,7 +14,7 @@ class StaffRepository {
 
     public function __construct() {
         global $wpdb;
-        $this->table = ER_STAFF_PROFILE;
+        $this->table = \ER_STAFF_PROFILE;
     }
 
     public function get_by_id($id) {
@@ -30,6 +30,11 @@ class StaffRepository {
     public function get_count_by_school($school_username) {
         global $wpdb;
         return $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$this->table} WHERE `school` = %s", $school_username));
+    }
+
+    public function get_total_count() {
+        global $wpdb;
+        return $wpdb->get_var("SELECT COUNT(*) FROM {$this->table}");
     }
 
     public function check_duplicate($first_name, $last_name, $school, $phone) {

@@ -38,6 +38,7 @@ class Plugin {
         
         $this->loader->er_add_action('admin_notices', $messages, 'invalidTheme');
         $this->loader->er_add_action('admin_menu', $admin, 'adminSettingsPageRegistration');
+        $this->loader->er_add_action('admin_init', $admin, 'registerSettingsFields');
         $this->loader->er_add_action('admin_init', $admin, 'exportRegistrationsToExcel');
     }
 

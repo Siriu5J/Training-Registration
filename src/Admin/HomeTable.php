@@ -19,6 +19,7 @@ if ( ! class_exists( 'WP_List_Table' ) ) {
  */
 class HomeTable extends WP_List_Table {
     protected $tools;
+    /** @var \SOT\TrainingRegistration\Data\Repositories\EventRepository */
     protected $event_repo;
 
     /** Class constructor */

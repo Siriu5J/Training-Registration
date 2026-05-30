@@ -26,7 +26,7 @@ class ToolsTest extends TestCase {
             return sprintf(str_replace('%s', "'%s'", $query), ...$args);
         });
 
-        $result = $this->tools->isValidEvent('Test Event', 'Location', '2026-01-01', 0);
+        $result = $this->tools->isValidEvent('Test Event', 'Location', '2026-01-01', '2026-01-02', 0);
         $this->assertTrue($result);
     }
 

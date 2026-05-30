@@ -1,121 +1,32 @@
-#er-display-two-columns {
-    display: flex;
-    margin-right: 280px;
-}
-
 .er_input {
     border-radius: 0;
 }
 
-#er-display-two-columns input {
-    border-radius: 0;
+/* Postbox customizations */
+#poststuff .postbox .hndle {
+    cursor: default;
 }
 
-#er-main-content {
-    float: left;
+#poststuff .postbox .inside {
+    margin-bottom: 0;
+}
+
+.misc-pub-section {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.misc-pub-section:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+/* Small text width */
+.small-text {
+    width: 60px;
+}
+
+/* Fix for large-text inside inside */
+.postbox .inside textarea.large-text {
     width: 100%;
-}
-
-#er-main-content label {
-    font-size: 13pt;
-    color: black;
-}
-
-#er-title input {
-    margin-bottom: 35pt;
-    font-size: 15pt;
-    width: 100%;
-}
-
-#er-information {
-    border: 1px solid #aaaaaa;
-    padding: 8px;
-    background: #ffffff;
-    height: max-content;
-}
-
-#er-information input {
-    width: 100%;
-    margin-top: 5pt;
-    margin-bottom: 15px;
-}
-
-#er-information textarea {
-    resize: none;
-    margin-top: 5pt;
-    height: 300px;
-    width: 100%;
-}
-
-#er-side-bar {
-    width: 280px;
-    margin-left: 15px;
-    margin-right: -280px;
-    float: right;
-}
-
-.er-sidebar-block {
-    border: 1px solid #aaaaaa;
-    background: #ffffff;
-    margin-bottom: 15px;
-}
-
-.er-sidebar-block input[type="datetime-local"], input[type="number"], input[type="text"]  {
-    width: 100%;
-}
-
-.er-block-title {
-    margin: 0;
-    padding: 8px;
-    border-bottom: 1px solid #aaaaaa;
-    background: #f1f1f1;
-}
-
-.er-block-title span {
-    float: right;
-}
-
-.er-block-title span:hover {
-    color: #0073aa;
-}
-
-.er-block-content span:hover {
-    color: #0073aa;
-}
-
-.er-block-title h3 {
-    margin: 0;
-}
-
-.er-block-content {
-    padding: 8px;
-}
-
-.er-block-content p {
-    margin: 0;
-}
-
-.er-tb-cell {
-    width: 50%;
-    vertical-align: top;
-}
-
-.er-block-content table {
-    width: 100%;
-}
-
-.er-submit-button {
-    background: #0071a1;
-    border-color: #0071a1;
-    border-radius: 2px;
-    padding: 4px;
-    color: white;
-}
-
-#confirm_remove_button {
-    background: #c62828;
-    border-color: #c62828;
-    border-radius: 2px;
-    padding: 4px;
-    color: white;
 }

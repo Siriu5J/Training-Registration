@@ -14,7 +14,7 @@ class EventRepository {
 
     public function __construct() {
         global $wpdb;
-        $this->table = ER_EVENT_LIST;
+        $this->table = \ER_EVENT_LIST;
     }
 
     public function get_by_id($id) {
@@ -36,6 +36,11 @@ class EventRepository {
             $time_now = current_time('mysql');
         }
         return $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$this->table} WHERE `activated` = 1 AND `start_time` > %s", $time_now));
+    }
+
+    public function get_total_count() {
+        global $wpdb;
+        return $wpdb->get_var("SELECT COUNT(*) FROM {$this->table}");
     }
 
     public function insert($data) {

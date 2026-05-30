@@ -15,8 +15,11 @@ use SOT\TrainingRegistration\Data\Repositories\EventRepository;
 class SettingsPageContent {
     use TemplateRenderer;
 
-    public function overview($home_table) {
-        $this->render('admin/overview', array('home_table' => $home_table));
+    public function overview($home_table, $stats = array()) {
+        $this->render('admin/overview', array(
+            'home_table' => $home_table,
+            'stats'      => $stats
+        ));
     }
 
     public function new_event($data, $tools) {
@@ -67,10 +70,10 @@ class SettingsPageContent {
         }
     }
 
-    public function view_settings($show_available, $my_enabled) {
-        $this->render('admin/settings', array(
-            'show_available' => $show_available,
-            'my_enabled'     => $my_enabled
-        ));
+    /**
+     * Render the settings page.
+     */
+    public function view_settings() {
+        $this->render('admin/settings');
     }
 }
