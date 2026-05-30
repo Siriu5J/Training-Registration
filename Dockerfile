@@ -9,4 +9,4 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 
 # Install Gemini CLI
 RUN apt-get update && apt-get install -y nodejs npm
-RUN npm install -g @google/genai
+RUN npm install -g @google/gemini-cli
