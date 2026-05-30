@@ -42,6 +42,12 @@ class RegistrationRepository {
         return $wpdb->get_var("SELECT COUNT(*) FROM {$this->table}");
     }
 
+    public function get_recent_count($days = 30) {
+        global $wpdb;
+        $date = date('Y-m-d H:i:s', strtotime("-$days days", current_time('timestamp')));
+        return $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$this->table} WHERE `reg_time` >= %s", $date));
+    }
+
     public function insert($data) {
         global $wpdb;
         $result = $wpdb->insert($this->table, $data);

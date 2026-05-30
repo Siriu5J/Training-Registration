@@ -88,13 +88,8 @@ class Activator {
             dbDelta($sql);
         }
 
-        // Add the pages if necessary
-        // The current theme must be Twenty Twenty
-        if (get_option('template') == 'twentytwenty') {
-            $creator = new PageCreator();
-            $creator->run();
-        }  else {
-            set_transient( 'invalid_theme_transient', true, 5 );
-        }
+        // Add the pages
+        $creator = new PageCreator();
+        $creator->run();
     }
 }

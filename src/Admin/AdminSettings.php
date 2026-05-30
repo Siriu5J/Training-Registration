@@ -185,8 +185,10 @@ class AdminSettings {
         $stats = array(
             'total_events'   => $this->event_repo->get_total_count(),
             'upcoming_events' => $this->event_repo->get_count_upcoming(),
+            'open_events'     => $this->event_repo->get_count_open(),
             'total_staff'    => $this->staff_repo->get_total_count(),
             'total_reg'      => $this->registration_repo->get_total_count(),
+            'recent_reg'     => $this->registration_repo->get_recent_count(30),
         );
 
         $this->content->overview($this->home_table, $stats);

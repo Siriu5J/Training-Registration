@@ -1,17 +1,31 @@
 /* SOT Training Registration Front-end UI Styles */
 
-/* Standard WordPress Block Compatibility */
-.wp-block-table {
-    width: 100%;
-    margin-bottom: 1.5rem;
-    border-collapse: collapse;
+/* Standard WordPress Block Compatibility - Forcing consistent borders */
+.wp-block-table,
+.sot-tr-table {
+    width: 100% !important;
+    margin-bottom: 1.5rem !important;
+    border-collapse: collapse !important;
+    border: 1px solid #e2e8f0 !important;
 }
 
 .wp-block-table th,
-.wp-block-table td {
-    padding: 0.5em;
-    border: 1px solid;
-    word-break: normal;
+.wp-block-table td,
+.sot-tr-table th,
+.sot-tr-table td {
+    padding: 1rem !important;
+    border: 1px solid #e2e8f0 !important;
+    word-break: normal !important;
+    text-align: left !important;
+}
+
+.sot-tr-table th {
+    background-color: #f8fafc !important;
+    font-weight: 700 !important;
+    color: #4a5568 !important;
+    text-transform: uppercase !important;
+    font-size: 0.75rem !important;
+    letter-spacing: 0.05em !important;
 }
 
 /* Ensure our container feels like a standard theme block */

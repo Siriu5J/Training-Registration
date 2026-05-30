@@ -30,7 +30,7 @@ class PageCreator {
         $staff_profile_content = array(
             'post_title'    =>  "Create Staff Profile",
             'post_type'     =>  'page',
-            'page_template' =>  'templates/template-full-width.php',
+            'page_template' =>  'app-layout.php',
             'post_content'  =>  $content,
             'post_status'   =>  'publish'
         );
@@ -43,7 +43,7 @@ class PageCreator {
         $manage_staff_content = array(
             'post_title'    =>  "Manage My Staff",
             'post_type'     =>  'page',
-            'page_template' =>  'templates/template-full-width.php',
+            'page_template' =>  'app-layout.php',
             'post_content'  =>  $content,
             'post_status'   =>  'publish'
         );
@@ -56,7 +56,7 @@ class PageCreator {
         $create_register_content = array(
             'post_title'    =>  "Register for Training",
             'post_type'     =>  'page',
-            'page_template' =>  'templates/template-full-width.php',
+            'page_template' =>  'app-layout.php',
             'post_content'  =>  $content,
             'post_status'   =>  'publish'
         );
@@ -90,7 +90,7 @@ class PageCreator {
         $create_home = array(
             'post_title'    =>  "Training Registration",
             'post_type'     =>  'page',
-            'page_template' =>  'templates/template-full-width.php',
+            'page_template' =>  'app-layout.php',
             'post_content'  =>  $content,
             'post_status'   =>  'publish'
         );

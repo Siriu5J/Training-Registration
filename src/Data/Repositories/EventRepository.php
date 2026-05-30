@@ -38,6 +38,14 @@ class EventRepository {
         return $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$this->table} WHERE `activated` = 1 AND `start_time` > %s", $time_now));
     }
 
+    public function get_count_open($time_now = null) {
+        global $wpdb;
+        if (!$time_now) {
+            $time_now = current_time('mysql');
+        }
+        return $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$this->table} WHERE `activated` = 1 AND `open_time` <= %s AND `close_time` >= %s", $time_now, $time_now));
+    }
+
     public function get_total_count() {
         global $wpdb;
         return $wpdb->get_var("SELECT COUNT(*) FROM {$this->table}");

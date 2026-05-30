@@ -35,12 +35,14 @@ class Plugin {
 
         // Admin Controllers
         $admin = new AdminSettings();
-        $messages = new AdminMessages();
         
-        $this->loader->er_add_action('admin_notices', $messages, 'invalidTheme');
         $this->loader->er_add_action('admin_menu', $admin, 'adminSettingsPageRegistration');
         $this->loader->er_add_action('admin_init', $admin, 'registerSettingsFields');
         $this->loader->er_add_action('admin_init', $admin, 'exportRegistrationsToExcel');
+
+        // Template Manager
+        $template_manager = new TemplateManager();
+        $template_manager->init();
     }
 
     /**

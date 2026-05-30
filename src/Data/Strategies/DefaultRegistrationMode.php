@@ -69,7 +69,7 @@ class DefaultRegistrationMode implements RegistrationModeInterface {
         $data = array(
             "first_name" => $first_name,
             "last_name" => $last_name,
-            "cn_name" => sanitize_text_field($post_data['cn_name']),
+            "cn_name" => sanitize_text_field($post_data['cn_name'] ?? ''),
             "sex" => sanitize_text_field($post_data['sex']),
             "age" => intval($post_data['age']),
             "school" => $school,
@@ -82,7 +82,7 @@ class DefaultRegistrationMode implements RegistrationModeInterface {
             "degree" => sanitize_text_field($post_data['degree']),
             "grad_year" => sanitize_text_field($post_data['grad-year']),
             "major" => sanitize_text_field($post_data['major']),
-            "minor" => sanitize_text_field($post_data['minor']),
+            "minor" => sanitize_text_field($post_data['minor'] ?? ''),
             "institution" => sanitize_text_field($post_data['institution']),
             "comment" => sanitize_textarea_field($post_data['comment']),
         );
@@ -94,7 +94,7 @@ class DefaultRegistrationMode implements RegistrationModeInterface {
         $data = array(
             "first_name"    =>  sanitize_text_field($post_data['first_name']),
             "last_name"     =>  sanitize_text_field($post_data['last_name']),
-            "cn_name"       =>  sanitize_text_field($post_data['cn_name']),
+            "cn_name"       =>  sanitize_text_field($post_data['cn_name'] ?? ''),
             "sex"           =>  sanitize_text_field($post_data['sex']),
             "age"           =>  intval($post_data['age']),
             "school"        =>  sanitize_text_field($post_data['school']),
@@ -107,7 +107,7 @@ class DefaultRegistrationMode implements RegistrationModeInterface {
             "degree"        =>  sanitize_text_field($post_data['degree']),
             "grad_year"     =>  sanitize_text_field($post_data['grad-year']),
             "major"         =>  sanitize_text_field($post_data['major']),
-            "minor"         =>  sanitize_text_field($post_data['minor']),
+            "minor"         =>  sanitize_text_field($post_data['minor'] ?? ''),
             "institution"   =>  sanitize_text_field($post_data['institution']),
             "comment"       =>  sanitize_textarea_field($post_data['comment']),
         );
