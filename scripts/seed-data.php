@@ -28,7 +28,7 @@ $registration_repo = new RegistrationRepository();
 $num_schools = 5;
 $schools = [];
 for ($i = 1; $i <= $num_schools; $i++) {
-    $username = "school_$i";
+    $username = "School$i";
     if (!username_exists($username)) {
         $user_id = wp_create_user($username, 'password', "school$i@example.com");
         if (!is_wp_error($user_id)) {
@@ -73,7 +73,7 @@ for ($i = 1; $i <= $num_events; $i++) {
 // 3. Create Staff and Registrations
 foreach ($schools as $school) {
     for ($j = 1; $j <= 3; $j++) {
-        $first_name = "Staff_{$j}_{$school}";
+        $first_name = "Staff{$j}_{$school}";
         $last_name = "Surname";
         $phone = "0123456789$j" . rand(10, 99); // Add randomness to phone to avoid duplicate across schools
         
@@ -86,7 +86,7 @@ foreach ($schools as $school) {
                 'sex'        => ($j % 2 == 0 ? 'M' : 'F'),
                 'pos'        => 'Monitor',
                 'lc'         => 'Lower LC',
-                'email'      => "staff$j@$school.com"
+                'email'      => "staff$j@{$school}.com"
             ]);
             echo "Created staff: $first_name $last_name for $school\n";
 
