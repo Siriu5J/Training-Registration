@@ -26,7 +26,7 @@
                 
                 <div class="sot-tr-form-group">
                     <label for="training-id">Select training(s) to withdraw from:</label>
-                    <select name="training-id[]" id="training-id" required multiple="multiple" style="height: auto; min-height: 150px;">
+                    <select name="training-id[]" id="training-id" required multiple="multiple" style="height: auto; min-height: 9.5rem;">
                         <?php
                         foreach ($trainings_registered as $training) {
                             $event = $event_repo->get_by_id($training->event_id);

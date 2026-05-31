@@ -42,7 +42,7 @@ $site_home = (string)get_option('home');
     </div>
 
     <!-- Quick Actions -->
-    <div class="sot-tr-actions-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2.5rem;">
+    <div class="sot-tr-actions-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr)); gap: 1rem; margin-bottom: 2.5rem;">
         <a href="<?php echo $site_home; ?>/create-staff-profile/" class="button button-primary" style="text-align: center; justify-content: center; display: flex; align-items: center; gap: 8px;">
             <span class="dashicons dashicons-plus"></span> Create Staff Profile
         </a>
@@ -84,35 +84,35 @@ $site_home = (string)get_option('home');
 /* Reusing admin card styles for UI frontend consistency */
 .sot-tr-dashboard-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 20px;
-    margin: 20px 0 30px 0;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1.25rem;
+    margin: 1.25rem 0 1.875rem 0;
 }
 
 .sot-tr-dashboard-card {
     background: #fff;
     border: 1px solid #e2e8f0;
     box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    padding: 20px;
+    padding: 1.25rem;
     display: flex;
     align-items: center;
     border-radius: 8px;
 }
 
 .sot-tr-card-icon {
-    width: 48px;
-    height: 48px;
-    border-radius: 12px;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.75rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-right: 15px;
+    margin-right: 0.9375rem;
 }
 
 .sot-tr-card-icon .dashicons {
-    font-size: 24px;
-    width: 24px;
-    height: 24px;
+    font-size: 1.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
     color: #fff;
 }
 
@@ -132,6 +132,7 @@ $site_home = (string)get_option('home');
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    white-space: nowrap;
 }
 
 .sot-tr-card-value {

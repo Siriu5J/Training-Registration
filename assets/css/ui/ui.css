@@ -4,17 +4,18 @@
 .wp-block-table,
 .sot-tr-table {
     width: 100% !important;
-    margin-bottom: 1.5rem !important;
     border-collapse: collapse !important;
-    border: 1px solid #e2e8f0 !important;
+    border: none !important;
+    margin-bottom: 0 !important;
 }
 
 .wp-block-table th,
 .wp-block-table td,
 .sot-tr-table th,
 .sot-tr-table td {
-    padding: 1rem !important;
-    border: 1px solid #e2e8f0 !important;
+    padding: 0.75rem 1rem !important;
+    border: none !important;
+    border-bottom: 1px solid #e2e8f0 !important;
     word-break: normal !important;
     text-align: left !important;
 }
@@ -174,7 +175,7 @@
 
 .sot-tr-card-label {
     font-weight: 600;
-    width: 130px;
+    width: 8.25rem;
     flex-shrink: 0;
     color: #4a5568;
 }
@@ -194,7 +195,7 @@
 
 /* Forms - Theme Friendly Layout */
 .sot-tr-form {
-    max-width: 700px;
+    max-width: 44rem;
     margin: 0 auto;
 }
 
@@ -231,6 +232,7 @@
     background-color: #fff;
     box-shadow: 0 0 0 transparent;
     transition: border-color 0.1s linear, box-shadow 0.1s linear;
+    font-family: inherit;
 }
 
 .sot-tr-form-group input:focus,
@@ -275,9 +277,23 @@
     color: #fff;
 }
 
+/* Global Button Icon Alignment Fix */
+.sot-tr-container .button {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    vertical-align: middle !important;
+}
+
+.sot-tr-container .button .dashicons {
+    line-height: 1 !important;
+}
+
 .sot-tr-form-group textarea {
     min-height: 100px;
 }
+
 
 .sot-tr-submit-row {
     margin-top: 1.5rem;
@@ -291,19 +307,20 @@
     margin: 1.5rem 0;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
+    background: #fff;
 }
 
 .sot-tr-table {
     width: 100%;
     border-collapse: collapse;
-    min-width: 600px;
 }
 
 .sot-tr-table th,
 .sot-tr-table td {
-    padding: 1rem;
+    padding: 1.25rem 1rem;
     text-align: left;
     border-bottom: 1px solid #edf2f7;
+    vertical-align: top;
 }
 
 .sot-tr-table th {
@@ -341,3 +358,80 @@
     border: 2px dashed #e2e8f0;
     color: #718096;
 }
+
+/* Form Grid & Layout Utilities */
+.sot-tr-form-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+    .sot-tr-form-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+}
+
+.sot-tr-form-card {
+    margin-bottom: 2.5rem;
+    position: relative;
+    padding: 2rem !important;
+}
+
+.sot-tr-form-card h3 {
+    margin-top: 0;
+    border-bottom: 1px solid #edf2f7;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+    color: #2d3748;
+}
+
+/* Staff Grid & Card Actions */
+.sot-tr-staff-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .sot-tr-staff-grid {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+}
+
+.sot-tr-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.sot-tr-card-content {
+    flex: 1; /* This will expand to push the comment and actions down */
+}
+
+
+.sot-tr-card-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #edf2f7;
+}
+
+
+.sot-tr-card-actions .button {
+    flex: 1;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+

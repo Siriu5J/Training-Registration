@@ -14,17 +14,17 @@
             <?php wp_nonce_field('create_staff_nonce', 'staff_nonce_field'); ?>
             
             <div class="sot-tr-table-container">
-                <table class="sot-tr-table wp-block-table">
+                <table class="sot-tr-table">
                     <thead>
                         <tr>
-                            <th style="width: 40px;"></th>
-                            <th>Name</th>
+                            <th>Staff Name</th>
                             <th>Sex</th>
                             <th>Position</th>
                             <?php if ($my_mode == 0) : ?>
                                 <th>Email</th>
                             <?php endif; ?>
                             <th>Registered Training(s)</th>
+                            <th style="text-align: center;">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,35 +40,38 @@
                             }
                             ?>
                             <tr>
-                                <td>
-                                    <input type="radio" name="select" value="<?php echo $staff->id ?>" required/>
-                                </td>
-                                <td><?php echo esc_html($tools->idtoName($staff->id)); ?></td>
-                                <td><?php echo esc_html($staff->sex); ?></td>
+                                <td style="font-weight: 600;"><?php echo esc_html($tools->idtoName($staff->id)); ?></td>
+                                <td><?php echo esc_html($staff->sex == 'M' ? 'Male' : 'Female'); ?></td>
                                 <td><?php echo esc_html($staff->pos); ?></td>
                                 <?php if ($my_mode == 0) : ?>
-                                    <td><?php echo esc_html($staff->email); ?></td>
+                                    <td style="font-size: 0.9rem;"><?php echo esc_html($staff->email); ?></td>
                                 <?php endif; ?>
                                 <td>
                                     <?php if (!empty($training_list)) : ?>
-                                        <ul style="margin: 0; padding-left: 1.2rem;">
+                                        <ul style="margin: 0; padding-left: 1.25rem; font-size: 0.9rem;">
                                             <?php foreach ($training_list as $t_name) : ?>
                                                 <li><?php echo $t_name; ?></li>
                                             <?php endforeach; ?>
                                         </ul>
                                     <?php else : ?>
-                                        <span style="color: #a0aec0; font-style: italic;">No Trainings Registered</span>
+                                        <span style="color: #a0aec0; font-style: italic; font-size: 0.9rem;">No upcoming trainings</span>
                                     <?php endif; ?>
+                                </td>
+                                <td style="text-align: center;">
+                                    <div style="display: flex; gap: 1.25rem; justify-content: left;">
+                                        <button type="submit" name="edit-profile" value="<?php echo $staff->id; ?>" class="button" title="Edit Profile">
+
+                                            <span class="dashicons dashicons-edit"></span>
+                                        </button>
+                                        <button type="submit" name="edit-reg" value="<?php echo $staff->id; ?>" class="button" title="Cancel Registration">
+                                            <span class="dashicons dashicons-dismiss"></span>
+                                        </button>
+                                    </div>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
                 </table>
-            </div>
-
-            <div class="sot-tr-actions">
-                <input type="submit" name="edit-profile" id="edit-profile" value="Edit Staff Profile" class="button" />
-                <input type="submit" name="edit-reg" id="edit-reg" value="Cancel Staff Registration" class="button" />
             </div>
         </form>
     <?php else : ?>

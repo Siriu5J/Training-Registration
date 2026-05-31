@@ -37,9 +37,10 @@ class TrainingRegistrationUI {
     }
 
     public function enqueue_ui_css() {
-        wp_enqueue_style('ui_styles', plugins_url('../../assets/css/ui/ui.css', __FILE__));
-        wp_enqueue_style('ui_styles');
+        wp_enqueue_style('dashicons');
+        wp_enqueue_style('ui_styles', plugins_url('../../assets/css/ui/ui.css', __FILE__), array('dashicons'));
     }
+
 
     /**
      * UI DASHBOARD
@@ -182,14 +183,14 @@ class TrainingRegistrationUI {
 
         // Edit Staff profile
         if (isset($_POST['edit-profile']) && wp_verify_nonce($_POST['staff_nonce_field'], 'create_staff_nonce')) {
-            $staff_id = intval($_POST['select']);
+            $staff_id = intval($_POST['edit-profile'] ?: $_POST['select']);
             $profile = $this->staff_repo->get_by_id($staff_id);
             $mode_strategy->render_staff_edit_form($username, $profile, $staff_id, $this->ui_content);
         }
 
         // Edit Staff Registration
         if (isset($_POST['edit-reg']) && wp_verify_nonce($_POST['staff_nonce_field'], 'create_staff_nonce')) {
-            $staff_id = intval($_POST['select']);
+            $staff_id = intval($_POST['edit-reg'] ?: $_POST['select']);
             $trainings_registered = $this->registration_repo->get_by_staff($staff_id);
             
             $this->render('ui/cancel-registration', array(
