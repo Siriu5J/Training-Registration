@@ -3,7 +3,13 @@
  * Data Seeder for Training Registration Plugin
  * Run this script to populate your development environment with test data.
  * 
- * Usage: php scripts/seed-data.php
+ * Usage: php scripts/seed-data.php [--schools=N] [--events=N] [--staff-per-school=N]
+ * 
+ * Options:
+ *   --schools=N          Number of schools to create (default: 5)
+ *   --events=N           Number of events to create (default: 10)
+ *   --staff-per-school=N Number of staff per school (default: 3)
+ *   -h, --help           Show usage information
  */
 
 // Bootstrap WordPress
@@ -18,14 +24,79 @@ if (PHP_SAPI !== 'cli') {
     die('This script can only be run from the command line.');
 }
 
-echo "Seeding data...\n";
+/**
+ * Parse command-line arguments
+ * @return array Parsed arguments with defaults
+ */
+function parse_arguments() {
+    $args = $_SERVER['argv'];
+    $defaults = [
+        'schools' => 5,
+        'events' => 10,
+        'staff-per-school' => 3
+    ];
+    $parsed = $defaults;
+    
+    // Check for help flag
+    if (in_array('-h', $args) || in_array('--help', $args)) {
+        show_usage();
+        exit(0);
+    }
+    
+    // Parse arguments
+    for ($i = 1; $i < count($args); $i++) {
+        if (preg_match('/^--(\w+)=([0-9]+)$/', $args[$i], $matches)) {
+            switch ($matches[1]) {
+                case 'schools':
+                    $parsed['schools'] = (int)$matches[2];
+                    break;
+                case 'events':
+                    $parsed['events'] = (int)$matches[2];
+                    break;
+                case 'staff-per-school':
+                    $parsed['staff-per-school'] = (int)$matches[2];
+                    break;
+                default:
+                    // Unknown argument, ignore
+                    break;
+            }
+        }
+    }
+    
+    return $parsed;
+}
+
+/**
+ * Show usage message and exit
+ */
+function show_usage() {
+    echo "Usage: php scripts/seed-data.php [--schools=N] [--events=N] [--staff-per-school=N]\n\n";
+    echo "Options:\n";
+    echo "  --schools=N          Number of schools to create (default: 5)\n";
+    echo "  --events=N           Number of events to create (default: 10)\n";
+    echo "  --staff-per-school=N Number of staff per school (default: 3)\n";
+    echo "  -h, --help           Show this help message\n\n";
+    echo "Examples:\n";
+    echo "  php scripts/seed-data.php\n";
+    echo "  php scripts/seed-data.php --schools=10 --events=20\n";
+    echo "  php scripts/seed-data.php --staff-per-school=5\n";
+    echo "  php scripts/seed-data.php --schools=8 --events=15 --staff-per-school=4\n";
+}
+
+// Parse arguments
+$arguments = parse_arguments();
+
+echo "Seeding data with parameters:\n";
+echo "  Schools: " . $arguments['schools'] . "\n";
+echo "  Events: " . $arguments['events'] . "\n";
+echo "  Staff per school: " . $arguments['staff-per-school'] . "\n\n";
 
 $event_repo = new EventRepository();
 $staff_repo = new StaffRepository();
 $registration_repo = new RegistrationRepository();
 
 // 1. Create Schools (Users)
-$num_schools = 5;
+$num_schools = $arguments['schools'];
 $schools = [];
 for ($i = 1; $i <= $num_schools; $i++) {
     $username = "School$i";
@@ -44,7 +115,7 @@ for ($i = 1; $i <= $num_schools; $i++) {
 }
 
 // 2. Create Events
-$num_events = 10;
+$num_events = $arguments['events'];
 $event_ids = [];
 for ($i = 1; $i <= $num_events; $i++) {
     $event_name = "Sample Training Event $i";
@@ -72,7 +143,7 @@ for ($i = 1; $i <= $num_events; $i++) {
 
 // 3. Create Staff and Registrations
 foreach ($schools as $school) {
-    for ($j = 1; $j <= 3; $j++) {
+    for ($j = 1; $j <= $arguments['staff-per-school']; $j++) {
         $first_name = "Staff{$j}_{$school}";
         $last_name = "Surname";
         $phone = "0123456789$j" . rand(10, 99); // Add randomness to phone to avoid duplicate across schools
