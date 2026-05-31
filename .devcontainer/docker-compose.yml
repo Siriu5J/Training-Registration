@@ -18,8 +18,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    image: wordpress-custom:7.0  # Gives your local build a distinct name/tag
+    image: wordpress:latest
     container_name: wordpress_site
+    tty: true
+    stdin_open: true
     ports:
       - "8080:80"
     environment:
@@ -31,8 +33,10 @@ services:
       WORDPRESS_DEBUG_LOG: 1
       WORDPRESS_DEBUG_DISPLAY: 0
     volumes:
-      - ../wordpress_instance:/var/www/html
-      - ./:/var/www/html/wp-content/plugins/training-registration
+      # Adjusted: Points to the wordpress_instance folder sitting next to your project folder
+      - ../../wordpress_instance:/var/www/html
+      # Points to your plugin's project root directory
+      - ..:/var/www/html/wp-content/plugins/training-registration
     depends_on:
       - db
     networks:
