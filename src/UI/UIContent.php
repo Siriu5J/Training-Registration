@@ -37,4 +37,8 @@ class UIContent {
             'staff_id' => $staff_id
         ));
     }
+
+    public function dashboard($stats) {
+        $this->render('ui/dashboard', array('stats' => $stats));
+    }
 }

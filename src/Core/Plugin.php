@@ -32,6 +32,7 @@ class Plugin {
         $this->loader->er_add_shortcode('staff_form', $ui, 'staffFormCreation');
         $this->loader->er_add_shortcode('view_staff', $ui, 'viewEditStaff');
         $this->loader->er_add_shortcode('register_training', $ui, 'eventRegistration');
+        $this->loader->er_add_shortcode('training_dashboard', $ui, 'uiDashboard');
 
         // Admin Controllers
         $admin = new AdminSettings();

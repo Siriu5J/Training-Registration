@@ -41,6 +41,27 @@ class TrainingRegistrationUI {
         wp_enqueue_style('ui_styles');
     }
 
+    /**
+     * UI DASHBOARD
+     */
+    public function uiDashboard() {
+        if (!is_user_logged_in()) {
+            return $this->render('ui/notice', array('type' => 'red', 'message' => 'You must be logged in to view the dashboard.'));
+        }
+
+        $username = wp_get_current_user()->user_login;
+        $time_now = current_time('mysql');
+
+        $stats = array(
+            'total_staff'    => $this->staff_repo->get_count_by_school($username),
+            'upcoming_trainings' => $this->event_repo->get_count_upcoming($time_now),
+            'my_registrations' => $this->registration_repo->get_total_count_by_school($username),
+            'agenda'         => $this->registration_repo->get_school_agenda($username, 90)
+        );
+
+        return $this->ui_content->dashboard($stats);
+    }
+
     /*
     STAFF PROFILE REGISTRATION FORM
      */
@@ -86,8 +107,8 @@ class TrainingRegistrationUI {
                             "event_id" => $event_id,
                             "staff"    => $staff_id,
                             "reg_time" => $time_now,
-                            "school"   => $_POST['school'],
-                            "comment"  => $_POST['comment'],
+                            "school"   => sanitize_text_field($_POST['school']),
+                            "comment"  => sanitize_textarea_field($_POST['comment']),
                         ));
                         $this->event_repo->increment_registration_count($event_id);
                         $this->render('ui/notice', array('type' => 'green', 'message' => $this->tools->idtoName($staff_id) . ' is successfully registered to ' . $training->event_name . ' at ' . $training->location));

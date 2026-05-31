@@ -57,6 +57,10 @@ class AdminSettings {
         add_action("load-$main_page", array($this, 'handleOverviewPageActions'));
         add_action("load-$new_event_page", array($this, 'handleEventSubmission'));
         add_action("load-$settings_page", array($this, 'handleSettingsPageActions'));
+
+        // Properly enqueue styles for specific pages
+        add_action("admin_print_styles-$main_page", array($this, 'load_home_style'));
+        add_action("admin_print_styles-$new_event_page", array($this, 'enqueue_new_training_CSS'));
     }
 
     /**
@@ -174,9 +178,6 @@ class AdminSettings {
             wp_die(__('You do not have sufficient permissions to access this page.'));
         }
 
-        // Inject CSS
-        add_action('admin_enqueue_scripts', array($this, 'load_home_style'), 5);
-
         // The home table
         $this->home_table = new HomeTable();
         $this->home_table->prepare_items();
@@ -202,9 +203,6 @@ class AdminSettings {
         if (!current_user_can('edit_plugins')) {
             wp_die(__('You do not have sufficient permissions to access this page.'));
         }
-
-        // Inject CSS
-        add_action('admin_enqueue_scripts', array($this, 'enqueue_new_training_CSS'), 5);
 
         // Determine Data to Display
         if (isset($_GET['view-event']) && isset($_GET['event-id'])) {

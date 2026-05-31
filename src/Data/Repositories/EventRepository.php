@@ -46,6 +46,44 @@ class EventRepository {
         return $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$this->table} WHERE `activated` = 1 AND `open_time` <= %s AND `close_time` >= %s", $time_now, $time_now));
     }
 
+    /**
+     * Get summary stats for events starting in the next X days
+     */
+    public function get_agenda_stats($days = 14) {
+        global $wpdb;
+        $now = current_time('mysql');
+        $future = date('Y-m-d H:i:s', strtotime("+$days days", current_time('timestamp')));
+        
+        $query = $wpdb->prepare(
+            "SELECT COUNT(*) as event_count, SUM(num_reg) as staff_count 
+             FROM {$this->table} 
+             WHERE `activated` = 1 
+             AND `start_time` >= %s 
+             AND `start_time` <= %s",
+            $now, $future
+        );
+        
+        return $wpdb->get_row($query);
+    }
+
+    /**
+     * Get list of events starting in the next X days
+     */
+    public function get_upcoming_agenda($days = 14) {
+        global $wpdb;
+        $now = current_time('mysql');
+        $future = date('Y-m-d H:i:s', strtotime("+$days days", current_time('timestamp')));
+        
+        return $wpdb->get_results($wpdb->prepare(
+            "SELECT * FROM {$this->table} 
+             WHERE `activated` = 1 
+             AND `start_time` >= %s 
+             AND `start_time` <= %s 
+             ORDER BY `start_time` ASC",
+            $now, $future
+        ));
+    }
+
     public function get_total_count() {
         global $wpdb;
         return $wpdb->get_var("SELECT COUNT(*) FROM {$this->table}");

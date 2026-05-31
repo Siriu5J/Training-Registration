@@ -42,6 +42,32 @@ class RegistrationRepository {
         return $wpdb->get_var("SELECT COUNT(*) FROM {$this->table}");
     }
 
+    public function get_total_count_by_school($school_username) {
+        global $wpdb;
+        return $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$this->table} WHERE `school` = %s", $school_username));
+    }
+
+    public function get_school_agenda($school_username, $days = 90) {
+        global $wpdb;
+        $event_table = \ER_EVENT_LIST;
+        $now = current_time('mysql');
+        $future = date('Y-m-d H:i:s', strtotime("+$days days", current_time('timestamp')));
+
+        $query = $wpdb->prepare("
+            SELECT e.id as event_id, e.event_name, e.start_time, e.location, COUNT(r.staff) as staff_count
+            FROM {$this->table} r
+            JOIN {$event_table} e ON r.event_id = e.id
+            WHERE r.school = %s 
+            AND e.end_time >= %s 
+            AND e.start_time <= %s
+            AND e.activated = 1
+            GROUP BY e.id
+            ORDER BY e.start_time ASC
+        ", $school_username, $now, $future);
+
+        return $wpdb->get_results($query);
+    }
+
     public function get_recent_count($days = 30) {
         global $wpdb;
         $date = date('Y-m-d H:i:s', strtotime("-$days days", current_time('timestamp')));

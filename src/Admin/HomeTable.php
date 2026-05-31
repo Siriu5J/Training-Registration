@@ -99,6 +99,7 @@ class HomeTable extends WP_List_Table {
         return array(
             'event_name'    => array('event_name', true),
             'location'      => array('location', true),
+            'training_dates'=> array('start_time', true),
         );
     }
 
@@ -135,8 +136,8 @@ class HomeTable extends WP_List_Table {
             'offset'    => $offset,
             'search'    => ( ! empty( $_REQUEST['s'] ) ? $_REQUEST['s'] : '' ),
             'customvar' => ( ! empty( $_REQUEST['customvar'] ) ? $_REQUEST['customvar'] : 'current' ),
-            'orderby'   => ( ! empty( $_GET['orderby'] ) ? $_GET['orderby'] : 'id' ),
-            'order'     => ( ! empty( $_GET['order'] ) ? $_GET['order'] : 'desc' )
+            'orderby'   => ( ! empty( $_GET['orderby'] ) ? $_GET['orderby'] : 'start_time' ),
+            'order'     => ( ! empty( $_GET['order'] ) ? $_GET['order'] : 'asc' )
         );
 
         $results = $this->event_repo->search($args);
