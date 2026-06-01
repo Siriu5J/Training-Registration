@@ -70,7 +70,7 @@ $site_home = (string)get_option('home');
                         <div class="sot-tr-agenda-text">
                             <strong><?php echo number_format($item->staff_count); ?></strong> staff<?php echo $item->staff_count > 1 ? 's' : ''; ?> 
                             <?php echo $item->staff_count == 1 ? 'is' : 'are'; ?> going to <strong><?php echo esc_html($item->event_name); ?></strong> 
-                            at <strong><?php echo date('F j, Y', strtotime($item->start_time)); ?></strong> 
+                            at <strong><?php echo esc_html(wp_date('F j, Y', strtotime($item->start_time))); ?></strong> 
                             in <em><?php echo esc_html($item->location); ?></em>.
                         </div>
                     </li>

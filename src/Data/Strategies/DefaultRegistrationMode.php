@@ -48,6 +48,14 @@ class DefaultRegistrationMode implements RegistrationModeInterface {
         ];
     }
 
+    public function get_excel_template() {
+        return ER_PLUGIN_DIR . '/files/Default_Excel_Template.xlsx';
+    }
+
+    public function get_excel_column_format() {
+        return 'A2:T2';
+    }
+
     public function handle_staff_creation($post_data) {
         $first_name = sanitize_text_field($post_data['first_name']);
         $last_name = sanitize_text_field($post_data['last_name']);

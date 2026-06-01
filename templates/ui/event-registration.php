@@ -38,10 +38,10 @@
                             </td>
                             <td><?php echo esc_html($training->location); ?></td>
                             <td class="sot-tr-table-cell">
-                                <?php echo date("M j", strtotime($training->open_time)); ?> - <?php echo date("M j, Y", strtotime($training->close_time)); ?>
+                                <?php echo esc_html(wp_date("M j", strtotime($training->open_time))); ?> - <?php echo esc_html(wp_date("M j, Y", strtotime($training->close_time))); ?>
                             </td>
                             <td class="sot-tr-table-cell">
-                                <?php echo date("M j", strtotime($training->start_time)); ?> - <?php echo date("M j, Y", strtotime($training->end_time)); ?>
+                                <?php echo esc_html(wp_date("M j", strtotime($training->start_time))); ?> - <?php echo esc_html(wp_date("M j, Y", strtotime($training->end_time))); ?>
                             </td>
                             <?php if ($show_available == 1) : ?>
                                 <td class="sot-tr-table-cell-avail">
@@ -52,7 +52,7 @@
                                 <?php 
                                 $can_reg = ($training->open_time < $time_now && $training->close_time > $time_now && ($training->limit_max == 0 || $training->max == -999 || $training->max - $training->num_reg > 0));
                                 if ($can_reg) : ?>
-                                    <button type="button" class="sot-tr-btn-parity state-select" onclick="selectTraining('<?php echo $training->id; ?>')">
+                                    <button type="button" class="sot-tr-btn-parity state-select" onclick="selectTraining('<?php echo esc_js($training->id); ?>')">
                                         <span class="dashicons dashicons-yes"></span> Select
                                     </button>
                                 <?php else: ?>
@@ -98,7 +98,7 @@
                         <?php
                         foreach($trainings_to_show as $training) {
                             if ($training->open_time < $time_now && $training->close_time > $time_now && ($training->limit_max == 0 || $training->max == -999 || $training->max - $training->num_reg > 0)) {
-                                echo '<option value="'.$training->id.'">'.esc_html($training->event_name).' at '.esc_html($training->location).'</option>';
+                                echo '<option value="'.esc_attr($training->id).'">'.esc_html($training->event_name).' at '.esc_html($training->location).'</option>';
                             }
                         }
                         ?>
@@ -111,7 +111,7 @@
                         <option value="" selected disabled>-- Choose a staff member --</option>
                         <?php
                         foreach ($staff_available as $staff) {
-                            echo '<option value="'.$staff->id.'">'. esc_html($tools->idtoName($staff->id)).'</option>';
+                            echo '<option value="'.esc_attr($staff->id).'">'. esc_html($tools->idtoName($staff->id)).'</option>';
                         }
                         ?>
                     </select>

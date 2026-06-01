@@ -112,14 +112,12 @@ class EventRepository {
 
     public function increment_registration_count($id) {
         global $wpdb;
-        $current = $wpdb->get_var($wpdb->prepare("SELECT `num_reg` FROM {$this->table} WHERE `id` = %d", $id));
-        return $wpdb->update($this->table, array('num_reg' => $current + 1), array('id' => $id));
+        return $wpdb->query($wpdb->prepare("UPDATE {$this->table} SET `num_reg` = `num_reg` + 1 WHERE `id` = %d", $id));
     }
 
     public function decrement_registration_count($id) {
         global $wpdb;
-        $current = $wpdb->get_var($wpdb->prepare("SELECT `num_reg` FROM {$this->table} WHERE `id` = %d", $id));
-        return $wpdb->update($this->table, array('num_reg' => $current - 1), array('id' => $id));
+        return $wpdb->query($wpdb->prepare("UPDATE {$this->table} SET `num_reg` = `num_reg` - 1 WHERE `id` = %d", $id));
     }
 
     public function search($args = array()) {
@@ -149,8 +147,9 @@ class EventRepository {
             $where .= " AND (event_name LIKE '%$search_val%' OR location LIKE '%$search_val%')";
         }
 
-        $orderby = esc_sql($args['orderby']);
-        $order   = esc_sql($args['order']);
+        $allowed_orderby = array('id', 'event_name', 'open_time', 'close_time', 'start_time', 'end_time', 'location', 'num_reg');
+        $orderby = in_array($args['orderby'], $allowed_orderby) ? $args['orderby'] : 'id';
+        $order   = strtoupper($args['order']) === 'ASC' ? 'ASC' : 'DESC';
 
         $items = $wpdb->get_results(
             $wpdb->prepare(

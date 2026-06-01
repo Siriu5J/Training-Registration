@@ -16,6 +16,7 @@ use SOT\TrainingRegistration\Data\Repositories\StaffRepository;
 class Tools {
     protected $event_repo;
     protected $registration_repo;
+    protected $staff_repo;
 
     public function __construct() {
         $this->event_repo = new EventRepository();
@@ -99,8 +100,10 @@ class Tools {
 
     // Tags staff id to name
     public function idtoName($id) {
-        $staff_repo = new StaffRepository();
-        $row = $staff_repo->get_by_id($id);
+        if (!isset($this->staff_repo)) {
+            $this->staff_repo = new StaffRepository();
+        }
+        $row = $this->staff_repo->get_by_id($id);
 
         return $row ? esc_html($row->first_name . ' ' . $row->last_name) : '';
     }
@@ -108,6 +111,6 @@ class Tools {
     // Find a field with the ID, table, and field name given
     public function getFieldById($table, $field_name, $id) {
         global $wpdb;
-        return $wpdb->get_var($wpdb->prepare("SELECT `$field_name` FROM $table WHERE `id` = %d", $id));;
+        return $wpdb->get_var($wpdb->prepare("SELECT `$field_name` FROM $table WHERE `id` = %d", $id));
     }
 }

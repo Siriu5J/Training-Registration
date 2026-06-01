@@ -108,7 +108,7 @@ class TrainingRegistrationUI {
                         "event_id" => $event_id,
                         "staff"    => $staff_id,
                         "reg_time" => $time_now,
-                        "school"   => sanitize_text_field($_POST['school']),
+                        "school"   => wp_get_current_user()->user_login,
                         "comment"  => sanitize_textarea_field($_POST['comment']),
                     ]);
                     $this->event_repo->increment_registration_count($event_id);

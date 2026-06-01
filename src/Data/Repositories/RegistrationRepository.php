@@ -119,8 +119,9 @@ class RegistrationRepository {
             $where .= " AND (s.first_name LIKE '%$search_val%' OR s.last_name LIKE '%$search_val%' OR r.school LIKE '%$search_val%')";
         }
 
-        $orderby = esc_sql($args['orderby']);
-        $order   = esc_sql($args['order']);
+        $allowed_orderby = array('id', 'event_id', 'staff', 'reg_time', 'school');
+        $orderby = in_array($args['orderby'], $allowed_orderby) ? $args['orderby'] : 'reg_time';
+        $order   = strtoupper($args['order']) === 'ASC' ? 'ASC' : 'DESC';
 
         $query = "
             SELECT r.* FROM {$this->table} r

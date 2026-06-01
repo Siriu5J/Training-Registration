@@ -59,11 +59,11 @@
                                 </td>
                                 <td class="sot-tr-text-center">
                                     <div class="sot-tr-action-flex">
-                                        <button type="submit" name="edit-profile" value="<?php echo $staff->id; ?>" class="button" title="Edit Profile">
+                                        <button type="submit" name="edit-profile" value="<?php echo esc_attr($staff->id); ?>" class="button" title="Edit Profile">
 
                                             <span class="dashicons dashicons-edit"></span>
                                         </button>
-                                        <button type="submit" name="edit-reg" value="<?php echo $staff->id; ?>" class="button" title="Cancel Registration">
+                                        <button type="submit" name="edit-reg" value="<?php echo esc_attr($staff->id); ?>" class="button" title="Cancel Registration">
                                             <span class="dashicons dashicons-dismiss"></span>
                                         </button>
                                     </div>
