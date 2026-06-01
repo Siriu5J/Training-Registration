@@ -43,7 +43,7 @@ if (!defined('ABSPATH')) {
     if (file_exists($path . '/wp-load.php')) {
         require_once $path . '/wp-load.php';
     } else {
-        // Fallback to searching for wp-config.php if wp-load.php is not found
+        // Fallback to searching for wp-config.php if wp-config.php is not found
         $path = __DIR__;
         while ($path !== '/' && !file_exists($path . '/wp-config.php')) {
             $path = dirname($path);
@@ -208,7 +208,7 @@ class EnhancedSeedDataGenerator {
             'email'      => strtolower($first . '.' . $last) . '@example.org',
             'phone'      => rand(1000000000, 9999999999),
             'pos'        => self::$positions[array_rand(self::$positions)],
-            'lc'         => self::$locations[array_rand(self::$locations)],
+            'lc'         => ['Kindergarten','Lower LC','Upper LC','Not in LC'][array_rand(['Kindergarten','Lower LC','Upper LC','Not in LC'])],
             'training_exp' => rand(0, 10),
             'cec_exp'    => rand(0, 5),
             'degree'     => self::$degrees[array_rand(self::$degrees)],
