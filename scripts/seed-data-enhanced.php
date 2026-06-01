@@ -253,14 +253,42 @@ if ($clear_data) {
     $wpdb->query("TRUNCATE TABLE {$staff_table}");
     $wpdb->query("TRUNCATE TABLE {$event_table}");
     $wpdb->query("TRUNCATE TABLE {$registration_table}");
+
+    // Clear existing school users
+    $existing_school_users = $wpdb->get_results("SELECT ID FROM $wpdb->users WHERE user_login LIKE 'SCHOOL_%'");
+    if (!empty($existing_school_users)) {
+        require_once(ABSPATH . 'wp-admin/includes/user.php');
+        foreach ($existing_school_users as $u) {
+            wp_delete_user($u->ID);
+        }
+        echo "Cleared existing school user accounts.\n";
+    }
 }
 
-echo "\n=== SEEDING STAFF PROFILES ===\n";
+echo "\n=== SEEDING SCHOOLS AND USERS ===\n";
 
 $school_ids = [];
 for ($i = 1; $i <= $schools_count; $i++) {
-    $school_ids[] = 'SCHOOL_' . str_pad($i, 3, '0', STR_PAD_LEFT);
+    $school_login = 'SCHOOL_' . str_pad($i, 3, '0', STR_PAD_LEFT);
+    $school_ids[] = $school_login;
+    
+    if (!username_exists($school_login)) {
+        $user_id = wp_create_user($school_login, 'password', $school_login . '@example.org');
+        if (!is_wp_error($user_id)) {
+            update_user_meta($user_id, 'nickname', "School " . str_pad($i, 3, '0', STR_PAD_LEFT));
+            // Set role to subscriber as seen in tests
+            $u = new WP_User($user_id);
+            $u->set_role('subscriber');
+            echo "Created user account: {$school_login}\n";
+        } else {
+            echo "Error creating user {$school_login}: " . $user_id->get_error_message() . "\n";
+        }
+    } else {
+        echo "User account {$school_login} already exists, skipping creation.\n";
+    }
 }
+
+echo "\n=== SEEDING STAFF PROFILES ===\n";
 
 for ($index = 1; $index <= $users_count; $index++) {
     $current_school = $school_ids[array_rand($school_ids)];
