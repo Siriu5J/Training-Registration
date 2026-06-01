@@ -34,7 +34,10 @@ class PageCreator {
      * @return int|false Page ID on success, false on failure.
      */
     private function upsert_page($title, $shortcode) {
-        $page_id = post_exists($title, '', '', 'page');
+        if (!function_exists('post_exists')) {
+            require_once(ABSPATH . 'wp-admin/includes/post.php');
+        }
+        $page_id = \post_exists($title, '', '', 'page');
         $content = "<!-- wp:shortcode -->{$shortcode}<!-- /wp:shortcode -->";
 
         if ($page_id == 0) {
