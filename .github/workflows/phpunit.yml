@@ -1,4 +1,4 @@
-name: PHPUnit Tests for WordPress
+name: PHPUnit Tests
 
 on:
   push:
