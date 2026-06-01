@@ -82,6 +82,18 @@ The project maintains a rigorous testing suite using PHPUnit.
     ./vendor/bin/phpunit -c phpunit-integration.xml
     ```
 
+### Running Tests in VS Code
+You can run PHPUnit tests directly from VS Code with a click of a button:
+
+1. Open the Command Palette (`Ctrl+Shift+P`)
+2. Run "Tasks: Run Test Task" and select from:
+   - `phpunit:unit` - Run unit tests
+   - `phpunit:integration` - Run integration tests
+   - `phpunit:all` - Run all tests
+
+3. Alternatively, you can use the Tasks view (`Ctrl+Shift+P` > "Tasks: Run Task")
+4. Or, use the debug configurations in the Debug view to run and debug specific tests
+
 ### Data Seeding
 For development and staging environments, a data seeding script is provided to generate realistic datasets:
 ```bash
