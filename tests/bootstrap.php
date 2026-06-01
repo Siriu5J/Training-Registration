@@ -36,3 +36,15 @@ if (!function_exists('__')) {
 if (!function_exists('_e')) {
     function _e($text, $domain = 'default') { echo $text; }
 }
+
+if (!class_exists('WP_Error')) {
+    class WP_Error {
+        public $code;
+        public $message;
+        public function __construct($code = '', $message = '') {
+            $this->code = $code;
+            $this->message = $message;
+        }
+        public function get_error_code() { return $this->code; }
+    }
+}

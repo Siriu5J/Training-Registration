@@ -23,7 +23,7 @@ class ActivationTest extends WP_Integration_TestCase {
         ];
 
         foreach ($pages as $title) {
-            $page = get_page_by_title($title);
+            $page = $this->get_page_by_title($title);
             $this->assertNotNull($page, "Page '$title' should exist.");
             $this->assertEquals('publish', $page->post_status);
             $this->assertEquals('app-layout.php', get_post_meta($page->ID, '_wp_page_template', true));
@@ -31,8 +31,23 @@ class ActivationTest extends WP_Integration_TestCase {
     }
 
     public function test_home_page_is_set() {
-        $home_page = get_page_by_title('Training Registration');
+        $home_page = $this->get_page_by_title('Training Registration');
         $this->assertEquals('page', get_option('show_on_front'));
         $this->assertEquals($home_page->ID, get_option('page_on_front'));
+    }
+
+    private function get_page_by_title($title) {
+        $query = new WP_Query([
+            'post_type' => 'page',
+            'title' => $title,
+            'post_status' => 'all',
+            'posts_per_page' => 1,
+            'no_found_rows' => true,
+            'ignore_sticky_posts' => true,
+            'update_post_term_cache' => false,
+            'update_post_meta_cache' => false,
+        ]);
+        
+        return $query->have_posts() ? $query->posts[0] : null;
     }
 }

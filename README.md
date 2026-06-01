@@ -73,6 +73,7 @@ Composer is used to manage the project's PHP dependencies and PSR-4 autoloading.
 ### Testing Framework
 The project maintains a rigorous testing suite using PHPUnit.
 
+#### Running Tests
 *   **Unit Tests**: Verify isolated logic using `WP_Mock`.
     ```bash
     ./vendor/bin/phpunit --testsuite Unit
@@ -81,6 +82,24 @@ The project maintains a rigorous testing suite using PHPUnit.
     ```bash
     ./vendor/bin/phpunit -c phpunit-integration.xml
     ```
+
+#### Setting up Integration Tests
+Integration tests require a WordPress test environment and a separate database.
+
+1.  **Install Dependencies**:
+    If you are using the provided Dev Container, `subversion` and `mysql-client` are **already installed**. Otherwise, ensure they are available in your environment:
+    ```bash
+    apt-get update && apt-get install -y subversion default-mysql-client
+    ```
+
+2.  **Initialize Environment**:
+    Use the provided script to set up the WordPress tests library and test database.
+    ```bash
+    # Usage: ./scripts/install-wp-tests.sh <db-name> <db-user> <db-pass> [db-host] [wp-version] [skip-database-creation]
+    # Example for local DevContainer:
+    ./scripts/install-wp-tests.sh wordpress_test wordpress changeme_db_password db latest
+    ```
+    *Note: If you encounter "Access denied" during database creation, create the database manually as root first.*
 
 ### Running Tests in VS Code
 You can run PHPUnit tests directly from VS Code with a click of a button:
