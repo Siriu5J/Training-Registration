@@ -60,14 +60,22 @@ class HomeTable extends WP_List_Table {
         switch($column_name) {
             case 'event_name':
             case 'location':
-            return $item[$column_name];
+                return esc_html($item[$column_name]);
             default:
-                return print_r($item, true);    // For debug purpose
+                return esc_html(print_r($item, true));    // For debug purpose
         }
     }
 
     function column_event_name($item) {
-        return '<a href="' . get_admin_url(get_current_blog_id(), 'admin.php?page=er_new_event_set') . '&event-id='. $item['id'] . '&view-event">' . $item['event_name'] . '</a>' . ( $item['activated'] == 0 ? ' (Deactivated)' : '');
+        $url = add_query_arg(
+            array(
+                'page'     => 'er_new_event_set',
+                'event-id' => $item['id'],
+                'view-event' => ''
+            ),
+            admin_url('admin.php')
+        );
+        return '<a href="' . esc_url($url) . '">' . esc_html($item['event_name']) . '</a>' . ( $item['activated'] == 0 ? ' (Deactivated)' : '');
     }
 
     function column_availability($item) {

@@ -345,9 +345,9 @@ class AdminSettings {
             $trainee_data = $this->staff_repo->get_by_id($trainee->staff);
             $reg_time = date("F j", strtotime($trainee->reg_time));
 
-            // Get school nickname
-            $school_id = $wpdb->get_var($wpdb->prepare("SELECT `ID` FROM $wpdb->users WHERE `user_login` = %s", $trainee_data->school));
-            $school_nick = $wpdb->get_var($wpdb->prepare("SELECT `meta_value` FROM $wpdb->usermeta WHERE `user_id` = %d AND `meta_key` = %s", $school_id, 'nickname'));
+            // Get school nickname using standard WP functions
+            $user = get_user_by('login', $trainee_data->school);
+            $school_nick = $user ? get_user_meta($user->ID, 'nickname', true) : $trainee_data->school;
 
             $data_array[] = $mode_strategy->get_staff_fields($trainee_data, $reg_time, $school_nick);
         }
@@ -358,8 +358,38 @@ class AdminSettings {
         $registration_sheet = IOFactory::load($template_file);
         $data_sheet = $registration_sheet->getActiveSheet();
 
-        $data_sheet->fromArray($data_array, null, 'A2');
-        $data_sheet->getStyle($mode_strategy->get_excel_column_format())->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_TEXT);
+        // Fill data if available
+        if (!empty($data_array)) {
+            $data_sheet->fromArray($data_array, null, 'A2');
+            
+            $rowCount = count($data_array);
+            $lastRow = $rowCount + 1; // Data starts at row 2, so last row is rowCount + 1
+            $format_range = $mode_strategy->get_excel_column_format(); // e.g., 'A2:T2'
+
+            // Expand the formatting range to all data rows
+            if (preg_match('/^([A-Z]+)2:([A-Z]+)2$/', $format_range, $matches)) {
+                $startCol = $matches[1];
+                $endCol = $matches[2];
+                $full_range = $startCol . '2:' . $endCol . $lastRow;
+                $data_sheet->getStyle($full_range)->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_TEXT);
+                
+                // Auto-fit column widths
+                foreach (range($startCol, $endCol) as $columnID) {
+                    $data_sheet->getColumnDimension($columnID)->setAutoSize(true);
+                }
+                
+                // Update Excel Table ranges to include all new data rows
+                foreach ($data_sheet->getTableCollection() as $table) {
+                    $tableRange = $table->getRange();
+                    $rangeParts = explode(':', $tableRange);
+                    if (count($rangeParts) === 2) {
+                        // Keep the start cell (usually A1 for headers), and update the end row
+                        $newEndCell = preg_replace('/\d+$/', $lastRow, $rangeParts[1]);
+                        $table->setRange($rangeParts[0] . ':' . $newEndCell);
+                    }
+                }
+            }
+        }
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
         header('Content-Disposition: attachment;filename="' . $output_filename . '"');

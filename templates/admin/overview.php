@@ -19,7 +19,7 @@
                     </div>
                     <div class="inside">
                         <form id="training-overview" method="GET">
-                            <input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
+                            <input type="hidden" name="page" value="<?php echo esc_attr($_REQUEST['page']) ?>" />
                             <?php 
                             $home_table->search_box('Search Trainings', 'search_id');
                             $home_table->display(); 

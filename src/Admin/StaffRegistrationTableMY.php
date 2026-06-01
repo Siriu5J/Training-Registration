@@ -58,7 +58,7 @@ class StaffRegistrationTableMY extends WP_List_Table {
             case 'comment':
                 return esc_html($item[$column_name]);
             default:
-                return print_r($item,true);
+                return esc_html(print_r($item, true));
         }
     }
 
