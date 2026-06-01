@@ -10,64 +10,61 @@
 ?>
 <div class="sot-tr-container">
     <?php if (count($trainings_to_show) != 0) : ?>
-        <!-- Training Overview Grid -->
-        <div class="sot-tr-training-list">
-            <?php foreach ($trainings_to_show as $training) : ?>
-                <div class="sot-tr-card">
-                    <div class="sot-tr-card-content">
-                        <h3><?php echo esc_html($training->event_name); ?></h3>
-                        
-                        <div class="sot-tr-card-row">
-                            <span class="sot-tr-card-label"><span class="dashicons dashicons-location"></span> Location</span>
-                            <span class="sot-tr-card-value"><?php echo esc_html($training->location); ?></span>
-                        </div>
-
-                        <div class="sot-tr-card-row">
-                            <span class="sot-tr-card-label"><span class="dashicons dashicons-calendar-alt"></span> Registration</span>
-                            <span class="sot-tr-card-value">
-                                <?php echo date("M j", strtotime($training->open_time)); ?> - <?php echo date("M j, Y", strtotime($training->close_time)); ?>
-                            </span>
-                        </div>
-
-                        <div class="sot-tr-card-row">
-                            <span class="sot-tr-card-label"><span class="dashicons dashicons-clock"></span> Training</span>
-                            <span class="sot-tr-card-value">
-                                <?php echo date("M j", strtotime($training->start_time)); ?> - <?php echo date("M j, Y", strtotime($training->end_time)); ?>
-                            </span>
-                        </div>
-
+        <!-- Training Overview Table -->
+        <div class="sot-tr-table-container">
+            <table class="sot-tr-table">
+                <thead>
+                    <tr>
+                        <th>Training Name</th>
+                        <th>Location</th>
+                        <th>Registration Period</th>
+                        <th>Training Dates</th>
                         <?php if ($show_available == 1) : ?>
-                            <div class="sot-tr-card-row">
-                                <span class="sot-tr-card-label"><span class="dashicons dashicons-groups"></span> Availability</span>
-                                <span class="sot-tr-card-value"><?php echo $tools->spotsOpen($training->id); ?> spots left</span>
-                            </div>
+                            <th>Availability</th>
                         <?php endif; ?>
-                    </div>
-
-                    <?php if (!empty($training->comment)) : ?>
-                        <div class="sot-tr-card-comment">
-                            <?php echo esc_html($training->comment); ?>
-                        </div>
-                    <?php endif; ?>
-
-
-                    <?php 
-                    $can_reg = ($training->open_time < $time_now && $training->close_time > $time_now && ($training->limit_max == 0 || $training->max == -999 || $training->max - $training->num_reg > 0));
-                    if ($can_reg) : ?>
-                        <div class="sot-tr-card-actions" style="border-top: 1px solid #edf2f7; margin-top: 1.5rem; padding-top: 1.25rem;">
-                            <button type="button" class="button button-primary" style="width: 100%;" onclick="selectTraining('<?php echo $training->id; ?>')">
-                                <span class="dashicons dashicons-yes"></span> Select This Training
-                            </button>
-                        </div>
-                    <?php else: ?>
-                        <div class="sot-tr-card-actions" style="border-top: 1px solid #edf2f7; margin-top: 1.5rem; padding-top: 1.25rem;">
-                            <button type="button" class="button" style="width: 100%; opacity: 0.6; cursor: not-allowed;" disabled>
-                                Registration Closed
-                            </button>
-                        </div>
-                    <?php endif; ?>
-                </div>
-            <?php endforeach; ?>
+                        <th style="text-align: center;">Register</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($trainings_to_show as $training) : ?>
+                        <tr>
+                            <td style="font-weight: 600;">
+                                <?php echo esc_html($training->event_name); ?>
+                                <?php if (!empty($training->comment)) : ?>
+                                    <div class="sot-tr-training-comment">
+                                        <?php echo esc_html($training->comment); ?>
+                                    </div>
+                                <?php endif; ?>
+                            </td>
+                            <td><?php echo esc_html($training->location); ?></td>
+                            <td style="font-size: 0.9rem; white-space: nowrap;">
+                                <?php echo date("M j", strtotime($training->open_time)); ?> - <?php echo date("M j, Y", strtotime($training->close_time)); ?>
+                            </td>
+                            <td style="font-size: 0.9rem; white-space: nowrap;">
+                                <?php echo date("M j", strtotime($training->start_time)); ?> - <?php echo date("M j, Y", strtotime($training->end_time)); ?>
+                            </td>
+                            <?php if ($show_available == 1) : ?>
+                                <td style="font-size: 0.9rem; font-weight: 500; color: #2f855a;">
+                                    <?php echo $tools->spotsOpen($training->id); ?> spots
+                                </td>
+                            <?php endif; ?>
+                            <td style="text-align: center;">
+                                <?php 
+                                $can_reg = ($training->open_time < $time_now && $training->close_time > $time_now && ($training->limit_max == 0 || $training->max == -999 || $training->max - $training->num_reg > 0));
+                                if ($can_reg) : ?>
+                                    <button type="button" class="sot-tr-btn-parity state-select" onclick="selectTraining('<?php echo $training->id; ?>')">
+                                        <span class="dashicons dashicons-yes"></span> Select
+                                    </button>
+                                <?php else: ?>
+                                    <button type="button" class="sot-tr-btn-parity state-closed" disabled>
+                                        <span class="dashicons dashicons-lock"></span> Closed
+                                    </button>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
         </div>
 
         <script>

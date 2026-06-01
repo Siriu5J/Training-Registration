@@ -320,7 +320,75 @@
     padding: 1.25rem 1rem;
     text-align: left;
     border-bottom: 1px solid #edf2f7;
-    vertical-align: top;
+    vertical-align: middle;
+}
+
+/* Definitive Button Parity Design */
+.sot-tr-table .sot-tr-btn-parity {
+    /* Reset & Structural Core */
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 0 12px !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    font-family: inherit !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    border-radius: 3px !important;
+    vertical-align: middle !important;
+    transition: all 0.15s ease-in-out !important;
+    
+    /* Absolute Dimensions */
+    height: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+    width: 110px !important;
+    min-width: 110px !important;
+    
+    /* Borders - ensured on both for parity */
+    border-width: 1px !important;
+    border-style: solid !important;
+}
+
+/* State: Selectable (Active) */
+.sot-tr-table .sot-tr-btn-parity.state-select {
+    background-color: #2271b1 !important;
+    background: #2271b1 !important;
+    border-color: #2271b1 !important;
+    color: #ffffff !important;
+    cursor: pointer !important;
+}
+
+.sot-tr-table .sot-tr-btn-parity.state-select:hover {
+    background-color: #135e96 !important;
+    background: #135e96 !important;
+    border-color: #135e96 !important;
+    color: #ffffff !important;
+}
+
+/* State: Closed (Disabled) */
+.sot-tr-table .sot-tr-btn-parity.state-closed {
+    background-color: #f6f7f7 !important;
+    background: #f6f7f7 !important;
+    border-color: #dcdcde !important;
+    color: #646970 !important;
+    cursor: not-allowed !important;
+    opacity: 0.8 !important;
+}
+
+/* Icon alignment within parity buttons */
+.sot-tr-table .sot-tr-btn-parity .dashicons {
+    margin: 0 6px 0 0 !important;
+    font-size: 18px !important;
+    width: 18px !important;
+    height: 18px !important;
+    line-height: 18px !important;
 }
 
 .sot-tr-table th {
