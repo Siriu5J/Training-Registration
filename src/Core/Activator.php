@@ -91,7 +91,6 @@ class Activator {
         }
 
         // Add the pages
-        $creator = new PageCreator();
-        $creator->run();
+        (new PageCreator())->run();
     }
 }
