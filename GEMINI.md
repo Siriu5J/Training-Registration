@@ -1,6 +1,6 @@
 # Project Overview: Training Registration Plugin
 
-The Training Registration Plugin is a WordPress plugin designed for SOT training organizers and Learning Centers. It facilitates the creation, management, and registration of training events, specifically tailored for the "Twenty Twenty" WordPress theme.
+The Training Registration Plugin is a robust management system for WordPress designed for training organizers and Learning Centers. It provides a complete framework for orchestrating training events, managing staff profiles, and facilitating participant enrollment with professional data export capabilities.
 
 ## Key Technologies
 - **PHP**: Core language for plugin logic.
@@ -12,8 +12,8 @@ The Training Registration Plugin is a WordPress plugin designed for SOT training
 ## Building and Running
 
 ### Prerequisites
-- PHP 7.4+ (inferred from `phpspreadsheet` usage).
-- A WordPress installation with the **Twenty Twenty** theme active.
+- PHP 8.1+ (required for PhpSpreadsheet 2.x/5.x).
+- A WordPress installation with version 6.0+ and the **Twenty Twenty** theme active.
 - [Composer](https://getcomposer.org/) installed.
 - (Optional) [7-Zip](https://www.7-zip.org/) for packaging.
 

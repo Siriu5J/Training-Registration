@@ -1,5 +1,10 @@
 {
+    "name": "sot/training-registration",
+    "description": "WordPress plugin for training event registration management.",
+    "type": "wordpress-plugin",
+    "license": "Apache-2.0",
     "require": {
+        "php": ">=8.1",
         "phpoffice/phpspreadsheet": "^5.7.0"
     },
     "require-dev": {
