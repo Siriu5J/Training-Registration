@@ -152,7 +152,7 @@ class EnhancedSeedDataGenerator {
         '许静', '何强', '吕洋', '施敏', '蔡明', '魏军', '丁静', '邓强'
     ];
 
-    private static $positions = ['Teacher', 'Principal', 'Administrator', 'Director', 'Supervisor', 'Librarian', 'Counselor', 'Coordinator', 'Assistant', 'Manager'];
+    private static $positions = ['Administrator', 'Principal', 'Supervisor', 'Monitor', 'Others'];
 
     private static $locations = [
         'Learning Center A', 'Learning Center B', 'Central Conference Hall', 'School District Office',
