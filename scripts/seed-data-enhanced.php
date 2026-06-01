@@ -186,7 +186,7 @@ class EnhancedSeedDataGenerator {
         'Educational Leadership', 'School Reform', 'Educational Change Management'
     ];
 
-    private static $degrees = ['Bachelor', 'Master', 'Doctorate', 'Associate', 'Certificate', 'PhD'];
+    private static $degrees = ['Elementary', 'Middle School', 'High School', 'Associates', 'Bachelors', 'Masters', 'Doctorate'];
 
     private static $majors = ['Education', 'Psychology', 'Business', 'Computer Science', 'Biology', 'Chemistry', 'Physics', 'Mathematics', 'English', 'History', 'Political Science', 'Sociology', 'Art', 'Music', 'Physical Education', 'Nursing', 'Engineering', 'Communications', 'Marketing', 'Finance'];
 
