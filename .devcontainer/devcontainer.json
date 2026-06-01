@@ -9,7 +9,8 @@
       "extensions": [
         "bmewburn.vscode-intelephense-client",
         "xdebug.php-debug",
-        "mshages.composer"
+        "mshages.composer",
+        "google.gemini-cli-vscode-ide-companion"
       ],
       "settings": {
         "php.validate.executablePath": "/usr/local/bin/php"

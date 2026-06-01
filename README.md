@@ -112,17 +112,34 @@ To fix this:
 The suite includes a `LargeDatasetTest.php` that programmatically seeds a large volume of realistic data (5+ schools, 100+ staff, 20+ events, and 1000+ registrations). Use this to verify that the admin interface and registration logic remain performant under load.
 
 ## Seeding Test Data
-For manual testing and development, you can use the included data seeder script to quickly populate your local WordPress site with realistic data (schools, events, staff, and registrations).
+For manual testing and development, you can use the included enhanced data seeder script to quickly populate your local WordPress site with realistic data (staff profiles, training events, and registrations).
 
 ```bash
-php scripts/seed-data.php
+php scripts/seed-data-enhanced.php [OPTIONS]
+```
+
+### Options
+*   `--schools=[number]`  Number of schools to generate (default: 10)
+*   `--events=[number]`   Number of events to generate (default: 8)
+*   `--users=[number]`    Number of staff users to generate (default: 50)
+*   `--no-clear`          Do not clear existing data before seeding
+*   `--force`             Skip confirmation when clearing data (useful for automated setups)
+*   `--help`              Show help message
+
+### Examples
+```bash
+# Generate 5 schools, 3 events, and 25 users
+php scripts/seed-data-enhanced.php --schools=5 --events=3 --users=25
+
+# Seed data without clearing existing records
+php scripts/seed-data-enhanced.php --no-clear
 ```
 
 The script will:
-*   Create 5 school users (`school_1` through `school_5`) with password `password`.
-*   Generate 10 sample training events.
-*   Create 3 staff profiles per school.
-*   Randomly register staff to upcoming events.
+*   Automatically ensure the necessary database tables exist.
+*   Generate realistic staff profiles across the specified number of schools.
+*   Create training events with valid scheduling (registration open/close and event start/end times).
+*   Randomly register staff members to events while respecting event capacity.
 
 ## Additional Libraries Used/Thanks
 * ~~[PHPExcel](https://github.com/PHPOffice/PHPExcel)~~
