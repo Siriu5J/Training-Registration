@@ -1,0 +1,43 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug PHPUnit Tests",
+            "type": "php",
+            "request": "launch",
+            "program": "${workspaceFolder}/vendor/bin/phpunit",
+            "args": [
+                "--configuration",
+                "${workspaceFolder}/phpunit.xml"
+            ],
+            "runtimeArgs": [
+                "-dxdebug.mode=debug",
+                "-dxdebug.start_with_request=yes",
+                "-dxdebug.client_port=9003"
+            ],
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "XDEBUG_MODE": "debug"
+            }
+        },
+        {
+            "name": "Debug PHPUnit Integration Tests",
+            "type": "php",
+            "request": "launch",
+            "program": "${workspaceFolder}/vendor/bin/phpunit",
+            "args": [
+                "--configuration",
+                "${workspaceFolder}/phpunit-integration.xml"
+            ],
+            "runtimeArgs": [
+                "-dxdebug.mode=debug",
+                "-dxdebug.start_with_request=yes",
+                "-dxdebug.client_port=9003"
+            ],
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "XDEBUG_MODE": "debug"
+            }
+        }
+    ]
+}

@@ -1,0 +1,54 @@
+<?php
+
+namespace SOT\TrainingRegistration\Core;
+
+defined('ABSPATH') || exit;
+
+/**
+ * Class Loader
+ *
+ * This class handles all the shortcode and action hooks.
+ *
+ * @package SOT\TrainingRegistration\Core
+ */
+class Loader {
+    // Two arrays to store all actions and shortcodes
+    protected $actions;
+    protected $shortcodes;
+
+    // Constructor
+    public function __construct() {
+        $this->actions = array();
+        $this->shortcodes = array();
+    }
+
+    // Fill the actions array
+    public function er_add_action($hook, $component, $callback, $priority = 10) {
+        $this->actions[] = array(
+            'hook'      => $hook,
+            'component' => $component,
+            'callback'  => $callback,
+            'priority'  => $priority
+        );
+    }
+
+    // Fill the shortcodes array
+    public function er_add_shortcode($tag, $component, $callback) {
+        $this->shortcodes[] = array(
+            'tag'      => $tag,
+            'component' => $component,
+            'callback'  => $callback
+        );
+    }
+
+    // Register all the hooks to WordPress
+    public function run() {
+        foreach ($this->actions as $action) {
+            add_action($action['hook'], array($action['component'], $action['callback']), $action['priority']);
+        }
+
+        foreach ($this->shortcodes as $shortcode) {
+            add_shortcode($shortcode['tag'], array($shortcode['component'], $shortcode['callback']));
+        }
+    }
+}

@@ -1,0 +1,50 @@
+.er_input {
+    border-radius: 0;
+}
+
+/* Postbox customizations */
+#poststuff .postbox .hndle {
+    cursor: default;
+}
+
+#poststuff .postbox .inside {
+    margin-bottom: 0;
+}
+
+.misc-pub-section {
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.misc-pub-section:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+}
+
+/* Small text width */
+.small-text {
+    width: 60px;
+}
+
+/* Fix for large-text inside inside */
+.postbox .inside textarea.large-text {
+    width: 100%;
+}
+
+/* Shared classes for training pages */
+.sot-tr-danger-postbox {
+    border-color: #d63638 !important;
+}
+
+.sot-tr-danger-hndle {
+    border-bottom-color: #d63638 !important;
+    color: #d63638 !important;
+}
+
+.sot-tr-danger-button {
+    color: #d63638 !important;
+}
+
+.sot-tr-hidden-form {
+    display: none;
+}

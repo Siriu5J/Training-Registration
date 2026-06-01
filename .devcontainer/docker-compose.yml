@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: wordpress_db
+    environment:
+      MYSQL_ROOT_PASSWORD: changeme_db_root_password
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: changeme_db_password
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - wordpress_net
+
+  wordpress:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: wordpress:latest
+    container_name: wordpress_site
+    tty: true
+    stdin_open: true
+    ports:
+      - "8080:80"
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: changeme_db_password
+      WORDPRESS_DB_NAME: wordpress
+      WORDPRESS_DEBUG: 1
+      WORDPRESS_DEBUG_LOG: 1
+      WORDPRESS_DEBUG_DISPLAY: 0
+    volumes:
+      # Adjusted: Points to the wordpress_instance folder sitting next to your project folder
+      - ../../wordpress_instance:/var/www/html
+      # Points to your plugin's project root directory
+      - ..:/var/www/html/wp-content/plugins/training-registration
+    depends_on:
+      - db
+    networks:
+      - wordpress_net
+
+volumes:
+  db_data:
+
+networks:
+  wordpress_net:

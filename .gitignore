@@ -1,3 +1,19 @@
 .idea/*
 .idea_*
 wordpress_instance/*
+.claude/*
+.nanocoder/*
+
+# Composer
+vendor/
+
+# PHPUnit
+.phpunit.result.cache
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Build/Release packages
+*.zip
+*.tar.gz

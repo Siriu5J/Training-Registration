@@ -1,0 +1,11 @@
+{
+    "intelephense.environment.includePaths": [
+        "/tmp/wordpress-tests-lib",
+        "/tmp/wordpress",
+        "vendor/phpunit/phpunit/src",
+        "vendor/yoast/phpunit-polyfills/src"
+    ],
+    "intelephense.files.exclude": [
+        "**/node_modules/**"
+    ]
+}
