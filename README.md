@@ -19,20 +19,6 @@ The Training Registration Plugin is a WordPress plugin created to allow SOT trai
 2. Download the plugin .zip from the [release page](https://github.com/Siriu5J/Training-Registration/releases).
 3. Install the plugin to WordPress by using local upload.
 
-**Customize Site (Twenty Twenty-Five)**
-1. Activate the **Twenty Twenty-Five** theme.
-2. Go to `Appearance` > `Editor` (this opens the WordPress Site Editor).
-3. Click on the **Styles** icon (top right circle icon) and select **Colors**.
-4. Define the following **Palette** for a professional and integrated look:
-    *   **Base (Background):** `#f8f8f8`
-    *   **Contrast (Text):** `#1d2327`
-    *   **Primary (Accent):** `#012552` (Deep Blue)
-    *   **Secondary (Highlight):** `#fecc00` (Gold/Yellow)
-5. Under **Elements**, set the following:
-    *   **Buttons:** Set the background to **Secondary** (`#fecc00`) and the text to **Primary** (`#012552`).
-    *   **Links:** Set the color to **Primary** (`#012552`) with a hover effect using **Secondary** (`#fecc00`).
-6. The plugin's UI now uses standard WordPress block classes (like `.wp-block-table` and `.button`), meaning it will automatically inherit these global styles without requiring large blocks of custom CSS.
-
 **Important**: Ensure Permalinks are set to **"Post Name"** in `Settings` > `Permalinks` for the registration pages to function correctly.
 
 
