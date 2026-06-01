@@ -2,6 +2,8 @@
 
 namespace SOT\TrainingRegistration\Core;
 
+defined('ABSPATH') || exit;
+
 use SOT\TrainingRegistration\Data\Repositories\EventRepository;
 use SOT\TrainingRegistration\Data\Repositories\RegistrationRepository;
 use SOT\TrainingRegistration\Data\Repositories\StaffRepository;

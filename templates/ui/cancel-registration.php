@@ -21,7 +21,7 @@
         </div>
 
         <div class="sot-tr-form">
-            <form id="staff-profile-cancel" name="staff-profile-cancel" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']);?>">
+            <form id="staff-profile-cancel" name="staff-profile-cancel" method="post" action="<?php echo esc_url(add_query_arg(array()));?>">
                 <?php wp_nonce_field('create_staff_nonce', 'staff_nonce_field'); ?>
                 
                 <div class="sot-tr-form-group">
@@ -48,7 +48,7 @@
                 </div>
             </form>
             
-            <form id="cancel-form" name="cancel-form" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']);?>" class="sot-tr-hidden-form"></form>
+            <form id="cancel-form" name="cancel-form" method="post" action="<?php echo esc_url(add_query_arg(array()));?>" class="sot-tr-hidden-form"></form>
         </div>
     <?php else : ?>
         <div class="sot-tr-empty">

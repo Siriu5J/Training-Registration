@@ -2,6 +2,8 @@
 
 namespace SOT\TrainingRegistration\Traits;
 
+defined('ABSPATH') || exit;
+
 /**
  * Trait TemplateRenderer
  *

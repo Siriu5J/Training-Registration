@@ -14,6 +14,9 @@ class UITest extends TestCase {
         WP_Mock::userFunction('plugins_url', [
             'return' => 'http://example.com/plugin/url'
         ]);
+        WP_Mock::userFunction('is_user_logged_in', [
+            'return' => true
+        ]);
         WP_Mock::userFunction('wp_enqueue_style', [
             'return' => true
         ]);

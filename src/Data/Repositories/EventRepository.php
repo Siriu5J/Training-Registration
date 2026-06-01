@@ -2,6 +2,8 @@
 
 namespace SOT\TrainingRegistration\Data\Repositories;
 
+defined('ABSPATH') || exit;
+
 /**
  * Class EventRepository
  *
@@ -135,16 +137,16 @@ class EventRepository {
 
         $where = "WHERE 1=1";
         if ($args['customvar'] == 'past') {
-            $where .= " AND end_time < '$time'";
+            $where .= $wpdb->prepare(" AND end_time < %s", $time);
         } elseif ($args['customvar'] == 'all') {
             // no filter
         } else {
-            $where .= " AND end_time > '$time'";
+            $where .= $wpdb->prepare(" AND end_time > %s", $time);
         }
 
         if (!empty($args['search'])) {
-            $search_val = esc_sql($wpdb->esc_like($args['search']));
-            $where .= " AND (event_name LIKE '%$search_val%' OR location LIKE '%$search_val%')";
+            $search_val = '%' . $wpdb->esc_like($args['search']) . '%';
+            $where .= $wpdb->prepare(" AND (event_name LIKE %s OR location LIKE %s)", $search_val, $search_val);
         }
 
         $allowed_orderby = array('id', 'event_name', 'open_time', 'close_time', 'start_time', 'end_time', 'location', 'num_reg');

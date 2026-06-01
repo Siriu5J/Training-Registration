@@ -2,6 +2,8 @@
 
 namespace SOT\TrainingRegistration\Data\Strategies;
 
+defined('ABSPATH') || exit;
+
 /**
  * Interface RegistrationModeInterface
  *

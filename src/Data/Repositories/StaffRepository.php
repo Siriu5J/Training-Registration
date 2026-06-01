@@ -2,6 +2,8 @@
 
 namespace SOT\TrainingRegistration\Data\Repositories;
 
+defined('ABSPATH') || exit;
+
 /**
  * Class StaffRepository
  *

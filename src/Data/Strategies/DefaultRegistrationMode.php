@@ -2,6 +2,8 @@
 
 namespace SOT\TrainingRegistration\Data\Strategies;
 
+defined('ABSPATH') || exit;
+
 use SOT\TrainingRegistration\Data\Repositories\StaffRepository;
 use WP_Error;
 

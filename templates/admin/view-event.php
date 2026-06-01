@@ -19,7 +19,7 @@ $event = (new \SOT\TrainingRegistration\Data\Repositories\EventRepository())->ge
                 <div class="postbox">
                     <h2 class="hndle"><span>Registration List</span></h2>
                     <div class="inside sot-tr-padded-inside">
-                        <form id="staff-reg" method="GET" action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>">
+                        <form id="staff-reg" method="GET" action="<?php echo esc_url(add_query_arg(array())); ?>">
                             <?php wp_nonce_field('staff_reg_nonce', 'reg_nonce_field'); ?>
                             <input type="hidden" name="event-id" value="<?php echo esc_attr($id) ?>" />
                             <input type="hidden" name="page" value="<?php echo esc_attr($_REQUEST['page']) ?>" />

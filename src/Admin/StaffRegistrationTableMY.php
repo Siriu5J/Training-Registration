@@ -2,6 +2,8 @@
 
 namespace SOT\TrainingRegistration\Admin;
 
+defined('ABSPATH') || exit;
+
 use WP_List_Table;
 use SOT\TrainingRegistration\Data\Repositories\StaffRepository;
 use SOT\TrainingRegistration\Data\Repositories\EventRepository;
@@ -52,8 +54,9 @@ class StaffRegistrationTableMY extends WP_List_Table {
             case 'staff':
             case 'reg_time':
             case 'school':
+                return esc_html($item[$column_name]);
             case 'comment':
-                return $item[$column_name];
+                return esc_html($item[$column_name]);
             default:
                 return print_r($item,true);
         }
@@ -76,33 +79,34 @@ class StaffRegistrationTableMY extends WP_List_Table {
         $staff_id = $item['staff'];
         $staff_profile = $this->staff_repo->get_by_id($staff_id);
 
-        return $staff_profile ? $staff_profile->pos : '';
+        return $staff_profile ? esc_html($staff_profile->pos) : '';
     }
 
     function column_staff_comment($item) {
         $staff_id = $item['staff'];
         $staff_profile = $this->staff_repo->get_by_id($staff_id);
 
-        return $staff_profile ? $staff_profile->comment : '';
+        return $staff_profile ? esc_html($staff_profile->comment) : '';
     }
 
     function column_staff_sex($item) {
         $staff_id = $item['staff'];
         $staff_profile = $this->staff_repo->get_by_id($staff_id);
 
-        return $staff_profile ? $staff_profile->sex : '';
+        return $staff_profile ? esc_html($staff_profile->sex) : '';
     }
 
     function column_contact($item) {
         $staff_id = $item['staff'];
         $staff_profile = $this->staff_repo->get_by_id($staff_id);
 
-        return $staff_profile ? '<b>Phone:</b><br>'.$staff_profile->phone : '';
+        return $staff_profile ? '<b>Phone:</b><br>' . esc_html($staff_profile->phone) : '';
     }
 
     function column_school($item) {
-        $user = get_user_by('login',$item['school']);
-        return $user ? $user->nickname : $item['school'];
+        $user = get_user_by('login', $item['school']);
+        $school = $user ? $user->nickname : $item['school'];
+        return esc_html($school);
     }
 
     function get_columns(){
@@ -135,10 +139,12 @@ class StaffRegistrationTableMY extends WP_List_Table {
 
     function process_bulk_action() {
         if( 'delete'===$this->current_action()) {
+            check_admin_referer('bulk-staffs');
+
             $records_to_remove = isset($_GET['id']) ? (array)$_GET['id'] : array();
 
             foreach($records_to_remove as $record_id) {
-                $this->registration_repo->delete_by_id($record_id);
+                $this->registration_repo->delete_by_id(intval($record_id));
                 $this->event_repo->decrement_registration_count($this->event_id);
             }
         }

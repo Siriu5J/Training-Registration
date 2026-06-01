@@ -1,5 +1,7 @@
 <?php
 
+defined('ABSPATH') || exit;
+
 /*
 Plugin Name: Event Registration
 Plugin URI: https://github.com/Siriu5J/Training-Registration

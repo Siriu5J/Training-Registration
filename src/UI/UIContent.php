@@ -2,6 +2,8 @@
 
 namespace SOT\TrainingRegistration\UI;
 
+defined('ABSPATH') || exit;
+
 use SOT\TrainingRegistration\Traits\TemplateRenderer;
 
 /**

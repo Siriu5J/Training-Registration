@@ -2,6 +2,8 @@
 
 namespace SOT\TrainingRegistration\Core;
 
+defined('ABSPATH') || exit;
+
 /**
  * Class TemplateManager
  *

@@ -2,6 +2,8 @@
 
 namespace SOT\TrainingRegistration\UI;
 
+defined('ABSPATH') || exit;
+
 use SOT\TrainingRegistration\Traits\TemplateRenderer;
 use SOT\TrainingRegistration\Data\Repositories\EventRepository;
 use SOT\TrainingRegistration\Data\Repositories\StaffRepository;
@@ -65,6 +67,12 @@ class TrainingRegistrationUI {
 
     public function staffFormCreation() {
         ob_start();
+
+        if (!is_user_logged_in()) {
+            $this->render('ui/notice', ['type' => 'red', 'message' => 'You must be logged in to create a staff profile.']);
+            return ob_get_clean();
+        }
+
         $username = wp_get_current_user()->user_login;
         $mode_strategy = RegistrationModeFactory::get_current_mode();
 
@@ -87,6 +95,12 @@ class TrainingRegistrationUI {
 
     public function eventRegistration() {
         ob_start();
+
+        if (!is_user_logged_in()) {
+            $this->render('ui/notice', ['type' => 'red', 'message' => 'You must be logged in to register for trainings.']);
+            return ob_get_clean();
+        }
+
         $time_now = current_time('mysql');
 
         if (isset($_POST['reg-training']) && wp_verify_nonce($_POST['reg_nonce_field'], 'reg_nonce')) {
@@ -132,6 +146,12 @@ class TrainingRegistrationUI {
 
     public function viewEditStaff() {
         ob_start();
+
+        if (!is_user_logged_in()) {
+            $this->render('ui/notice', ['type' => 'red', 'message' => 'You must be logged in to manage staff.']);
+            return ob_get_clean();
+        }
+
         $username = wp_get_current_user()->user_login;
         $time_now = current_time('mysql');
         $mode_strategy = RegistrationModeFactory::get_current_mode();

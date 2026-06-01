@@ -66,7 +66,7 @@
                                 <small class="sot-tr-training-location">at <?php echo esc_html($training->location); ?></small>
                             </h2>
                             <div class="inside sot-tr-padded-inside">
-                                <form id="staff-reg-<?php echo $training->id ?>" method="GET" action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>">
+                                <form id="staff-reg-<?php echo $training->id ?>" method="GET" action="<?php echo esc_url(add_query_arg(array())); ?>">
                                     <?php wp_nonce_field('staff_reg_nonce', 'reg_nonce_field'); ?>
                                     <input type="hidden" name="page" value="<?php echo esc_attr($_REQUEST['page']) ?>" />
                                     <?php $reg_table->display(); ?>

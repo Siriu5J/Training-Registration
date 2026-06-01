@@ -2,6 +2,8 @@
 
 namespace SOT\TrainingRegistration\Admin;
 
+defined('ABSPATH') || exit;
+
 use WP_List_Table;
 use SOT\TrainingRegistration\Core\Tools;
 use SOT\TrainingRegistration\Data\Repositories\EventRepository;
@@ -89,7 +91,13 @@ class HomeTable extends WP_List_Table {
     function column_print_sheet($item) {
         $mode = get_option('my_mode');
         $nonce = wp_create_nonce('excel_export_nonce');
-        $download = '<a href="' . esc_url($_SERVER['REQUEST_URI'] . '&id=' . $item['id'] . '&print-excel=true&mode='. $mode . '&nonce=' . $nonce) . '">Download</a>';
+        $download_url = add_query_arg(array(
+            'id'          => $item['id'],
+            'print-excel' => 'true',
+            'mode'        => $mode,
+            'nonce'       => $nonce
+        ));
+        $download = '<a href="' . esc_url($download_url) . '">Download</a>';
         $view     = '<a href="'. get_admin_url(get_current_blog_id(), 'admin.php?page=er_view_reg_set') . '&event-id=' . $item['id'] .'">View</a>';
         return $download . '<br />' . $view;
     }

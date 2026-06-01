@@ -2,6 +2,8 @@
 
 namespace SOT\TrainingRegistration\Admin;
 
+defined('ABSPATH') || exit;
+
 /**
  * Class AdminMessages
  *
@@ -32,58 +34,38 @@ class AdminMessages {
         </div>
         <?php
     }
-    public function tableFailedCreation() {
-        ?>
-        <div class="notice notice-error is-dismissible">
-            <p>Failed to create training!</p>
-        </div>
-        <?php
-    }
-
-    public function tableFailedUpdate() {
-        ?>
-        <div class="notice notice-error is-dismissible">
-            <p>Failed to update training!</p>
-        </div>
-        <?php
-    }
-
     public function tableSuccessDeletion() {
         ?>
         <div class="notice notice-success is-dismissible">
-            <p>Training and all associated registrations have been removed.</p>
+            <p>Training has been deleted successfully!</p>
         </div>
         <?php
     }
-
-    public function tableAlreadyExist() {
-        ?>
-        <div class="notice notice-error is-dismissible">
-            <p>Event already exists!</p>
-        </div>
-        <?php
-    }
-
-    public function invalidTimeOrder() {
-        ?>
-        <div class="notice notice-error is-dismissible">
-            <p>Invalid time range! Ensure end times are later than start times.</p>
-        </div>
-        <?php
-    }
-
-    public function invalidMaxTrainee() {
-        ?>
-        <div class="notice notice-error is-dismissible">
-            <p>Max number of trainees cannot be negative!</p>
-        </div>
-        <?php
-    }
-
-    public function settingsUpdated() {
+    public function registrationDeletion() {
         ?>
         <div class="notice notice-success is-dismissible">
-            <p>Settings Updated!</p>
+            <p>Staff Registration has been deleted successfully!</p>
+        </div>
+        <?php
+    }
+    public function staffProfileDeletion() {
+        ?>
+        <div class="notice notice-success is-dismissible">
+            <p>Staff Profile has been deleted successfully!</p>
+        </div>
+        <?php
+    }
+    public function staffProfileUpdated() {
+        ?>
+        <div class="notice notice-success is-dismissible">
+            <p>Staff Profile has been updated successfully!</p>
+        </div>
+        <?php
+    }
+    public function staffProfileUpdateFailed() {
+        ?>
+        <div class="notice notice-error is-dismissible">
+            <p>Failed to update Staff Profile. Please check the data and try again.</p>
         </div>
         <?php
     }

@@ -2,6 +2,8 @@
 
 namespace SOT\TrainingRegistration\Core;
 
+defined('ABSPATH') || exit;
+
 use SOT\TrainingRegistration\UI\TrainingRegistrationUI;
 use SOT\TrainingRegistration\Admin\AdminSettings;
 use SOT\TrainingRegistration\Admin\AdminMessages;

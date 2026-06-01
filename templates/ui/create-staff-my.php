@@ -8,7 +8,7 @@
     <div class="sot-tr-form">
         <h2 class="sot-tr-center">Create Staff Profile (SOTAM)</h2>
         
-        <form id="staff-profile" name="staff-profile" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']);?>">
+        <form id="staff-profile" name="staff-profile" method="post" action="<?php echo esc_url(add_query_arg(array()));?>">
             <?php wp_nonce_field('create_staff_nonce', 'staff_nonce_field'); ?>
             
             <p>Fields marked with * are required.</p>

@@ -10,7 +10,7 @@
 ?>
 <div class="sot-tr-container">
     <?php if (count($all_staff) != 0) : ?>
-        <form id="select-staff" name="select-staff" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']);?>">
+        <form id="select-staff" name="select-staff" method="post" action="<?php echo esc_url(add_query_arg(array()));?>">
             <?php wp_nonce_field('create_staff_nonce', 'staff_nonce_field'); ?>
             
             <div class="sot-tr-table-container">

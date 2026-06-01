@@ -2,6 +2,8 @@
 
 namespace SOT\TrainingRegistration\Admin;
 
+defined('ABSPATH') || exit;
+
 use SOT\TrainingRegistration\Data\Repositories\EventRepository;
 use SOT\TrainingRegistration\Data\Repositories\StaffRepository;
 use SOT\TrainingRegistration\Data\Repositories\RegistrationRepository;
@@ -135,7 +137,6 @@ class AdminSettings {
                 Disabling this option will hide the number of seats remaining in a training to schools.
             </label>
         </fieldset>
-        <?php
     }
 
     public function renderMyModeField() {
@@ -147,7 +148,6 @@ class AdminSettings {
                 Enable SOTAM requested form formats.
             </label>
         </fieldset>
-        <?php
     }
 
     // Registers the required CSS

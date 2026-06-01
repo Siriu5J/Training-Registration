@@ -88,7 +88,7 @@
         <div class="sot-tr-form sot-tr-reg-form-wrap">
             <h2 class="sot-tr-center sot-tr-margin-top-0">Complete Registration</h2>
             
-            <form id="reg-event" name="reg-event" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']);?>">
+            <form id="reg-event" name="reg-event" method="post" action="<?php echo esc_url(add_query_arg(array()));?>">
                 <?php wp_nonce_field('reg_nonce', 'reg_nonce_field'); ?>
                 
                 <div class="sot-tr-form-group">

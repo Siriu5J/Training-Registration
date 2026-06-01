@@ -2,6 +2,8 @@
 
 namespace SOT\TrainingRegistration\Data\Repositories;
 
+defined('ABSPATH') || exit;
+
 /**
  * Class RegistrationRepository
  *
@@ -115,8 +117,8 @@ class RegistrationRepository {
         $where = $wpdb->prepare("WHERE r.event_id = %d", $args['event_id']);
         
         if (!empty($args['search'])) {
-            $search_val = esc_sql($wpdb->esc_like($args['search']));
-            $where .= " AND (s.first_name LIKE '%$search_val%' OR s.last_name LIKE '%$search_val%' OR r.school LIKE '%$search_val%')";
+            $search_val = '%' . $wpdb->esc_like($args['search']) . '%';
+            $where .= $wpdb->prepare(" AND (s.first_name LIKE %s OR s.last_name LIKE %s OR r.school LIKE %s)", $search_val, $search_val, $search_val);
         }
 
         $allowed_orderby = array('id', 'event_id', 'staff', 'reg_time', 'school');
