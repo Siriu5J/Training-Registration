@@ -22,13 +22,13 @@
                         <?php if ($show_available == 1) : ?>
                             <th>Availability</th>
                         <?php endif; ?>
-                        <th style="text-align: center;">Register</th>
+                        <th class="sot-tr-text-center">Register</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php foreach ($trainings_to_show as $training) : ?>
                         <tr>
-                            <td style="font-weight: 600;">
+                            <td class="sot-tr-fw-600">
                                 <?php echo esc_html($training->event_name); ?>
                                 <?php if (!empty($training->comment)) : ?>
                                     <div class="sot-tr-training-comment">
@@ -37,18 +37,18 @@
                                 <?php endif; ?>
                             </td>
                             <td><?php echo esc_html($training->location); ?></td>
-                            <td style="font-size: 0.9rem; white-space: nowrap;">
+                            <td class="sot-tr-table-cell">
                                 <?php echo date("M j", strtotime($training->open_time)); ?> - <?php echo date("M j, Y", strtotime($training->close_time)); ?>
                             </td>
-                            <td style="font-size: 0.9rem; white-space: nowrap;">
+                            <td class="sot-tr-table-cell">
                                 <?php echo date("M j", strtotime($training->start_time)); ?> - <?php echo date("M j, Y", strtotime($training->end_time)); ?>
                             </td>
                             <?php if ($show_available == 1) : ?>
-                                <td style="font-size: 0.9rem; font-weight: 500; color: #2f855a;">
+                                <td class="sot-tr-table-cell-avail">
                                     <?php echo $tools->spotsOpen($training->id); ?> spots
                                 </td>
                             <?php endif; ?>
-                            <td style="text-align: center;">
+                            <td class="sot-tr-text-center">
                                 <?php 
                                 $can_reg = ($training->open_time < $time_now && $training->close_time > $time_now && ($training->limit_max == 0 || $training->max == -999 || $training->max - $training->num_reg > 0));
                                 if ($can_reg) : ?>
@@ -85,8 +85,8 @@
         </script>
 
         <!-- Registration Form -->
-        <div class="sot-tr-form sot-tr-reg-form-wrap" style="background: #f8fafc; padding: 2.5rem; border-radius: 12px; border: 1px solid #e2e8f0;">
-            <h2 class="sot-tr-center" style="margin-top: 0;">Complete Registration</h2>
+        <div class="sot-tr-form sot-tr-reg-form-wrap">
+            <h2 class="sot-tr-center sot-tr-margin-top-0">Complete Registration</h2>
             
             <form id="reg-event" name="reg-event" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']);?>">
                 <?php wp_nonce_field('reg_nonce', 'reg_nonce_field'); ?>

@@ -6,7 +6,7 @@
  */
 ?>
 <div class="sot-tr-container" id="edit-profile-view">
-    <hr style="margin-bottom: 4rem; border-top: 2px solid #2271b1; opacity: 0.3;">
+    <hr class="sot-tr-profile-hr">
     
     <div class="sot-tr-form">
         <h2 class="sot-tr-center">Edit Staff Profile: <?php echo esc_html($profile->first_name . ' ' . $profile->last_name); ?></h2>
@@ -36,11 +36,11 @@
                 <div class="sot-tr-form-row">
                     <div class="sot-tr-form-group">
                         <label>Gender*</label>
-                        <div style="display: flex; gap: 1.5rem; margin-top: 0.25rem; height: 3rem; align-items: center;">
-                            <label style="font-weight: 400; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <div class="sot-tr-radio-group">
+                            <label class="sot-tr-radio-label">
                                 <input type="radio" name="sex" value="M" id="M" required <?php checked($profile->sex, 'M'); ?>/> Male
                             </label>
-                            <label style="font-weight: 400; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <label class="sot-tr-radio-label">
                                 <input type="radio" name="sex" value="F" id="F" required <?php checked($profile->sex, 'F'); ?>/> Female
                             </label>
                         </div>

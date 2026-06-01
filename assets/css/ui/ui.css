@@ -503,3 +503,280 @@
 }
 
 
+
+/* Custom UI styles extracted from templates */
+.sot-tr-app-header {
+    padding: 16px 0;
+    background-color: #012552;
+    margin-bottom: 30px;
+    color: #fff;
+}
+.sot-tr-app-header .sot-tr-app-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.sot-tr-app-header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+.sot-tr-app-header a {
+    text-decoration: none;
+    color: #fff;
+}
+.sot-tr-app-user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    position: relative;
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    transition: all 0.2s ease;
+    user-select: none;
+    color: #fff;
+}
+.sot-tr-app-user-info:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+.sot-tr-app-user-info.active {
+    border-color: #fecc00;
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 0 1px #fecc00;
+}
+.sot-tr-app-user-info img {
+    border-radius: 50%;
+    display: block;
+    border: 1px solid #eee;
+}
+.sot-tr-app-user-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    padding: 8px 0;
+    min-width: 180px;
+    z-index: 1000;
+    display: none;
+}
+.sot-tr-app-user-info.active .sot-tr-app-user-dropdown {
+    display: block;
+}
+.sot-tr-app-user-dropdown a {
+    display: block;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    color: #333 !important;
+    transition: background 0.2s;
+}
+.sot-tr-app-user-dropdown a:hover {
+    background: #f0f0f0;
+}
+.sot-tr-app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+.sot-tr-app-footer {
+    display: none !important;
+}
+/* Hide theme footer elements that might be injected via wp_footer or otherwise */
+footer, .site-footer, #colophon, .footer-nav-widgets-wrapper, #site-footer {
+    display: none !important;
+}
+
+.sot-tr-dashicon-align {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    vertical-align: text-bottom;
+}
+.sot-tr-dropdown-divider {
+    margin: 4px 0;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+.sot-tr-logout-link {
+    color: #d63638 !important;
+}
+
+.sot-tr-cancel-select {
+    height: auto;
+    min-height: 9.5rem;
+}
+.sot-tr-hidden-form {
+    display: none;
+}
+
+.sot-tr-radio-group {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 0.25rem;
+    height: 3rem;
+    align-items: center;
+}
+.sot-tr-radio-label {
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.sot-tr-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+.sot-tr-action-btn {
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sot-tr-agenda-card {
+    margin-top: 2rem;
+}
+.sot-tr-agenda-list {
+    list-style: none;
+    padding: 0;
+}
+.sot-tr-agenda-item {
+    padding: 1rem;
+    border-bottom: 1px solid #edf2f7;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.sot-tr-agenda-icon-wrap {
+    background: #f0f4f8;
+    padding: 0.75rem;
+    border-radius: 8px;
+    color: #2271b1;
+}
+.sot-tr-agenda-text {
+    font-size: 1.1rem;
+    line-height: 1.4;
+}
+
+.sot-tr-profile-hr {
+    margin-bottom: 4rem;
+    border-top: 2px solid #2271b1;
+    opacity: 0.3;
+}
+
+.sot-tr-text-center {
+    text-align: center;
+}
+.sot-tr-fw-600 {
+    font-weight: 600;
+}
+.sot-tr-table-cell {
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+.sot-tr-table-cell-avail {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #2f855a;
+}
+.sot-tr-reg-form-wrap {
+    background: #f8fafc;
+    padding: 2.5rem;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+.sot-tr-margin-top-0 {
+    margin-top: 0;
+}
+
+.sot-tr-fs-09 {
+    font-size: 0.9rem;
+}
+.sot-tr-ul-list {
+    margin: 0;
+    padding-left: 1.25rem;
+    font-size: 0.9rem;
+}
+.sot-tr-no-trainings {
+    color: #a0aec0;
+    font-style: italic;
+    font-size: 0.9rem;
+}
+.sot-tr-action-flex {
+    display: flex;
+    gap: 1.25rem;
+    justify-content: left;
+}
+
+/* Dashboard Card Styles */
+.sot-tr-dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1.25rem;
+    margin: 1.25rem 0 1.875rem 0;
+}
+
+.sot-tr-dashboard-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+}
+
+.sot-tr-card-icon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.9375rem;
+}
+
+.sot-tr-card-icon .dashicons {
+    font-size: 1.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    color: #fff;
+}
+
+.color-blue { background-color: #2271b1; }
+.color-green { background-color: #38a169; }
+.color-purple { background-color: #805ad5; }
+
+.sot-tr-card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.sot-tr-card-label {
+    font-size: 0.8rem;
+    color: #718096;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
+.sot-tr-card-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1a202c;
+    line-height: 1.2;
+}

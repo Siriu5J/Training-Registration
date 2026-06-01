@@ -37,7 +37,7 @@
                     <div class="postbox-header">
                         <h2 class="hndle">Quick Stats</h2>
                     </div>
-                    <div class="inside" style="padding: 12px;">
+                    <div class="inside sot-tr-padded-inside">
                         <div class="sot-tr-sidebar-stats">
                             <div class="sot-tr-sidebar-stat-item">
                                 <span class="dashicons dashicons-groups"></span>
@@ -65,7 +65,7 @@
                                 <div class="sot-tr-stat-info">
                                     <span class="sot-tr-stat-label">Total Registrations</span>
                                     <span class="sot-tr-stat-value"><?php echo number_format($stats['total_reg']); ?></span>
-                                    <small style="color: #646970; display: block; margin-top: 2px;">
+                                    <small class="sot-tr-recent-reg-stats">
                                         +<?php echo number_format($stats['recent_reg']); ?> in last 30 days
                                     </small>
                                 </div>
@@ -79,7 +79,7 @@
                     <div class="postbox-header">
                         <h2 class="hndle">Quick Access</h2>
                     </div>
-                    <div class="inside" style="padding: 12px;">
+                    <div class="inside sot-tr-padded-inside">
                         <div class="sot-tr-quick-access-list">
                             <a href="<?php echo admin_url('admin.php?page=er_view_reg_set'); ?>" class="button sot-tr-qa-btn">
                                 <span class="dashicons dashicons-list-view"></span> View All Registrations

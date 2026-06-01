@@ -26,7 +26,7 @@
                 
                 <div class="sot-tr-form-group">
                     <label for="training-id">Select training(s) to withdraw from:</label>
-                    <select name="training-id[]" id="training-id" required multiple="multiple" style="height: auto; min-height: 9.5rem;">
+                    <select name="training-id[]" id="training-id" required multiple="multiple" class="sot-tr-cancel-select">
                         <?php
                         foreach ($trainings_registered as $training) {
                             $event = $event_repo->get_by_id($training->event_id);
@@ -48,7 +48,7 @@
                 </div>
             </form>
             
-            <form id="cancel-form" name="cancel-form" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']);?>" style="display:none;"></form>
+            <form id="cancel-form" name="cancel-form" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']);?>" class="sot-tr-hidden-form"></form>
         </div>
     <?php else : ?>
         <div class="sot-tr-empty">

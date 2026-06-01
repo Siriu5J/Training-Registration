@@ -42,32 +42,32 @@ $site_home = (string)get_option('home');
     </div>
 
     <!-- Quick Actions -->
-    <div class="sot-tr-actions-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr)); gap: 1rem; margin-bottom: 2.5rem;">
-        <a href="<?php echo $site_home; ?>/create-staff-profile/" class="button button-primary" style="text-align: center; justify-content: center; display: flex; align-items: center; gap: 8px;">
+    <div class="sot-tr-actions-grid">
+        <a href="<?php echo $site_home; ?>/create-staff-profile/" class="button button-primary sot-tr-action-btn">
             <span class="dashicons dashicons-plus"></span> Create Staff Profile
         </a>
-        <a href="<?php echo $site_home; ?>/register-for-training/" class="button button-primary" style="text-align: center; justify-content: center; display: flex; align-items: center; gap: 8px;">
+        <a href="<?php echo $site_home; ?>/register-for-training/" class="button button-primary sot-tr-action-btn">
             <span class="dashicons dashicons-edit"></span> Register for Training
         </a>
-        <a href="<?php echo $site_home; ?>/manage-my-staff/" class="button button-primary" style="text-align: center; justify-content: center; display: flex; align-items: center; gap: 8px;">
+        <a href="<?php echo $site_home; ?>/manage-my-staff/" class="button button-primary sot-tr-action-btn">
             <span class="dashicons dashicons-admin-users"></span> Manage My Staff
         </a>
     </div>
 
     <!-- Agenda View -->
-    <div class="sot-tr-card" style="margin-top: 2rem;">
+    <div class="sot-tr-card sot-tr-agenda-card">
         <h3>Upcoming Agenda (Next 90 Days)</h3>
         <hr>
         <?php if (empty($stats['agenda'])): ?>
             <p class="sot-tr-empty">You have no staff registered for trainings in the next 90 days.</p>
         <?php else: ?>
-            <ul class="sot-tr-agenda-list" style="list-style: none; padding: 0;">
+            <ul class="sot-tr-agenda-list">
                 <?php foreach ($stats['agenda'] as $item): ?>
-                    <li style="padding: 1rem; border-bottom: 1px solid #edf2f7; display: flex; align-items: center; gap: 1rem;">
-                        <div class="sot-tr-agenda-icon" style="background: #f0f4f8; padding: 0.75rem; border-radius: 8px; color: #2271b1;">
+                    <li class="sot-tr-agenda-item">
+                        <div class="sot-tr-agenda-icon-wrap">
                             <span class="dashicons dashicons-clock"></span>
                         </div>
-                        <div class="sot-tr-agenda-text" style="font-size: 1.1rem; line-height: 1.4;">
+                        <div class="sot-tr-agenda-text">
                             <strong><?php echo number_format($item->staff_count); ?></strong> staff<?php echo $item->staff_count > 1 ? 's' : ''; ?> 
                             <?php echo $item->staff_count == 1 ? 'is' : 'are'; ?> going to <strong><?php echo esc_html($item->event_name); ?></strong> 
                             at <strong><?php echo date('F j, Y', strtotime($item->start_time)); ?></strong> 
@@ -79,66 +79,3 @@ $site_home = (string)get_option('home');
         <?php endif; ?>
     </div>
 </div>
-
-<style>
-/* Reusing admin card styles for UI frontend consistency */
-.sot-tr-dashboard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
-    gap: 1.25rem;
-    margin: 1.25rem 0 1.875rem 0;
-}
-
-.sot-tr-dashboard-card {
-    background: #fff;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    padding: 1.25rem;
-    display: flex;
-    align-items: center;
-    border-radius: 8px;
-}
-
-.sot-tr-card-icon {
-    width: 3rem;
-    height: 3rem;
-    border-radius: 0.75rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 0.9375rem;
-}
-
-.sot-tr-card-icon .dashicons {
-    font-size: 1.5rem;
-    width: 1.5rem;
-    height: 1.5rem;
-    color: #fff;
-}
-
-.color-blue { background-color: #2271b1; }
-.color-green { background-color: #38a169; }
-.color-purple { background-color: #805ad5; }
-
-.sot-tr-card-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.sot-tr-card-label {
-    font-size: 0.8rem;
-    color: #718096;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    white-space: nowrap;
-}
-
-.sot-tr-card-value {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: #1a202c;
-    line-height: 1.2;
-}
-</style>

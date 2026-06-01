@@ -17,7 +17,7 @@
                 <div id="post-body-content">
                     <div class="postbox">
                         <h2 class="hndle"><span>Upcoming Trainings Overview</span></h2>
-                        <div class="inside">
+                        <div class="inside sot-tr-padded-inside">
                             <table class="wp-list-table widefat fixed striped table-view-list">
                                 <thead>
                                     <tr>
@@ -63,9 +63,9 @@
                         <div class="postbox" id="event-<?php echo esc_attr($training->id); ?>">
                             <h2 class="hndle">
                                 <span>Registrations for <?php echo esc_html($training->event_name); ?></span>
-                                <small style="font-weight: normal; margin-left: 10px;">at <?php echo esc_html($training->location); ?></small>
+                                <small class="sot-tr-training-location">at <?php echo esc_html($training->location); ?></small>
                             </h2>
-                            <div class="inside">
+                            <div class="inside sot-tr-padded-inside">
                                 <form id="staff-reg-<?php echo $training->id ?>" method="GET" action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>">
                                     <?php wp_nonce_field('staff_reg_nonce', 'reg_nonce_field'); ?>
                                     <input type="hidden" name="page" value="<?php echo esc_attr($_REQUEST['page']) ?>" />

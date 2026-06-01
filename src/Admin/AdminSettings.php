@@ -50,7 +50,7 @@ class AdminSettings {
         $parent_slug = 'er_gen_set';
         $main_page = add_menu_page('Training Registration', 'Training Registration', 'edit_plugins', $parent_slug, array($this, 'erSettingsPage'), 'dashicons-id-alt', 4);
         $new_event_page = add_submenu_page($parent_slug, 'Create Training', 'Create Training', 'edit_plugins', 'er_new_event_set', array($this, 'erNewEvent'));
-        add_submenu_page($parent_slug, 'View Trainings', 'View Registrations', 'edit_plugins', 'er_view_reg_set', array($this, 'erViewEvent'));
+        $view_reg_page = add_submenu_page($parent_slug, 'View Trainings', 'View Registrations', 'edit_plugins', 'er_view_reg_set', array($this, 'erViewEvent'));
         $settings_page = add_submenu_page($parent_slug, 'Settings', 'Settings', 'edit_plugins', 'er_settings', array($this, 'erSettings') );
 
         // Handle POST actions before headers are sent
@@ -61,45 +61,36 @@ class AdminSettings {
         // Properly enqueue styles for specific pages
         add_action("admin_print_styles-$main_page", array($this, 'load_home_style'));
         add_action("admin_print_styles-$new_event_page", array($this, 'enqueue_new_training_CSS'));
+        add_action("admin_print_styles-$view_reg_page", array($this, 'load_home_style'));
     }
 
-    /**
-     * Handle actions for the main overview page early
-     */
     public function handleOverviewPageActions() {
-        // Handle Deletion
         if (isset($_POST['confirm_remove']) && wp_verify_nonce($_POST['remove_training_nonce_field'], 'remove_training_nonce')) {
             $removal_id = intval($_POST['removal-id']);
             $this->event_repo->delete($removal_id);
             $this->registration_repo->delete_by_event($removal_id);
             
-            // Redirect to refresh list and show notice
             wp_safe_redirect(admin_url('admin.php?page=er_gen_set&deleted=true'));
             exit;
         }
 
-        // Register notices for redirects
-        if (isset($_GET['deleted']) && $_GET['deleted'] === 'true') {
+        if (($_GET['deleted'] ?? '') === 'true') {
             add_action('admin_notices', array($this->admin_notice, 'tableSuccessDeletion'));
         }
-        if (isset($_GET['created']) && $_GET['created'] === 'true') {
+
+        if (($_GET['created'] ?? '') === 'true') {
             add_action('admin_notices', array($this->admin_notice, 'tableSuccessCreation'));
         }
     }
 
-    /**
-     * Handle actions for the settings page early
-     */
     public function handleSettingsPageActions() {
         if (isset($_POST['create-page']) && wp_verify_nonce($_POST['create_page_nonce_field'], 'create_page_nonce')) {
-            $creator = new PageCreator();
-            $creator->run();
-            
+            (new PageCreator())->run();
             wp_safe_redirect(admin_url('admin.php?page=er_settings&pages-created=true'));
             exit;
         }
 
-        if (isset($_GET['pages-created']) && $_GET['pages-created'] === 'true') {
+        if (($_GET['pages-created'] ?? '') === 'true') {
             add_action('admin_notices', array($this->admin_notice, 'pagesCreated'));
         }
     }
@@ -195,118 +186,101 @@ class AdminSettings {
         $this->content->overview($this->home_table, $stats);
     }
 
-    /**
-     * CREATE TRAINING PAGE
-     */
     public function erNewEvent() {
-        // Add capability check
         if (!current_user_can('edit_plugins')) {
             wp_die(__('You do not have sufficient permissions to access this page.'));
         }
 
-        // Determine Data to Display
-        if (isset($_GET['view-event']) && isset($_GET['event-id'])) {
-            $id = intval($_GET['event-id']);
-            $data = $this->event_repo->get_by_id($id);
-            if (!$data) {
-                wp_die(__('Training event not found.'));
-            }
-        } else {
-            // Preset data for a new blank form
-            $data = (object) array(
-                'id'            => -1,
-                'event_name'    => '',
-                'max'           => '',
-                'open_time'     => date("Y-m-d\TH:i", current_time('timestamp')),
-                'close_time'    => date("Y-m-d\TH:i", strtotime("+15 days", current_time('timestamp'))),
-                'start_time'    => date("Y-m-d\TH:i", strtotime("+30 days", current_time('timestamp'))),
-                'end_time'      => date("Y-m-d\TH:i", strtotime("+37 days", current_time('timestamp'))),
-                'location'      => '',
-                'limit_max'     => 0,
-                'activated'     => 1,
-                'comment'       => '',
-                'num_reg'       => 0
-            );
+        $id = isset($_GET['event-id']) ? intval($_GET['event-id']) : -1;
+        $data = ($id !== -1) ? $this->event_repo->get_by_id($id) : null;
+
+        if ($id !== -1 && !$data) {
+            wp_die(__('Training event not found.'));
         }
+
+        $data ??= (object) [
+            'id'            => -1,
+            'event_name'    => '',
+            'max'           => '',
+            'open_time'     => date("Y-m-d\TH:i", current_time('timestamp')),
+            'close_time'    => date("Y-m-d\TH:i", strtotime("+15 days", current_time('timestamp'))),
+            'start_time'    => date("Y-m-d\TH:i", strtotime("+30 days", current_time('timestamp'))),
+            'end_time'      => date("Y-m-d\TH:i", strtotime("+37 days", current_time('timestamp'))),
+            'location'      => '',
+            'limit_max'     => 0,
+            'activated'     => 1,
+            'comment'       => '',
+            'num_reg'       => 0
+        ];
 
         $this->content->new_event($data, $this->tools);
     }
 
-    /**
-     * Handle Creation/Update Submission
-     */
     public function handleEventSubmission() {
-        $is_create = isset($_POST['create_training']) && wp_verify_nonce($_POST['training_nonce_field'], 'create_training_nonce');
-        $is_edit   = isset($_POST['submit_edit']) && wp_verify_nonce($_POST['training_nonce_field'], 'edit_training_nonce');
+        $nonce = $_POST['training_nonce_field'] ?? '';
+        $is_create = isset($_POST['create_training']) && wp_verify_nonce($nonce, 'create_training_nonce');
+        $is_edit = isset($_POST['submit_edit']) && wp_verify_nonce($nonce, 'edit_training_nonce');
 
         if (!$is_create && !$is_edit) {
             return;
         }
 
-        // Sanitize inputs
-        $event_name     = sanitize_text_field($_POST['event-name']);
-        $location       = sanitize_text_field($_POST['location']);
-        $start_date     = sanitize_text_field($_POST['start-date']);
-        $limit_max      = isset($_POST['max-limit']) ? 1 : 0;
-        $max            = intval($_POST['max']);
-        $event_id       = intval($_POST['event-id']);
-        $open_date      = sanitize_text_field($_POST['open-date']);
-        $close_date     = sanitize_text_field($_POST['close-date']);
-        $end_date       = sanitize_text_field($_POST['end-date']);
-        $comment        = sanitize_textarea_field($_POST['comment']);
-        $activated      = isset($_POST['activated']) ? 1 : 0;
+        $max = intval($_POST['max']);
+        $open_date = $_POST['open-date'];
+        $close_date = $_POST['close-date'];
+        $start_date = $_POST['start-date'];
+        $end_date = $_POST['end-date'];
+        $limit_max = isset($_POST['max-limit']) ? 1 : 0;
+        $event_name = sanitize_text_field($_POST['event-name']);
+        $location = sanitize_text_field($_POST['location']);
 
-        // 1. Max Trainee Validation
+        // Validations
         if ($max < 0) {
             add_action('admin_notices', array($this->admin_notice, 'invalidMaxTrainee'));
             return;
         }
 
-        // 2. Time Order Validation
         if (strtotime($close_date) <= strtotime($open_date) || strtotime($end_date) <= strtotime($start_date)) {
             add_action('admin_notices', array($this->admin_notice, 'invalidTimeOrder'));
             return;
         }
 
-        // 3. Logic Validation (Max limit with unlimited registration)
-        if ($max == 0 && $limit_max == 1) {
+        if ($max === 0 && $limit_max === 1) {
             add_action('admin_notices', array($this->admin_notice, 'createEventNotAllowed'));
             return;
         }
 
-        // 4. Duplicate Check
-        if (!$this->tools->isValidEvent($event_name, $location, $start_date, $end_date, $event_id)) {
+        if (!$this->tools->isValidEvent($event_name, $location, $start_date, $end_date, intval($_POST['event-id']))) {
             add_action('admin_notices', array($this->admin_notice, 'tableAlreadyExist'));
             return;
         }
 
-        $event_data = array(
+        $event_data = [
             "event_name"    => $event_name,
-            "max"           => ($max == 0) ? -999 : $max,
+            "max"           => ($max === 0) ? -999 : $max,
             "open_time"     => $open_date,
             "close_time"    => $close_date,
             "start_time"    => $start_date,
             "end_time"      => $end_date,
             "location"      => $location,
             "limit_max"     => $limit_max,
-            "comment"       => $comment,
-            "activated"     => $activated,
-        );
+            "comment"       => sanitize_textarea_field($_POST['comment']),
+            "activated"     => isset($_POST['activated']) ? 1 : 0,
+        ];
 
-        if ($is_create) {
-            $event_data["num_reg"] = 0;
-            $success = $this->event_repo->insert($event_data);
-            if ($success) {
-                // Redirect to overview page
-                wp_safe_redirect(admin_url('admin.php?page=er_gen_set&created=true'));
-                exit;
-            } else {
-                add_action('admin_notices', array($this->admin_notice, 'tableFailedCreation'));
-            }
-        } else {
-            $this->event_repo->update($event_id, $event_data);
+        if ($is_edit) {
+            $this->event_repo->update(intval($_POST['event-id']), $event_data);
             add_action('admin_notices', array($this->admin_notice, 'tableSuccessUpdate'));
+            return;
         }
+
+        $event_data["num_reg"] = 0;
+        if ($this->event_repo->insert($event_data)) {
+            wp_safe_redirect(admin_url('admin.php?page=er_gen_set&created=true'));
+            exit;
+        }
+
+        add_action('admin_notices', array($this->admin_notice, 'tableFailedCreation'));
     }
 
     /**
@@ -339,75 +313,62 @@ class AdminSettings {
         $this->content->view_settings();
     }
 
-    /**
-     * Download to Excel
-     * This function migrated from PHPExcel to PHPSpreadsheet
-     */
     public function exportRegistrationsToExcel() {
-        if (!isset($_GET['print-excel']) || $_GET['print-excel'] !== "true") {
+        if (($_GET['print-excel'] ?? '') !== "true") {
             return;
         }
 
-        if (!wp_verify_nonce($_GET['nonce'], 'excel_export_nonce')) {
+        if (!wp_verify_nonce($_GET['nonce'] ?? '', 'excel_export_nonce')) {
             wp_die(__('Invalid nonce.'));
         }
 
-        // Add capability check for Excel export
         if (!current_user_can('edit_plugins')) {
             wp_die(__('You do not have sufficient permissions to access this page.'));
         }
 
         $event_id = intval($_GET['id']);
-        $mode_strategy = RegistrationModeFactory::get_current_mode();
-        
-        $registrations = $this->registration_repo->get_by_event($event_id);
-        $event_info    = $this->event_repo->get_by_id($event_id);
-        $data_array    = array();
+        $event_info = $this->event_repo->get_by_id($event_id);
 
         if (!$event_info) {
             wp_die(__('Event not found.'));
         }
 
+        $mode_strategy = RegistrationModeFactory::get_current_mode();
+        $registrations = $this->registration_repo->get_by_event($event_id);
+        $data_array = [];
+
         global $wpdb;
 
-        foreach($registrations as $trainee) {
-            $trainee_id     = $trainee->staff;
-            $reg_time       = date("F j", strtotime($trainee->reg_time));
-            $trainee_data   = $this->staff_repo->get_by_id($trainee_id);
+        foreach ($registrations as $trainee) {
+            $trainee_data = $this->staff_repo->get_by_id($trainee->staff);
+            $reg_time = date("F j", strtotime($trainee->reg_time));
 
             // Get school nickname
-            $school_id		= $wpdb->get_var($wpdb->prepare("SELECT `ID` FROM $wpdb->users WHERE `user_login` = %s", $trainee_data->school));
-            $school_nick	= $wpdb->get_var($wpdb->prepare("SELECT `meta_value` FROM $wpdb->usermeta WHERE `user_id` = %d AND `meta_key` = %s", $school_id, 'nickname'));
+            $school_id = $wpdb->get_var($wpdb->prepare("SELECT `ID` FROM $wpdb->users WHERE `user_login` = %s", $trainee_data->school));
+            $school_nick = $wpdb->get_var($wpdb->prepare("SELECT `meta_value` FROM $wpdb->usermeta WHERE `user_id` = %d AND `meta_key` = %s", $school_id, 'nickname'));
 
             $data_array[] = $mode_strategy->get_staff_fields($trainee_data, $reg_time, $school_nick);
         }
 
-        // Set filenames
         $template_file = $mode_strategy->get_excel_template();
-        $output_filename = $event_info->event_name . '_' . $event_info->location . '_' . date("Y-m-d", strtotime($event_info->start_time)) . '.xlsx';
+        $output_filename = "{$event_info->event_name}_{$event_info->location}_" . date("Y-m-d", strtotime($event_info->start_time)) . '.xlsx';
 
-        // Read the template registration form
         $registration_sheet = IOFactory::load($template_file);
-
-        // Get the first sheet
         $data_sheet = $registration_sheet->getActiveSheet();
 
-        // Write data
         $data_sheet->fromArray($data_array, null, 'A2');
         $data_sheet->getStyle($mode_strategy->get_excel_column_format())->getNumberFormat()->setFormatCode(NumberFormat::FORMAT_TEXT);
 
-        // Redirect output to a client’s web browser (Excel2007)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="'. $output_filename .'"');
+        header('Content-Disposition: attachment;filename="' . $output_filename . '"');
         header('Cache-Control: max-age=0');
         header('Cache-Control: max-age=1');
-        header ('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
-        header ('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT'); // always modified
-        header ('Cache-Control: cache, must-revalidate'); // HTTP/1.1
-        header ('Pragma: public'); // HTTP/1.0
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        header('Cache-Control: cache, must-revalidate');
+        header('Pragma: public');
 
-        $objWriter = IOFactory::createWriter($registration_sheet, 'Xlsx');
-        $objWriter->save('php://output');
+        IOFactory::createWriter($registration_sheet, 'Xlsx')->save('php://output');
         exit();
     }
 }

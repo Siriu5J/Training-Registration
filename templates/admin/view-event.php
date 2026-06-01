@@ -18,7 +18,7 @@ $event = (new \SOT\TrainingRegistration\Data\Repositories\EventRepository())->ge
             <div id="post-body-content">
                 <div class="postbox">
                     <h2 class="hndle"><span>Registration List</span></h2>
-                    <div class="inside">
+                    <div class="inside sot-tr-padded-inside">
                         <form id="staff-reg" method="GET" action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>">
                             <?php wp_nonce_field('staff_reg_nonce', 'reg_nonce_field'); ?>
                             <input type="hidden" name="event-id" value="<?php echo esc_attr($id) ?>" />
@@ -35,7 +35,7 @@ $event = (new \SOT\TrainingRegistration\Data\Repositories\EventRepository())->ge
             <div id="postbox-container-1" class="postbox-container">
                 <div class="postbox">
                     <h2 class="hndle"><span>Event Details</span></h2>
-                    <div class="inside">
+                    <div class="inside sot-tr-padded-inside">
                         <div class="misc-pub-section">
                             <strong>Location:</strong> <?php echo esc_html($event->location); ?>
                         </div>
@@ -59,7 +59,7 @@ $event = (new \SOT\TrainingRegistration\Data\Repositories\EventRepository())->ge
 
                 <div class="postbox">
                     <h2 class="hndle"><span>Actions</span></h2>
-                    <div class="inside">
+                    <div class="inside sot-tr-padded-inside">
                         <?php 
                         $mode = get_option('my_mode');
                         $nonce = wp_create_nonce('excel_export_nonce');

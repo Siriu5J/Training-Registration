@@ -30,3 +30,21 @@
 .postbox .inside textarea.large-text {
     width: 100%;
 }
+
+/* Shared classes for training pages */
+.sot-tr-danger-postbox {
+    border-color: #d63638 !important;
+}
+
+.sot-tr-danger-hndle {
+    border-bottom-color: #d63638 !important;
+    color: #d63638 !important;
+}
+
+.sot-tr-danger-button {
+    color: #d63638 !important;
+}
+
+.sot-tr-hidden-form {
+    display: none;
+}

@@ -24,7 +24,7 @@
                                 <th>Email</th>
                             <?php endif; ?>
                             <th>Registered Training(s)</th>
-                            <th style="text-align: center;">Actions</th>
+                            <th class="sot-tr-text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,25 +40,25 @@
                             }
                             ?>
                             <tr>
-                                <td style="font-weight: 600;"><?php echo esc_html($tools->idtoName($staff->id)); ?></td>
+                                <td class="sot-tr-fw-600"><?php echo esc_html($tools->idtoName($staff->id)); ?></td>
                                 <td><?php echo esc_html($staff->sex == 'M' ? 'Male' : 'Female'); ?></td>
                                 <td><?php echo esc_html($staff->pos); ?></td>
                                 <?php if ($my_mode == 0) : ?>
-                                    <td style="font-size: 0.9rem;"><?php echo esc_html($staff->email); ?></td>
+                                    <td class="sot-tr-fs-09"><?php echo esc_html($staff->email); ?></td>
                                 <?php endif; ?>
                                 <td>
                                     <?php if (!empty($training_list)) : ?>
-                                        <ul style="margin: 0; padding-left: 1.25rem; font-size: 0.9rem;">
+                                        <ul class="sot-tr-ul-list">
                                             <?php foreach ($training_list as $t_name) : ?>
                                                 <li><?php echo $t_name; ?></li>
                                             <?php endforeach; ?>
                                         </ul>
                                     <?php else : ?>
-                                        <span style="color: #a0aec0; font-style: italic; font-size: 0.9rem;">No upcoming trainings</span>
+                                        <span class="sot-tr-no-trainings">No upcoming trainings</span>
                                     <?php endif; ?>
                                 </td>
-                                <td style="text-align: center;">
-                                    <div style="display: flex; gap: 1.25rem; justify-content: left;">
+                                <td class="sot-tr-text-center">
+                                    <div class="sot-tr-action-flex">
                                         <button type="submit" name="edit-profile" value="<?php echo $staff->id; ?>" class="button" title="Edit Profile">
 
                                             <span class="dashicons dashicons-edit"></span>

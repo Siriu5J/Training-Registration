@@ -126,8 +126,8 @@
 
                     <?php if ($show_stat) : ?>
                         <!-- Danger Zone -->
-                        <div class="postbox" style="border-color: #d63638;">
-                            <h2 class="hndle" style="border-bottom-color: #d63638; color: #d63638;"><span>Danger Zone</span></h2>
+                        <div class="postbox sot-tr-danger-postbox">
+                            <h2 class="hndle sot-tr-danger-hndle"><span>Danger Zone</span></h2>
                             <div class="inside">
                                 <p class="description">
                                     <strong>Remove Training</strong><br>
@@ -136,7 +136,7 @@
                                 <p>Type <code>remove training</code> to confirm:</p>
                                 <input type="text" id="removal_confirm" class="widefat" placeholder="remove training" autocomplete="off" />
                                 <br><br>
-                                <button type="button" id="delete_button" class="button button-link-delete" style="color: #d63638;" onclick="if(document.getElementById('removal_confirm').value === 'remove training') { document.getElementById('remove_event_form').submit(); } else { alert('Please type \'remove training\' to confirm.'); }">Remove Training</button>
+                                <button type="button" id="delete_button" class="button button-link-delete sot-tr-danger-button" onclick="if(document.getElementById('removal_confirm').value === 'remove training') { document.getElementById('remove_event_form').submit(); } else { alert('Please type \'remove training\' to confirm.'); }">Remove Training</button>
                             </div>
                         </div>
                     <?php endif; ?>
@@ -148,7 +148,7 @@
 
     <?php if ($show_stat) : ?>
         <!-- Hidden removal form -->
-        <form id="remove_event_form" method="post" action="<?php echo admin_url('admin.php?page=er_gen_set'); ?>" style="display:none;">
+        <form id="remove_event_form" method="post" action="<?php echo admin_url('admin.php?page=er_gen_set'); ?>" class="sot-tr-hidden-form">
             <?php wp_nonce_field('remove_training_nonce', 'remove_training_nonce_field'); ?>
             <input type="hidden" name="removal-id" value="<?php echo esc_attr($data->id) ?>" />
             <input type="hidden" name="confirm" value="remove training" />

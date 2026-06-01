@@ -70,7 +70,8 @@
     align-items: center;
 }
 
-.postbox .inside {
+/* Reset padding for tables that should be edge-to-edge */
+.postbox .inside.sot-tr-no-padding {
     padding: 0;
     margin-top: 0;
 }
@@ -86,4 +87,38 @@
 /* Responsive Table container if needed */
 #post-body-content .wp-list-table {
     border: none !important;
+}
+
+/* Custom admin styles extracted from templates */
+.sot-tr-training-location {
+    font-weight: normal;
+    margin-left: 10px;
+}
+
+.sot-tr-danger-postbox {
+    border-color: #d63638 !important;
+}
+
+.sot-tr-danger-hndle {
+    border-bottom-color: #d63638 !important;
+    color: #d63638 !important;
+}
+
+.sot-tr-danger-button {
+    color: #d63638 !important;
+}
+
+.sot-tr-hidden-form {
+    display: none;
+}
+
+/* Standard padding for dashboard tiles */
+#poststuff .postbox .inside.sot-tr-padded-inside {
+    padding: 12px;
+}
+
+.sot-tr-recent-reg-stats {
+    color: #646970;
+    display: block;
+    margin-top: 2px;
 }

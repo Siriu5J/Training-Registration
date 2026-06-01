@@ -36,11 +36,11 @@
                 <div class="sot-tr-form-row">
                     <div class="sot-tr-form-group">
                         <label>Gender*</label>
-                        <div style="display: flex; gap: 1.5rem; margin-top: 0.25rem; height: 3rem; align-items: center;">
-                            <label style="font-weight: 400; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <div class="sot-tr-radio-group">
+                            <label class="sot-tr-radio-label">
                                 <input type="radio" name="sex" value="M" id="M" required/> Male
                             </label>
-                            <label style="font-weight: 400; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                            <label class="sot-tr-radio-label">
                                 <input type="radio" name="sex" value="F" id="F" required/> Female
                             </label>
                         </div>
