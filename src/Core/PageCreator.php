@@ -26,6 +26,14 @@ class PageCreator {
             update_option('show_on_front', 'page');
             update_option('page_on_front', $home_id);
         }
+
+        // Set permalink structure to "Post name"
+        if (get_option('permalink_structure') !== '/%postname%/') {
+            update_option('permalink_structure', '/%postname%/');
+        }
+        
+        // Flush rewrite rules to ensure the new permalink structure and pages are recognized
+        flush_rewrite_rules();
     }
 
     /**
