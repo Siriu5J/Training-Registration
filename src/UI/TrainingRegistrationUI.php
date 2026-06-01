@@ -46,8 +46,10 @@ class TrainingRegistrationUI {
      * UI DASHBOARD
      */
     public function uiDashboard() {
+        ob_start();
         if (!is_user_logged_in()) {
-            return $this->render('ui/notice', array('type' => 'red', 'message' => 'You must be logged in to view the dashboard.'));
+            $this->render('ui/notice', array('type' => 'red', 'message' => 'You must be logged in to view the dashboard.'));
+            return ob_get_clean();
         }
 
         $username = wp_get_current_user()->user_login;
@@ -60,13 +62,15 @@ class TrainingRegistrationUI {
             'agenda'         => $this->registration_repo->get_school_agenda($username, 90)
         );
 
-        return $this->ui_content->dashboard($stats);
+        $this->ui_content->dashboard($stats);
+        return ob_get_clean();
     }
 
     /*
     STAFF PROFILE REGISTRATION FORM
      */
     public function staffFormCreation() {
+        ob_start();
         $username = wp_get_current_user()->user_login;  // Get Current username for school name
         $mode_strategy = RegistrationModeFactory::get_current_mode();
 
@@ -86,12 +90,14 @@ class TrainingRegistrationUI {
         }
 
         $mode_strategy->render_staff_creation_form($username, $this->ui_content);
+        return ob_get_clean();
     }
 
     /*
     REGISTER TO TRAINING
      */
     public function eventRegistration() {
+        ob_start();
         $time_now = current_time('mysql');
 
         // Take care of the form
@@ -136,12 +142,14 @@ class TrainingRegistrationUI {
             'tools'             => $this->tools,
             'show_available'    => get_option('show_availability', 0)
         ));
+        return ob_get_clean();
     }
 
     /**
     *MANAGE STAFF PROFILES
     */
     function viewEditStaff() {
+        ob_start();
         $username = wp_get_current_user()->user_login;
         $time_now = current_time('mysql');
         $my_mode = get_option('my_mode');
@@ -201,5 +209,6 @@ class TrainingRegistrationUI {
                 'event_repo'            => $this->event_repo
             ));
         }
+        return ob_get_clean();
     }
 }

@@ -14,31 +14,31 @@ use SOT\TrainingRegistration\Traits\TemplateRenderer;
 class UIContent {
     use TemplateRenderer;
 
-    public function create_staff_cn($username) {
-        $this->render('ui/create-staff-cn', array('username' => $username, 'this_year' => date("Y")));
+    public function create_staff_cn($username, $echo = true) {
+        return $this->render('ui/create-staff-cn', array('username' => $username, 'this_year' => date("Y")), $echo);
     }
 
-    public function create_staff_my($username) {
-        $this->render('ui/create-staff-my', array('username' => $username, 'this_year' => date("Y")));
+    public function create_staff_my($username, $echo = true) {
+        return $this->render('ui/create-staff-my', array('username' => $username, 'this_year' => date("Y")), $echo);
     }
 
-    public function edit_staff_cn($username, $profile, $staff_id) {
-        $this->render('ui/edit-staff-cn', array(
+    public function edit_staff_cn($username, $profile, $staff_id, $echo = true) {
+        return $this->render('ui/edit-staff-cn', array(
             'username' => $username,
             'profile'  => $profile,
             'staff_id' => $staff_id
-        ));
+        ), $echo);
     }
 
-    public function edit_staff_my($username, $profile, $staff_id) {
-        $this->render('ui/edit-staff-my', array(
+    public function edit_staff_my($username, $profile, $staff_id, $echo = true) {
+        return $this->render('ui/edit-staff-my', array(
             'username' => $username,
             'profile'  => $profile,
             'staff_id' => $staff_id
-        ));
+        ), $echo);
     }
 
-    public function dashboard($stats) {
-        $this->render('ui/dashboard', array('stats' => $stats));
+    public function dashboard($stats, $echo = true) {
+        return $this->render('ui/dashboard', array('stats' => $stats), $echo);
     }
 }

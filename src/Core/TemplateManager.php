@@ -37,7 +37,7 @@ class TemplateManager {
             $current_template = get_post_meta(get_the_ID(), '_wp_page_template', true);
             
             if ($current_template === $this->template_slug) {
-                $plugin_template = plugin_dir_path(dirname(__FILE__, 2)) . 'templates/' . $this->template_slug;
+                $plugin_template = ER_PLUGIN_DIR . '/templates/' . $this->template_slug;
                 
                 if (file_exists($plugin_template)) {
                     return $plugin_template;

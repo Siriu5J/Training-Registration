@@ -10,75 +10,54 @@ namespace SOT\TrainingRegistration\Core;
  * @package SOT\TrainingRegistration\Core
  */
 class PageCreator {
+    /**
+     * Run the page creation/update process.
+     */
     public function run() {
-        if (post_exists('Create Staff Profile', '', '', 'page') == 0) {
-            $this->create_staff_profile();
-        }
-        if (post_exists('Manage My Staff', '', '', 'page') == 0) {
-            $this->create_manage_my_staff();
-        }
-        if (post_exists('Register for Training', '', '', 'page') == 0) {
-            $this->create_register_to_training();
-        }
-        if (post_exists('Training Registration', '', '', 'page') == 0) {
-            $this->create_home();
+        $this->upsert_page('Create Staff Profile', '[staff_form]');
+        $this->upsert_page('Manage My Staff', '[view_staff]');
+        $this->upsert_page('Register for Training', '[register_training]');
+        
+        $home_id = $this->upsert_page('Training Registration', '[training_dashboard]');
+        
+        if ($home_id) {
+            update_option('show_on_front', 'page');
+            update_option('page_on_front', $home_id);
         }
     }
 
-    private function create_staff_profile() {
-        $content = '<!-- wp:shortcode -->[staff_form]<!-- /wp:shortcode -->';
-        $staff_profile_content = array(
-            'post_title'    =>  "Create Staff Profile",
-            'post_type'     =>  'page',
-            'page_template' =>  'app-layout.php',
-            'post_content'  =>  $content,
-            'post_status'   =>  'publish'
-        );
+    /**
+     * Creates a page if it doesn't exist, or updates the template for an existing one.
+     * 
+     * @param string $title
+     * @param string $shortcode
+     * @return int|false Page ID on success, false on failure.
+     */
+    private function upsert_page($title, $shortcode) {
+        $page_id = post_exists($title, '', '', 'page');
+        $content = "<!-- wp:shortcode -->{$shortcode}<!-- /wp:shortcode -->";
 
-        wp_insert_post($staff_profile_content);
-    }
+        if ($page_id == 0) {
+            $page_data = array(
+                'post_title'    => $title,
+                'post_type'     => 'page',
+                'post_content'  => $content,
+                'post_status'   => 'publish'
+            );
+            $page_id = wp_insert_post($page_data);
+        } else {
+            // Ensure content matches just in case
+            $page_data = array(
+                'ID'           => $page_id,
+                'post_content' => $content,
+            );
+            wp_update_post($page_data);
+        }
 
-    private function create_manage_my_staff() {
-        $content = '<!-- wp:shortcode -->[view_staff]<!-- /wp:shortcode -->';
-        $manage_staff_content = array(
-            'post_title'    =>  "Manage My Staff",
-            'post_type'     =>  'page',
-            'page_template' =>  'app-layout.php',
-            'post_content'  =>  $content,
-            'post_status'   =>  'publish'
-        );
+        if ($page_id) {
+            update_post_meta($page_id, '_wp_page_template', 'app-layout.php');
+        }
 
-        wp_insert_post($manage_staff_content);
-    }
-
-    private function create_register_to_training() {
-        $content = '<!-- wp:shortcode -->[register_training]<!-- /wp:shortcode -->';
-        $create_register_content = array(
-            'post_title'    =>  "Register for Training",
-            'post_type'     =>  'page',
-            'page_template' =>  'app-layout.php',
-            'post_content'  =>  $content,
-            'post_status'   =>  'publish'
-        );
-
-        wp_insert_post($create_register_content);
-    }
-
-    private function create_home() {
-        $site_home = (string)get_option('home');
-        $content = '<!-- wp:shortcode -->[training_dashboard]<!-- /wp:shortcode -->';
-        $create_home = array(
-            'post_title'    =>  "Training Registration",
-            'post_type'     =>  'page',
-            'page_template' =>  'app-layout.php',
-            'post_content'  =>  $content,
-            'post_status'   =>  'publish'
-        );
-
-        $id = wp_insert_post($create_home);
-
-        // Set as home
-        update_option('show_on_front', 'page');
-        update_option('page_on_front', $id);
+        return $page_id;
     }
 }

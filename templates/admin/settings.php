@@ -19,7 +19,7 @@
         <p>Use the button below to initialize the mandatory pages required for the plugin to function correctly (Staff Management, Event Registration, etc.).</p>
         <form id="create" name="create" method="post" action="<?php echo esc_url($_SERVER['REQUEST_URI']); ?>">
             <?php wp_nonce_field('create_page_nonce', 'create_page_nonce_field'); ?>
-            <input type="submit" class="button button-secondary" name="create-page" id="create-page" value="Create Necessary Pages">
+            <input type="submit" class="button button-secondary" name="create-page" id="create-page" value="Create/Update Necessary Pages">
         </form>
     </div>
 </div>

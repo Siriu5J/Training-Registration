@@ -85,11 +85,11 @@
             padding: 0 20px;
         }
         .app-footer {
-            margin-top: 50px;
-            padding: 20px;
-            text-align: center;
-            font-size: 0.8rem;
-            color: #666;
+            display: none !important;
+        }
+        /* Hide theme footer elements that might be injected via wp_footer or otherwise */
+        footer, .site-footer, #colophon, .footer-nav-widgets-wrapper, #site-footer {
+            display: none !important;
         }
     </style>
 </head>
