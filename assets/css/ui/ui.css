@@ -1,0 +1,783 @@
+/* SOT Training Registration Front-end UI Styles */
+
+/* Standard WordPress Block Compatibility - Forcing consistent borders */
+.wp-block-table,
+.sot-tr-table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+    border: none !important;
+    margin-bottom: 0 !important;
+}
+
+.wp-block-table th,
+.wp-block-table td,
+.sot-tr-table th,
+.sot-tr-table td {
+    padding: 0.75rem 1rem !important;
+    border: none !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    word-break: normal !important;
+    text-align: left !important;
+}
+
+.sot-tr-table th {
+    background-color: #f8fafc !important;
+    font-weight: 700 !important;
+    color: #4a5568 !important;
+    text-transform: uppercase !important;
+    font-size: 0.75rem !important;
+    letter-spacing: 0.05em !important;
+}
+
+/* Ensure our container feels like a standard theme block */
+.sot-tr-container {
+    max-width: 100%;
+    margin-top: 2rem;
+    margin-bottom: 6rem;
+    padding-bottom: 4rem;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #1d2327;
+    clear: both;
+    display: block;
+}
+
+.sot-tr-container p {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.sot-tr-container h2 {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: #1d2327;
+}
+
+.sot-tr-container h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    color: #1d2327;
+}
+
+.sot-tr-container fieldset {
+    border: none;
+    padding: 0;
+    margin: 0 0 2.5rem 0;
+}
+
+.sot-tr-container legend {
+    font-weight: 700;
+    font-size: 1.25rem;
+    margin-bottom: 1.25rem;
+    color: #1d2327;
+    border-bottom: 2px solid #edf2f7;
+    width: 100%;
+    padding-bottom: 0.5rem;
+}
+
+/* Spacer utility to force content away from footer */
+.sot-tr-spacer {
+    height: 100px;
+    clear: both;
+    display: block;
+    width: 100%;
+}
+
+.sot-tr-container hr {
+    margin: 2.5rem 0;
+    border: 0;
+    border-top: 1px solid #e2e8f0;
+}
+
+.sot-tr-reg-form-wrap {
+    margin-top: 3.5rem;
+}
+
+.sot-tr-training-comment {
+    font-size: 0.9rem;
+    color: #4a5568;
+    margin-top: 0.5rem;
+    font-style: italic;
+    line-height: 1.4;
+}
+
+/* Notices - using softer colors that work well with most themes */
+.er-notice {
+    padding: 1.25rem;
+    margin-bottom: 2.5rem;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-left: 4px solid;
+}
+
+.er-notice-green {
+    background-color: #f0fff4;
+    color: #22543d;
+    border-color: #38a169;
+}
+
+.er-notice-red {
+    background-color: #fff5f5;
+    color: #742a2a;
+    border-color: #e53e3e;
+}
+
+.er-notice .closebtn {
+    font-size: 1.25rem;
+    cursor: pointer;
+    line-height: 1;
+    margin-left: 1rem;
+    opacity: 0.6;
+}
+
+.er-notice .closebtn:hover {
+    opacity: 1;
+}
+
+/* Training List - Grid based layout instead of heavy tables */
+.sot-tr-training-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+    .sot-tr-training-list {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+}
+
+.sot-tr-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.sot-tr-card h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.25rem;
+}
+
+.sot-tr-card-row {
+    display: flex;
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+}
+
+.sot-tr-card-label {
+    font-weight: 600;
+    width: 8.25rem;
+    flex-shrink: 0;
+    color: #4a5568;
+}
+
+.sot-tr-card-value {
+    color: #2d3748;
+}
+
+.sot-tr-card-comment {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #edf2f7;
+    font-style: italic;
+    color: #718096;
+    font-size: 0.9rem;
+}
+
+/* Forms - Theme Friendly Layout */
+.sot-tr-form {
+    max-width: 44rem;
+    margin: 0 auto;
+}
+
+.sot-tr-form-group {
+    margin-bottom: 2.25rem;
+}
+
+.sot-tr-form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.85rem;
+    font-size: 1.15rem;
+    color: #1d2327;
+}
+
+.sot-tr-center {
+    text-align: center;
+}
+
+.sot-tr-form-group input[type="text"],
+.sot-tr-form-group input[type="email"],
+.sot-tr-form-group input[type="number"],
+.sot-tr-form-group input[type="datetime-local"],
+.sot-tr-form-group input[type="tel"],
+.sot-tr-form-group select,
+.sot-tr-form-group textarea {
+    width: 100%;
+    padding: 12px 16px;
+    border: 1px solid #8c8f94; /* WP Admin border color */
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 1.05rem;
+    color: #2c3338;
+    background-color: #fff;
+    box-shadow: 0 0 0 transparent;
+    transition: border-color 0.1s linear, box-shadow 0.1s linear;
+    font-family: inherit;
+}
+
+.sot-tr-form-group input:focus,
+.sot-tr-form-group select:focus,
+.sot-tr-form-group textarea:focus {
+    border-color: #2271b1; /* WP Admin primary blue */
+    box-shadow: 0 0 0 1px #2271b1;
+    outline: 2px solid transparent;
+}
+
+.sot-tr-form-group select {
+    padding-right: 24px;
+    cursor: pointer;
+}
+
+/* Primary Button Styling - fallback for when theme doesn't style .button */
+.sot-tr-container .button.button-primary {
+    background: #2271b1;
+    border-color: #2271b1;
+    color: #fff;
+    text-decoration: none;
+    text-shadow: none;
+    display: inline-block;
+    padding: 6px 12px;
+    font-size: 13px;
+    line-height: 2.15384615;
+    min-height: 30px;
+    margin: 0;
+    cursor: pointer;
+    border-width: 1px;
+    border-style: solid;
+    -webkit-appearance: none;
+    border-radius: 8px;
+    white-space: nowrap;
+    box-sizing: border-box;
+    font-weight: 400;
+}
+
+.sot-tr-container .button.button-primary:hover {
+    background: #135e96;
+    border-color: #135e96;
+    color: #fff;
+}
+
+/* Global Button Icon Alignment Fix */
+.sot-tr-container .button {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important;
+    vertical-align: middle !important;
+    border-radius: 8px !important;
+}
+
+.sot-tr-container .button .dashicons {
+    line-height: 1 !important;
+}
+
+.sot-tr-form-group textarea {
+    min-height: 100px;
+}
+
+
+.sot-tr-submit-row {
+    margin-top: 1.5rem;
+    display: flex;
+    gap: 1rem;
+}
+
+/* Tables - Responsive */
+.sot-tr-table-container {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    background: #fff;
+}
+
+.sot-tr-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.sot-tr-table th,
+.sot-tr-table td {
+    padding: 1.25rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #edf2f7;
+    vertical-align: middle;
+}
+
+/* Definitive Button Parity Design */
+.sot-tr-table .sot-tr-btn-parity {
+    /* Reset & Structural Core */
+    -webkit-appearance: none !important;
+    -moz-appearance: none !important;
+    appearance: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box !important;
+    margin: 0 !important;
+    padding: 0 12px !important;
+    text-decoration: none !important;
+    white-space: nowrap !important;
+    font-family: inherit !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    border-radius: 8px !important;
+    vertical-align: middle !important;
+    transition: all 0.15s ease-in-out !important;
+    
+    /* Absolute Dimensions */
+    height: 32px !important;
+    min-height: 32px !important;
+    max-height: 32px !important;
+    width: 110px !important;
+    min-width: 110px !important;
+    
+    /* Borders - ensured on both for parity */
+    border-width: 1px !important;
+    border-style: solid !important;
+}
+
+/* State: Selectable (Active) */
+.sot-tr-table .sot-tr-btn-parity.state-select {
+    background-color: #2271b1 !important;
+    background: #2271b1 !important;
+    border-color: #2271b1 !important;
+    color: #ffffff !important;
+    cursor: pointer !important;
+}
+
+.sot-tr-table .sot-tr-btn-parity.state-select:hover {
+    background-color: #135e96 !important;
+    background: #135e96 !important;
+    border-color: #135e96 !important;
+    color: #ffffff !important;
+}
+
+/* State: Closed (Disabled) */
+.sot-tr-table .sot-tr-btn-parity.state-closed {
+    background-color: #f6f7f7 !important;
+    background: #f6f7f7 !important;
+    border-color: #dcdcde !important;
+    color: #646970 !important;
+    cursor: not-allowed !important;
+    opacity: 0.8 !important;
+}
+
+/* Icon alignment within parity buttons */
+.sot-tr-table .sot-tr-btn-parity .dashicons {
+    margin: 0 6px 0 0 !important;
+    font-size: 18px !important;
+    width: 18px !important;
+    height: 18px !important;
+    line-height: 18px !important;
+}
+
+.sot-tr-table th {
+    background-color: #f8fafc;
+    font-weight: 700;
+    color: #4a5568;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+.sot-tr-table tr:last-child td {
+    border-bottom: none;
+}
+
+.sot-tr-table tr:hover td {
+    background-color: #f7fafc;
+}
+
+/* Action Buttons for Management */
+.sot-tr-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+/* Helper for centered messages */
+.sot-tr-empty {
+    text-align: center;
+    padding: 3rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 2px dashed #e2e8f0;
+    color: #718096;
+}
+
+/* Form Grid & Layout Utilities */
+.sot-tr-form-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+    .sot-tr-form-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+    }
+}
+
+.sot-tr-form-card {
+    margin-bottom: 2.5rem;
+    position: relative;
+    padding: 2rem !important;
+}
+
+.sot-tr-form-card h3 {
+    margin-top: 0;
+    border-bottom: 1px solid #edf2f7;
+    padding-bottom: 1rem;
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+    color: #2d3748;
+}
+
+/* Staff Grid & Card Actions */
+.sot-tr-staff-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+    .sot-tr-staff-grid {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+}
+
+.sot-tr-card {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.sot-tr-card-content {
+    flex: 1; /* This will expand to push the comment and actions down */
+}
+
+
+.sot-tr-card-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid #edf2f7;
+}
+
+
+.sot-tr-card-actions .button {
+    flex: 1;
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+
+
+/* Custom UI styles extracted from templates */
+.sot-tr-app-header {
+    padding: 16px 0;
+    background-color: #012552;
+    margin-bottom: 30px;
+    color: #fff;
+}
+.sot-tr-app-header .sot-tr-app-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.sot-tr-app-header h1 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+.sot-tr-app-header a {
+    text-decoration: none;
+    color: #fff;
+}
+.sot-tr-app-user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    position: relative;
+    padding: 6px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.1);
+    transition: all 0.2s ease;
+    user-select: none;
+    color: #fff;
+}
+.sot-tr-app-user-info:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+.sot-tr-app-user-info.active {
+    border-color: #fecc00;
+    background: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 0 1px #fecc00;
+}
+.sot-tr-app-user-info img {
+    border-radius: 50%;
+    display: block;
+    border: 1px solid #eee;
+}
+.sot-tr-app-user-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    padding: 8px 0;
+    min-width: 180px;
+    z-index: 1000;
+    display: none;
+}
+.sot-tr-app-user-info.active .sot-tr-app-user-dropdown {
+    display: block;
+}
+.sot-tr-app-user-dropdown a {
+    display: block;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    color: #333 !important;
+    transition: background 0.2s;
+}
+.sot-tr-app-user-dropdown a:hover {
+    background: #f0f0f0;
+}
+.sot-tr-app-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+.sot-tr-app-footer {
+    display: none !important;
+}
+/* Hide theme footer elements that might be injected via wp_footer or otherwise */
+footer, .site-footer, #colophon, .footer-nav-widgets-wrapper, #site-footer {
+    display: none !important;
+}
+
+.sot-tr-dashicon-align {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+    margin-right: 8px;
+    vertical-align: text-bottom;
+}
+.sot-tr-dropdown-divider {
+    margin: 4px 0;
+    border: 0;
+    border-top: 1px solid #eee;
+}
+.sot-tr-logout-link {
+    color: #d63638 !important;
+}
+
+.sot-tr-cancel-select {
+    height: auto;
+    min-height: 9.5rem;
+}
+.sot-tr-hidden-form {
+    display: none;
+}
+
+.sot-tr-radio-group {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 0.25rem;
+    height: 3rem;
+    align-items: center;
+}
+.sot-tr-radio-label {
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+}
+
+.sot-tr-actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(12.5rem, 1fr));
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+}
+.sot-tr-action-btn {
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.sot-tr-agenda-card {
+    margin-top: 2rem;
+}
+.sot-tr-agenda-list {
+    list-style: none;
+    padding: 0;
+}
+.sot-tr-agenda-item {
+    padding: 1rem;
+    border-bottom: 1px solid #edf2f7;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.sot-tr-agenda-icon-wrap {
+    background: #f0f4f8;
+    padding: 0.75rem;
+    border-radius: 8px;
+    color: #2271b1;
+}
+.sot-tr-agenda-text {
+    font-size: 1.1rem;
+    line-height: 1.4;
+}
+
+.sot-tr-profile-hr {
+    margin-bottom: 4rem;
+    border-top: 2px solid #2271b1;
+    opacity: 0.3;
+}
+
+.sot-tr-text-center {
+    text-align: center;
+}
+.sot-tr-fw-600 {
+    font-weight: 600;
+}
+.sot-tr-table-cell {
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+.sot-tr-table-cell-avail {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #2f855a;
+}
+.sot-tr-reg-form-wrap {
+    background: #f8fafc;
+    padding: 2.5rem;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+.sot-tr-margin-top-0 {
+    margin-top: 0;
+}
+
+.sot-tr-fs-09 {
+    font-size: 0.9rem;
+}
+.sot-tr-ul-list {
+    margin: 0;
+    padding-left: 1.25rem;
+    font-size: 0.9rem;
+}
+.sot-tr-no-trainings {
+    color: #a0aec0;
+    font-style: italic;
+    font-size: 0.9rem;
+}
+.sot-tr-action-flex {
+    display: flex;
+    gap: 1.25rem;
+    justify-content: left;
+}
+
+/* Dashboard Card Styles */
+.sot-tr-dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+    gap: 1.25rem;
+    margin: 1.25rem 0 1.875rem 0;
+}
+
+.sot-tr-dashboard-card {
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    padding: 1.25rem;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+}
+
+.sot-tr-card-icon {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.9375rem;
+}
+
+.sot-tr-card-icon .dashicons {
+    font-size: 1.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    color: #fff;
+}
+
+.color-blue { background-color: #2271b1; }
+.color-green { background-color: #38a169; }
+.color-purple { background-color: #805ad5; }
+
+.sot-tr-card-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.sot-tr-card-label {
+    font-size: 0.8rem;
+    color: #718096;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+
+.sot-tr-card-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1a202c;
+    line-height: 1.2;
+}

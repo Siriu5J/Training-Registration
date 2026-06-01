@@ -1,0 +1,33 @@
+{
+  "name": "WordPress Plugin Dev (Training Registration)",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "wordpress",
+  "workspaceFolder": "/var/www/html/wp-content/plugins/training-registration",
+  
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bmewburn.vscode-intelephense-client",
+        "xdebug.php-debug",
+        "mshages.composer",
+        "google.gemini-cli-vscode-ide-companion"
+      ],
+      "settings": {
+        "php.validate.executablePath": "/usr/local/bin/php"
+      }
+    }
+  },
+
+  "containerEnv": {
+    "GEMINI_CLI_SYSTEM_SETTINGS_PATH": "/var/www/html/wp-content/plugins/training-registration/.gemini/settings.json"
+  },
+
+  "mounts": [
+    "source=gemini-cli-oauth-tokens,target=/root/.gemini,type=volume",
+    "source=gemini-cli-www-tokens,target=/var/www/.gemini,type=volume"
+  ],
+
+  "forwardPorts": [8080, 9005],
+
+  "postCreateCommand": "composer install --no-interaction --dev"
+}
