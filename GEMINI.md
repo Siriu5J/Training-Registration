@@ -12,7 +12,7 @@ The Training Registration Plugin is a robust management system for WordPress des
 ## Building and Running
 
 ### Prerequisites
-- PHP 8.1+ (required for PhpSpreadsheet 2.x/5.x).
+- PHP 8.3+ (required for PhpSpreadsheet 2.x/5.x).
 - A WordPress installation with version 6.0+ and the **Twenty Twenty** theme active.
 - [Composer](https://getcomposer.org/) installed.
 - (Optional) [7-Zip](https://www.7-zip.org/) for packaging.
