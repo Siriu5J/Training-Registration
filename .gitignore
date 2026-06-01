@@ -17,3 +17,7 @@ Thumbs.db
 # Build/Release packages
 *.zip
 *.tar.gz
+
+# AI files
+GEMINI.md
+QWEN.md

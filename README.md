@@ -1,8 +1,9 @@
 # Training Registration Plugin
 
 [![WordPress Version](https://img.shields.io/badge/WordPress-6.0%2B-blue.svg)](https://wordpress.org/)
-[![PHP Version](https://img.shields.io/badge/PHP-8.1%2B-8892bf.svg)](https://php.net/)
+[![PHP Version](https://img.shields.io/badge/PHP-8.3%2B-8892bf.svg)](https://php.net/)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![PHPUnit Tests](https://github.com/Siriu5J/Training-Registration/actions/workflows/phpunit.yml/badge.svg)](https://github.com/Siriu5J/Training-Registration/actions/workflows/phpunit.yml)
 
 The Training Registration Plugin is a robust management system for WordPress designed for training organizers and Learning Centers. It provides a complete framework for orchestrating training events, managing staff profiles, and facilitating participant enrollment with professional data export capabilities.
 
@@ -23,7 +24,7 @@ The Training Registration Plugin is a robust management system for WordPress des
 
 ### Prerequisites
 *   **WordPress**: Version 6.0 or higher.
-*   **PHP**: Version 8.1 or higher.
+*   **PHP**: Version 8.3 or higher.
 *   **Theme**: Optimized for the Twenty Twenty-Five theme.
 *   **Composer**: Required for dependency management and autoloading.
 
