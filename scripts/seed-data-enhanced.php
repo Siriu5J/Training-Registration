@@ -128,38 +128,67 @@ class EnhancedSeedDataGenerator {
     private static $first_names = [
         'John', 'Jane', 'Robert', 'Emily', 'Michael', 'Sarah', 'William', 'Jessica',
         'David', 'Lisa', 'James', 'Jennifer', 'Thomas', 'Patricia', 'Christopher',
-        'Linda', 'Daniel', 'Elizabeth', 'Matthew', 'Barbara'
+        'Linda', 'Daniel', 'Elizabeth', 'Matthew', 'Barbara', 'Christopher', 'Amanda',
+        'Matthew', 'Nicole', 'Andrew', 'Ashley', 'Jason', 'Samantha', 'Ryan', 'Melissa',
+        'Kevin', 'Kimberly', 'Nicholas', 'Stephanie', 'Eric', 'Amy', 'Timothy', 'Rachel',
+        'Steven', 'Lauren', 'Adam', 'Jennifer', 'Brandon', 'Michelle',
+        'Jeffrey', 'Jessica', 'Scott', 'Amanda', 'Brian', 'Sarah', 'Richard', 'Elizabeth'
     ];
 
     private static $last_names = [
         'Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Garcia', 'Miller', 'Davis',
         'Rodriguez', 'Martinez', 'Hernandez', 'Lopez', 'Wilson', 'Anderson', 'Taylor',
-        'Thomas', 'Moore', 'Jackson', 'Martin', 'Lee'
+        'Thomas', 'Moore', 'Jackson', 'Martin', 'Lee', 'Perez', 'Thompson', 'White', 'Harris', 'Sanchez',
+        'Clark', 'Ramirez', 'Lewis', 'Robinson', 'Walker', 'Young', 'Allen', 'King',
+        'Wright', 'Scott', 'Torres', 'Nguyen', 'Hill', 'Flores', 'Green', 'Adams', 'Nelson',
+        'Baker', 'Hall', 'Rivera', 'Campbell', 'Mitchell', 'Carter', 'Roberts', 'Gomez'
     ];
 
     private static $cn_names = [
         '张伟', '王芳', '李秀英', '刘伟', '张秀英', '李军', '王静', '张静',
-        '李强', '王强', '刘洋', '张敏', '李敏', '王敏', '郭明', '赵军'
+        '李强', '王强', '刘洋', '张敏', '李敏', '王敏', '郭明', '赵军',
+        '钱伟', '孙芳', '周秀英', '吴军', '郑静', '王强', '冯洋', '陈敏',
+        '褚明', '卫军', '蒋静', '沈强', '韩洋', '杨敏', '朱明', '秦军',
+        '许静', '何强', '吕洋', '施敏', '蔡明', '魏军', '丁静', '邓强'
     ];
 
-    private static $positions = ['Teacher', 'Principal', 'Administrator', 'Director', 'Supervisor'];
+    private static $positions = ['Teacher', 'Principal', 'Administrator', 'Director', 'Supervisor', 'Librarian', 'Counselor', 'Coordinator', 'Assistant', 'Manager'];
 
     private static $locations = [
         'Learning Center A', 'Learning Center B', 'Central Conference Hall', 'School District Office',
         'Regional Educational Hub', 'Virtual Online Platform', 'Community Learning Center',
-        'Innovation Lab', 'Professional Development Center', 'Educational Resource Center'
+        'Innovation Lab', 'Professional Development Center', 'Educational Resource Center',
+        'Main Auditorium', 'Science Wing', 'Arts Studio', 'Technology Center',
+        'Library Annex', 'Cafeteria Learning Area', 'Outdoor Classroom', 'Media Center',
+        'Student Lounge', 'Staff Break Room', 'Administration Building', 'Curriculum Office',
+        'Parent Meeting Room', 'Staff Training Room', 'Conference Center', 'Instructional Support',
+        'Special Education Resource', 'STEM Lab', 'Language Arts Center', 'Mathematics Wing'
     ];
 
     private static $event_names = [
         'Digital Literacy Workshop', 'Leadership Development Program', 'STEM Conference',
         'Math Pedagogy Seminar', 'Language Arts Curriculum Design', 'Science Inquiry Methods',
         'Social Studies Integration', 'Technology in Classroom Management', 'Special Education Strategies',
-        'Student Assessment Techniques'
+        'Student Assessment Techniques', 'Classroom Management Techniques', 'Curriculum Mapping Workshop',
+        'Educational Technology Integration', 'Differentiated Instruction Strategies', 'Formative Assessment Practices',
+        'Student Engagement Techniques', 'Inclusive Education Methods', 'Educational Research Methods',
+        'Professional Learning Communities', 'Instructional Coaching', 'School Improvement Planning',
+        'Parent Engagement Strategies', 'Student Mental Health Awareness', 'Cultural Competency Training',
+        'STEM Education Innovation', 'Arts Integration in Curriculum', 'Literacy Development',
+        'Mathematics Education Research', 'Science Education Best Practices', 'Social Emotional Learning',
+        'Educational Leadership Development', 'School Safety and Security', 'Digital Citizenship',
+        'Career and Technical Education', 'Early Childhood Education', 'Adult Learning Theory',
+        'Educational Policy and Practice', 'Innovation in Education', 'Global Education Perspectives',
+        'Educational Equity and Inclusion', 'Student Success Strategies', 'Educational Assessment',
+        'Teaching and Learning Research', 'Educational Technology Trends', 'School Culture and Climate',
+        'Educational Data Analysis', 'Student Achievement Improvement', 'Educational Program Evaluation',
+        'Inclusive Teaching Practices', 'Educational Innovation', 'Learning Analytics',
+        'Educational Leadership', 'School Reform', 'Educational Change Management'
     ];
 
-    private static $degrees = ['Bachelor', 'Master', 'Doctorate'];
+    private static $degrees = ['Bachelor', 'Master', 'Doctorate', 'Associate', 'Certificate', 'PhD'];
 
-    private static $majors = ['Education', 'Psychology', 'Business', 'Computer Science', 'Biology'];
+    private static $majors = ['Education', 'Psychology', 'Business', 'Computer Science', 'Biology', 'Chemistry', 'Physics', 'Mathematics', 'English', 'History', 'Political Science', 'Sociology', 'Art', 'Music', 'Physical Education', 'Nursing', 'Engineering', 'Communications', 'Marketing', 'Finance'];
 
     /**
      * Generate a random staff member record
@@ -186,7 +215,7 @@ class EnhancedSeedDataGenerator {
             'grad_year'  => rand(1980, 2024),
             'major'      => self::$majors[array_rand(self::$majors)],
             'minor'      => self::$majors[array_rand(self::$majors)],
-            'institution'=> 'University of ' . ['Toronto','Ottawa','Vancouver','Montreal'][rand(0,3)] . ' School of Education',
+            'institution'=> 'University of ' . ['Toronto','Ottawa','Vancouver','Montreal','Calgary','Edmonton','Quebec City','Winnipeg','Halifax','Victoria'][rand(0,9)] . ' School of Education',
             'comment'    => ''
         ];
     }
