@@ -67,6 +67,7 @@ class SettingsPageContent {
                     <p align="center">This page will only allow you to manage registrations of activated and upcoming (start date set to time in the future) trainings.<br>Make sure trainings you want to manage fulfill both requirements.</p>
             </div>
         </div>
+        <?php
     }
 
     /**
