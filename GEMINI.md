@@ -23,10 +23,9 @@ The Training Registration Plugin is a WordPress plugin designed for SOT training
   composer install
   ```
 - **Package for Release**:
-  ```bash
-  .\package.bat
-  ```
-  *Note: Ensure `7z.exe` is in your PATH or update the script path.*
+  - Windows: `.\scripts\package.bat`
+  - Linux/Mac: `./scripts/package.sh`
+  *Note: Ensure `7z.exe` (Windows) or `zip` (Linux) is installed.*
 
 ### Installation & Setup
 1. Upload the plugin zip to WordPress.

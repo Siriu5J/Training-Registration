@@ -86,7 +86,7 @@ Integration tests run against a real WordPress instance and a dedicated test dat
 If you are running in a new environment, you may need to initialize the WordPress test library:
 ```bash
 # Inside the container
-./install-wp-tests.sh wordpress_test root changeme_db_root_password db latest
+./scripts/install-wp-tests.sh wordpress_test root changeme_db_root_password db latest
 ```
 
 #### Running Integration Tests
