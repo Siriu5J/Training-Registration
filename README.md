@@ -100,7 +100,7 @@ Integration tests require a WordPress test environment and a separate database.
     # Example for local DevContainer:
     ./scripts/install-wp-tests.sh wordpress_test wordpress changeme_db_password db latest
     ```
-    *Note: If you encounter "Access denied" during database creation, create the database manually as root first.*
+    *Note: The script will automatically attempt to create the database using the `root` user if `MYSQL_ROOT_PASSWORD` is set in the environment or if running as the OS root user.*
 
 ### Running Tests in VS Code
 You can run PHPUnit tests directly from VS Code with a click of a button:
