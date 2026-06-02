@@ -3,6 +3,8 @@ LABEL authors="Samuel Jiang"
 
 RUN apt-get update && apt-get install -y \
     curl \
+    zip \
+    vim \
     unzip \
     nodejs \
     npm \
