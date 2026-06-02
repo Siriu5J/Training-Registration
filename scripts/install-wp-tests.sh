@@ -144,7 +144,18 @@ install_db() {
 	fi
 
 	# create database
-	mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
+	if [ -n "$MYSQL_ROOT_PASSWORD" ]; then
+		mysqladmin create $DB_NAME --user=root --password="$MYSQL_ROOT_PASSWORD"$EXTRA
+		mysql --user=root --password="$MYSQL_ROOT_PASSWORD"$EXTRA -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'%'; FLUSH PRIVILEGES;"
+	elif [ "$(id -u)" -eq 0 ]; then
+		if mysqladmin create $DB_NAME --user=root $EXTRA; then
+			mysql --user=root $EXTRA -e "GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'%'; FLUSH PRIVILEGES;"
+		else
+			mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
+		fi
+	else
+		mysqladmin create $DB_NAME --user="$DB_USER" --password="$DB_PASS"$EXTRA
+	fi
 }
 
 install_wp
