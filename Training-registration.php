@@ -6,7 +6,7 @@ defined('ABSPATH') || exit;
 Plugin Name: Event Registration
 Plugin URI: https://github.com/Siriu5J/Training-Registration
 Description: A robust training management system for WordPress that enables organizers to create events and Learning Centers to register staff. Features include automated page creation, staff profile management, and comprehensive data export capabilities.
-Version: 4.0.0-beta1
+Version: 4.0.0-Beta.2
 Author: Samuel Jiang
 Author URI: https://github.com/Siriu5J/Training-Registration
 License: Apache-2.0
