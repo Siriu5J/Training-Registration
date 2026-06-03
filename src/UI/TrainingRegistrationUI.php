@@ -184,6 +184,36 @@ class TrainingRegistrationUI {
             $this->render('ui/notice', ['type' => 'green', 'message' => 'Registration(s) Cancelled']);
         }
 
+        // Remove Staff
+        if (isset($_POST['remove-staff']) && wp_verify_nonce($nonce, 'create_staff_nonce')) {
+            $staff_id = intval($_POST['remove-staff']);
+            $registrations = $this->registration_repo->get_by_staff($staff_id);
+            $can_delete = true;
+            $failed_event = '';
+
+            foreach ($registrations as $reg) {
+                $event = $this->event_repo->get_by_id($reg->event_id);
+                if ($event && $time_now > $event->close_time) {
+                    $can_delete = false;
+                    $failed_event = $event->event_name;
+                    break;
+                }
+            }
+
+            if (!$can_delete) {
+                $this->render('ui/notice', ['type' => 'red', 'message' => 'Cannot remove staff member. The registration period for "' . $failed_event . '" has already ended. Please contact the training organizer to manually withdraw them first.']);
+            } else {
+                // Withdraw from all trainings first
+                foreach ($registrations as $reg) {
+                    $this->registration_repo->delete_by_event_and_staff($reg->event_id, $staff_id);
+                    $this->event_repo->decrement_registration_count($reg->event_id);
+                }
+                // Delete staff profile
+                $this->staff_repo->delete($staff_id);
+                $this->render('ui/notice', ['type' => 'green', 'message' => 'Staff member successfully removed and withdrawn from all trainings.']);
+            }
+        }
+
         $this->render('ui/manage-staff', [
             'username'      => $username,
             'all_staff'     => $this->staff_repo->get_all_by_school($username),

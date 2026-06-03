@@ -32,10 +32,16 @@
                             <?php
                             $trainings = $registration_repo->get_by_staff($staff->id);
                             $training_list = array();
+                            $has_closed_training = false;
                             foreach ($trainings as $training) {
                                 $event = $event_repo->get_by_id($training->event_id);
-                                if ($event && $time_now < $event->start_time) {
-                                    $training_list[] = esc_html($event->event_name);
+                                if ($event) {
+                                    if ($time_now < $event->start_time) {
+                                        $training_list[] = esc_html($event->event_name);
+                                    }
+                                    if ($time_now > $event->close_time) {
+                                        $has_closed_training = true;
+                                    }
                                 }
                             }
                             ?>
@@ -63,9 +69,15 @@
 
                                             <span class="dashicons dashicons-edit"></span>
                                         </button>
-                                        <button type="submit" name="edit-reg" value="<?php echo esc_attr($staff->id); ?>" class="button button-primary" title="Cancel Registration">
-                                            <span class="dashicons dashicons-dismiss"></span>
-                                        </button>
+                                        <?php if ($has_closed_training) : ?>
+                                            <button type="button" class="button button-primary" title="Remove Staff" onclick="alert('Cannot remove staff. The registration period for one or more of their trainings has ended. Please contact the training organizer if you would like to withdraw them from the training before removing the staff member.');">
+                                                <span class="dashicons dashicons-dismiss"></span>
+                                            </button>
+                                        <?php else : ?>
+                                            <button type="submit" name="remove-staff" value="<?php echo esc_attr($staff->id); ?>" class="button button-primary" title="Remove Staff" onclick="return confirm('Are you sure you want to remove this staff member? This action cannot be undone and will withdraw them from all registered trainings.');">
+                                                <span class="dashicons dashicons-dismiss"></span>
+                                            </button>
+                                        <?php endif; ?>
                                     </div>
                                 </td>
                             </tr>
