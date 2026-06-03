@@ -35,7 +35,12 @@ class PageCreatorTest extends WP_Integration_TestCase {
         $home_id = get_page_by_path(sanitize_title('Training Registration'))->ID;
         $this->assertEquals('page', get_option('show_on_front'));
         $this->assertEquals($home_id, get_option('page_on_front'));
-        $this->assertEquals('/%postname%/', get_option('permalink_structure'));
+
+        // Assert Page IDs are stored in options
+        $this->assertEquals(get_page_by_path(sanitize_title('Create Staff Profile'))->ID, get_option('er_create_staff_page_id'));
+        $this->assertEquals(get_page_by_path(sanitize_title('Manage My Staff'))->ID, get_option('er_manage_staff_page_id'));
+        $this->assertEquals(get_page_by_path(sanitize_title('Register for Training'))->ID, get_option('er_register_training_page_id'));
+        $this->assertEquals($home_id, get_option('er_dashboard_page_id'));
     }
 
     public function test_run_does_not_duplicate_pages() {

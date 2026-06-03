@@ -1,8 +1,8 @@
 <?php
 /**
  * @var array $stats
+ * @var array $urls
  */
-$site_home = (string)get_option('home');
 ?>
 <div class="sot-tr-container">
     <h2>Welcome to Your Training Dashboard</h2>
@@ -43,13 +43,13 @@ $site_home = (string)get_option('home');
 
     <!-- Quick Actions -->
     <div class="sot-tr-actions-grid">
-        <a href="<?php echo $site_home; ?>/create-staff-profile/" class="button button-primary sot-tr-action-btn">
+        <a href="<?php echo esc_url($urls['create_staff']); ?>" class="button button-primary sot-tr-action-btn">
             <span class="dashicons dashicons-plus"></span> Create Staff Profile
         </a>
-        <a href="<?php echo $site_home; ?>/register-for-training/" class="button button-primary sot-tr-action-btn">
+        <a href="<?php echo esc_url($urls['register_training']); ?>" class="button button-primary sot-tr-action-btn">
             <span class="dashicons dashicons-edit"></span> Register for Training
         </a>
-        <a href="<?php echo $site_home; ?>/manage-my-staff/" class="button button-primary sot-tr-action-btn">
+        <a href="<?php echo esc_url($urls['manage_staff']); ?>" class="button button-primary sot-tr-action-btn">
             <span class="dashicons dashicons-admin-users"></span> Manage My Staff
         </a>
     </div>

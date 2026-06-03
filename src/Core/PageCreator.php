@@ -16,23 +16,23 @@ class PageCreator {
      * Run the page creation/update process.
      */
     public function run() {
-        $this->upsert_page('Create Staff Profile', '[staff_form]');
-        $this->upsert_page('Manage My Staff', '[view_staff]');
-        $this->upsert_page('Register for Training', '[register_training]');
-        
+        $create_staff_id = $this->upsert_page('Create Staff Profile', '[staff_form]');
+        $manage_staff_id = $this->upsert_page('Manage My Staff', '[view_staff]');
+        $register_training_id = $this->upsert_page('Register for Training', '[register_training]');
         $home_id = $this->upsert_page('Training Registration', '[training_dashboard]');
         
+        // Store Page IDs for dynamic link generation
+        update_option('er_create_staff_page_id', $create_staff_id);
+        update_option('er_manage_staff_page_id', $manage_staff_id);
+        update_option('er_register_training_page_id', $register_training_id);
+        update_option('er_dashboard_page_id', $home_id);
+
         if ($home_id) {
             update_option('show_on_front', 'page');
             update_option('page_on_front', $home_id);
         }
 
-        // Set permalink structure to "Post name"
-        // if (get_option('permalink_structure') !== '/%postname%/') {
-        //     update_option('permalink_structure', '/%postname%/');
-        // }
-        
-        // Flush rewrite rules to ensure the new permalink structure and pages are recognized
+        // Flush rewrite rules to ensure the new pages are recognized
         flush_rewrite_rules();
     }
 
