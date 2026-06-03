@@ -16,7 +16,7 @@ The Training Registration Plugin is a robust management system for WordPress des
 *   **Pluggable Strategies**: Support for multiple registration modes (e.g., Default and SOTAM) via the Strategy design pattern.
 
 ### Learning Center Capabilities
-*   **Staff Management**: A centralized system for Learning Centers to maintain staff profiles and records.
+*   **Staff Management**: A centralized system for Learning Centers to maintain staff profiles and records. Includes a secure staff removal feature that automatically handles withdrawals from all open trainings while enforcing registration deadlines to prevent unauthorized cancellations.
 *   **Event Enrollment**: Simplified registration process for available training sessions.
 *   **Management Dashboard**: A dedicated interface for centers to view upcoming events and monitor their existing registrations.
 
@@ -97,10 +97,12 @@ Integration tests require a WordPress test environment and a separate database.
     Use the provided script to set up the WordPress tests library and test database.
     ```bash
     # Usage: ./scripts/install-wp-tests.sh <db-name> <db-user> <db-pass> [db-host] [wp-version] [skip-database-creation]
-    # Example for local DevContainer:
+    
+    # Example for local DevContainer (export root password first):
+    export MYSQL_ROOT_PASSWORD=changeme_db_root_password
     ./scripts/install-wp-tests.sh wordpress_test wordpress changeme_db_password db latest
     ```
-    *Note: The script will automatically attempt to create the database using the `root` user if `MYSQL_ROOT_PASSWORD` is set in the environment or if running as the OS root user.*
+    *Note: The script requires `root` privileges to create the test database. Export `MYSQL_ROOT_PASSWORD` if your environment does not have passwordless root access to MySQL.*
 
 ### Running Tests in VS Code
 You can run PHPUnit tests directly from VS Code with a click of a button:
