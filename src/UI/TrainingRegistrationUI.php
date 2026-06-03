@@ -43,12 +43,25 @@ class TrainingRegistrationUI {
         wp_enqueue_style('ui_styles', plugins_url('../../assets/css/ui/ui.css', __FILE__), array('dashicons'));
     }
 
+    /**
+     * Helper to check if user is logged in and render a notice if not.
+     *
+     * @param string $message The message to display.
+     * @return bool True if NOT logged in (notice rendered), false if logged in.
+     */
+    protected function is_not_logged_in($message) {
+        if (!is_user_logged_in()) {
+            $this->render('ui/notice', ['type' => 'red', 'message' => $message]);
+            return true;
+        }
+        return false;
+    }
+
 
     public function uiDashboard() {
         ob_start();
 
-        if (!is_user_logged_in()) {
-            $this->render('ui/notice', ['type' => 'red', 'message' => 'You must be logged in to view the dashboard.']);
+        if ($this->is_not_logged_in('You must be logged in to view the dashboard.')) {
             return ob_get_clean();
         }
 
@@ -68,8 +81,7 @@ class TrainingRegistrationUI {
     public function staffFormCreation() {
         ob_start();
 
-        if (!is_user_logged_in()) {
-            $this->render('ui/notice', ['type' => 'red', 'message' => 'You must be logged in to create a staff profile.']);
+        if ($this->is_not_logged_in('You must be logged in to create a staff profile.')) {
             return ob_get_clean();
         }
 
@@ -96,8 +108,7 @@ class TrainingRegistrationUI {
     public function eventRegistration() {
         ob_start();
 
-        if (!is_user_logged_in()) {
-            $this->render('ui/notice', ['type' => 'red', 'message' => 'You must be logged in to register for trainings.']);
+        if ($this->is_not_logged_in('You must be logged in to register for trainings.')) {
             return ob_get_clean();
         }
 
@@ -147,8 +158,7 @@ class TrainingRegistrationUI {
     public function viewEditStaff() {
         ob_start();
 
-        if (!is_user_logged_in()) {
-            $this->render('ui/notice', ['type' => 'red', 'message' => 'You must be logged in to manage staff.']);
+        if ($this->is_not_logged_in('You must be logged in to manage staff.')) {
             return ob_get_clean();
         }
 

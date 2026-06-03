@@ -14,9 +14,6 @@ class UITest extends TestCase {
         WP_Mock::userFunction('plugins_url', [
             'return' => 'http://example.com/plugin/url'
         ]);
-        WP_Mock::userFunction('is_user_logged_in', [
-            'return' => true
-        ]);
         WP_Mock::userFunction('wp_enqueue_style', [
             'return' => true
         ]);
@@ -34,7 +31,25 @@ class UITest extends TestCase {
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
+    public function test_uiDashboard_returns_notice_when_not_logged_in() {
+        WP_Mock::userFunction('is_user_logged_in', [
+            'return' => false
+        ]);
+
+        $this->ui = new TrainingRegistrationUI();
+
+        $output = $this->ui->uiDashboard();
+        $this->assertNotEmpty($output);
+    }
+
+    /**
+     * @runInSeparateProcess
+     * @preserveGlobalState disabled
+     */
     public function test_staffFormCreation_shows_my_form_when_my_mode_is_on() {
+        WP_Mock::userFunction('is_user_logged_in', [
+            'return' => true
+        ]);
         WP_Mock::userFunction('get_option', [
             'args' => ['my_mode'],
             'return' => 1
@@ -58,6 +73,9 @@ class UITest extends TestCase {
      * @preserveGlobalState disabled
      */
     public function test_staffFormCreation_shows_cn_form_when_my_mode_is_off() {
+        WP_Mock::userFunction('is_user_logged_in', [
+            'return' => true
+        ]);
         WP_Mock::userFunction('get_option', [
             'args' => ['my_mode'],
             'return' => 0
