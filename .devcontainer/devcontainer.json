@@ -13,7 +13,12 @@
         "google.gemini-cli-vscode-ide-companion"
       ],
       "settings": {
-        "php.validate.executablePath": "/usr/local/bin/php"
+        "php.validate.executablePath": "/usr/local/bin/php",
+        "intelephense.stubs": [
+          "Core",
+          "standard",
+          "wordpress"
+        ]
       }
     }
   },
