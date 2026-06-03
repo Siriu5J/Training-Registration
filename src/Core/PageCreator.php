@@ -18,12 +18,14 @@ class PageCreator {
     public function run() {
         $create_staff_id = $this->upsert_page('Create Staff Profile', '[staff_form]');
         $manage_staff_id = $this->upsert_page('Manage My Staff', '[view_staff]');
+        $manage_reg_id = $this->upsert_page('Manage Registrations', '[manage_registrations]');
         $register_training_id = $this->upsert_page('Register for Training', '[register_training]');
         $home_id = $this->upsert_page('Training Registration', '[training_dashboard]');
         
         // Store Page IDs for dynamic link generation
         update_option('er_create_staff_page_id', $create_staff_id);
         update_option('er_manage_staff_page_id', $manage_staff_id);
+        update_option('er_manage_registrations_page_id', $manage_reg_id);
         update_option('er_register_training_page_id', $register_training_id);
         update_option('er_dashboard_page_id', $home_id);
 

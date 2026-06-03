@@ -759,6 +759,30 @@ footer, .site-footer, #colophon, .footer-nav-widgets-wrapper, #site-footer {
 .color-blue { background-color: #2271b1; }
 .color-green { background-color: #38a169; }
 .color-purple { background-color: #805ad5; }
+.color-red { color: #e53e3e !important; }
+
+.sot-tr-header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.sot-tr-event-summary {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2.5rem;
+    border-left: 4px solid #2271b1;
+}
+
+.sot-tr-event-summary p {
+    margin-bottom: 0.5rem;
+}
+
+.sot-tr-event-summary p:last-child {
+    margin-bottom: 0;
+}
 
 .sot-tr-card-content {
     flex: 1;

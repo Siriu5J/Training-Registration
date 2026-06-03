@@ -69,6 +69,9 @@
 
                                             <span class="dashicons dashicons-edit"></span>
                                         </button>
+                                        <button type="submit" name="edit-reg" value="<?php echo esc_attr($staff->id); ?>" class="button button-primary" title="Manage Registrations">
+                                            <span class="dashicons dashicons-list-view"></span>
+                                        </button>
                                         <?php if ($has_closed_training) : ?>
                                             <button type="button" class="button button-primary" title="Remove Staff" onclick="alert('Cannot remove staff. The registration period for one or more of their trainings has ended. Please contact the training organizer if you would like to withdraw them from the training before removing the staff member.');">
                                                 <span class="dashicons dashicons-dismiss"></span>

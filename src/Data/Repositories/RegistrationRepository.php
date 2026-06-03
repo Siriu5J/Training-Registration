@@ -34,6 +34,11 @@ class RegistrationRepository {
         return $wpdb->get_results($wpdb->prepare("SELECT * FROM {$this->table} WHERE `staff` = %d", $staff_id));
     }
 
+    public function get_by_event_and_school($event_id, $school_username) {
+        global $wpdb;
+        return $wpdb->get_results($wpdb->prepare("SELECT * FROM {$this->table} WHERE `event_id` = %d AND `school` = %s", $event_id, $school_username));
+    }
+
     public function check_duplicate($staff_id, $event_id) {
         global $wpdb;
         return $wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM {$this->table} WHERE `staff` = %d AND `event_id` = %d", $staff_id, $event_id));

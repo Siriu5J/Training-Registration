@@ -10,18 +10,18 @@
 <div class="sot-tr-container">
     <hr>
     
-    <?php if ($tools->hasRemovables($staff_id)) : ?>
-        <h3>Cancel Registrations for <?php echo esc_html($tools->idtoName($staff_id)) ?></h3>
+    <?php if (!empty($trainings_registered)) : ?>
+        <h3>Withdraw Registrations for <?php echo esc_html($tools->idtoName($staff_id)) ?></h3>
         
         <div class="er-notice er-notice-red">
             <div>
-                <strong>Important Notice:</strong><br>
-                Although it is possible to withdraw from a training here even after the training registration is closed, please <strong>ALWAYS</strong> notify the training organizer before doing so.
+                <strong>Notice:</strong><br>
+                If a training registration period has ended, it will be disabled in the list below. To withdraw from a closed training, please <strong>ALWAYS</strong> contact the training organizer.
             </div>
         </div>
 
         <div class="sot-tr-form">
-            <form id="staff-profile-cancel" name="staff-profile-cancel" method="post" action="<?php echo esc_url(add_query_arg(array()));?>">
+            <form id="staff-profile-cancel" name="staff-profile-cancel" method="post" action="<?php echo esc_url(add_query_arg(array()));?>" onsubmit="return confirm('Are you sure you want to withdraw from the selected training(s)? This action cannot be undone.');">
                 <?php wp_nonce_field('create_staff_nonce', 'staff_nonce_field'); ?>
                 
                 <div class="sot-tr-form-group">
@@ -30,8 +30,14 @@
                         <?php
                         foreach ($trainings_registered as $training) {
                             $event = $event_repo->get_by_id($training->event_id);
-                            if ($event && $event->start_time > $time_now) {
-                                echo '<option value="' . esc_attr($training->event_id) . '">' . esc_html($event->event_name . ' at ' . $event->location) . '</option>';
+                            if ($event) {
+                                $is_closed = $time_now > $event->close_time;
+                                $disabled = $is_closed ? ' disabled="disabled"' : '';
+                                $label_suffix = $is_closed ? ' (Registration Closed)' : '';
+                                
+                                echo '<option value="' . esc_attr($training->event_id) . '"' . $disabled . '>' . 
+                                     esc_html($event->event_name . ' at ' . $event->location . $label_suffix) . 
+                                     '</option>';
                             }
                         }
                         ?>
@@ -52,8 +58,8 @@
         </div>
     <?php else : ?>
         <div class="sot-tr-empty">
-            <h3>No registrations available for cancellation</h3>
-            <p>There are no upcoming trainings registered for <?php echo esc_html($tools->idtoName($staff_id)); ?>.</p>
+            <h3>No registrations found</h3>
+            <p>There are no trainings registered for <?php echo esc_html($tools->idtoName($staff_id)); ?>.</p>
         </div>
     <?php endif; ?>
 </div>

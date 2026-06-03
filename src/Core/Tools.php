@@ -92,7 +92,7 @@ class Tools {
 
         foreach ($trainings_registered as $training) {
             $event = $this->event_repo->get_by_id($training->event_id);
-            if ($event && $event->start_time > $time_now) {
+            if ($event && $event->close_time > $time_now) {
                 return true;
             }
         }

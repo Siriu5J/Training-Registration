@@ -69,7 +69,10 @@
                         </div>
                         <div class="sot-tr-agenda-text">
                             <strong><?php echo number_format($item->staff_count); ?></strong> staff<?php echo $item->staff_count > 1 ? 's' : ''; ?> 
-                            <?php echo $item->staff_count == 1 ? 'is' : 'are'; ?> going to <strong><?php echo esc_html($item->event_name); ?></strong> 
+                            <?php echo $item->staff_count == 1 ? 'is' : 'are'; ?> going to 
+                            <a href="<?php echo esc_url(add_query_arg('event_id', $item->event_id, $urls['manage_registrations'])); ?>" class="sot-tr-agenda-link">
+                                <strong><?php echo esc_html($item->event_name); ?></strong>
+                            </a>
                             at <strong><?php echo esc_html(wp_date('F j, Y', strtotime($item->start_time))); ?></strong> 
                             in <em><?php echo esc_html($item->location); ?></em>.
                         </div>

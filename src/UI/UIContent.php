@@ -42,9 +42,10 @@ class UIContent {
 
     public function dashboard($stats, $echo = true) {
         $urls = array(
-            'create_staff'      => get_permalink(get_option('er_create_staff_page_id')),
-            'manage_staff'      => get_permalink(get_option('er_manage_staff_page_id')),
-            'register_training' => get_permalink(get_option('er_register_training_page_id')),
+            'create_staff'         => get_permalink(get_option('er_create_staff_page_id')),
+            'manage_staff'         => get_permalink(get_option('er_manage_staff_page_id')),
+            'register_training'    => get_permalink(get_option('er_register_training_page_id')),
+            'manage_registrations' => get_permalink(get_option('er_manage_registrations_page_id')),
         );
 
         return $this->render('ui/dashboard', array(

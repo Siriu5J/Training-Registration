@@ -155,6 +155,54 @@ class TrainingRegistrationUI {
         return ob_get_clean();
     }
 
+    public function manageRegistrations() {
+        ob_start();
+
+        if ($this->is_not_logged_in('You must be logged in to manage registrations.')) {
+            return ob_get_clean();
+        }
+
+        $username = wp_get_current_user()->user_login;
+        $time_now = current_time('mysql');
+        $event_id = isset($_GET['event_id']) ? intval($_GET['event_id']) : 0;
+
+        if ($event_id === 0) {
+            $this->render('ui/notice', ['type' => 'red', 'message' => 'No training selected. Please go back to the dashboard and select a training from the agenda.']);
+            return ob_get_clean();
+        }
+
+        $event = $this->event_repo->get_by_id($event_id);
+        if (!$event) {
+            $this->render('ui/notice', ['type' => 'red', 'message' => 'Training not found.']);
+            return ob_get_clean();
+        }
+
+        // Handle Withdrawal
+        if (isset($_POST['withdraw-staff']) && wp_verify_nonce($_POST['reg_nonce_field'], 'withdraw_staff_nonce')) {
+            $staff_id = intval($_POST['staff_id']);
+            
+            // Server-side validation: check if registration period is still open
+            if ($time_now > $event->close_time) {
+                $this->render('ui/notice', ['type' => 'red', 'message' => 'Cannot withdraw staff. The registration period for this training has ended. Please contact the training organizer.']);
+            } else {
+                $this->registration_repo->delete_by_event_and_staff($event_id, $staff_id);
+                $this->event_repo->decrement_registration_count($event_id);
+                $this->render('ui/notice', ['type' => 'green', 'message' => $this->tools->idtoName($staff_id) . ' has been successfully withdrawn from the training.']);
+            }
+        }
+
+        $this->render('ui/manage-event-registrations', [
+            'event'             => $event,
+            'registrations'     => $this->registration_repo->get_by_event_and_school($event_id, $username),
+            'time_now'          => $time_now,
+            'tools'             => $this->tools,
+            'staff_repo'        => $this->staff_repo,
+            'dashboard_url'     => get_permalink(get_option('er_dashboard_page_id'))
+        ]);
+
+        return ob_get_clean();
+    }
+
     public function viewEditStaff() {
         ob_start();
 
@@ -177,11 +225,20 @@ class TrainingRegistrationUI {
         // Withdraw from a training
         if (isset($_POST['confirm-remove']) && wp_verify_nonce($nonce, 'create_staff_nonce')) {
             $staff_id = intval($_POST['staff_id']);
+            $count = 0;
             foreach (($_POST['training-id'] ?? []) as $training_id) {
-                $this->registration_repo->delete_by_event_and_staff($training_id, $staff_id);
-                $this->event_repo->decrement_registration_count($training_id);
+                $event = $this->event_repo->get_by_id($training_id);
+                if ($event && $time_now <= $event->close_time) {
+                    $this->registration_repo->delete_by_event_and_staff($training_id, $staff_id);
+                    $this->event_repo->decrement_registration_count($training_id);
+                    $count++;
+                }
             }
-            $this->render('ui/notice', ['type' => 'green', 'message' => 'Registration(s) Cancelled']);
+            if ($count > 0) {
+                $this->render('ui/notice', ['type' => 'green', 'message' => 'Registration(s) Withdrawn']);
+            } else {
+                $this->render('ui/notice', ['type' => 'red', 'message' => 'No registrations could be withdrawn. Registration periods may have closed.']);
+            }
         }
 
         // Remove Staff
