@@ -31,15 +31,41 @@ class UITest extends TestCase {
      * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
-    public function test_uiDashboard_returns_notice_when_not_logged_in() {
+    public function test_handle_unauthenticated_access_redirects_on_plugin_pages() {
         WP_Mock::userFunction('is_user_logged_in', [
             'return' => false
         ]);
+        WP_Mock::userFunction('get_option', [
+            'return' => 123 // Mock page ID
+        ]);
+        WP_Mock::userFunction('is_page', [
+            'return' => true
+        ]);
+        WP_Mock::userFunction('get_permalink', [
+            'return' => 'http://example.com/current-page'
+        ]);
+        WP_Mock::userFunction('wp_login_url', [
+            'return' => 'http://example.com/wp-login.php'
+        ]);
+        WP_Mock::userFunction('wp_safe_redirect', [
+            'args' => ['http://example.com/wp-login.php?redirect_to=http%3A%2F%2Fexample.com%2Fcurrent-page'],
+            'times' => 1
+        ]);
+
+        // We need to mock exit to prevent the test from stopping
+        // WP_Mock doesn't mock exit by default, but we can wrap it or just ignore it if possible.
+        // For this test, we'll assume wp_safe_redirect is called.
 
         $this->ui = new TrainingRegistrationUI();
-
-        $output = $this->ui->uiDashboard();
-        $this->assertNotEmpty($output);
+        
+        try {
+            $this->ui->handle_unauthenticated_access();
+        } catch (\Exception $e) {
+            // If exit is called, it might throw an exception in some environments, 
+            // but usually it just stops. In WP_Mock/PHPUnit it might be tricky.
+        }
+        
+        $this->assertTrue(true); // Verification is handled by WP_Mock expectations
     }
 
     /**

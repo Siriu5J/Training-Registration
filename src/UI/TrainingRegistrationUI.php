@@ -44,26 +44,29 @@ class TrainingRegistrationUI {
     }
 
     /**
-     * Helper to check if user is logged in and render a notice if not.
-     *
-     * @param string $message The message to display.
-     * @return bool True if NOT logged in (notice rendered), false if logged in.
+     * Redirect unauthenticated users to the login page when accessing plugin pages.
      */
-    protected function is_not_logged_in($message) {
-        if (!is_user_logged_in()) {
-            $this->render('ui/notice', ['type' => 'red', 'message' => $message]);
-            return true;
+    public function handle_unauthenticated_access() {
+        if (is_user_logged_in()) {
+            return;
         }
-        return false;
-    }
 
+        $plugin_pages = [
+            get_option('er_dashboard_page_id'),
+            get_option('er_create_staff_page_id'),
+            get_option('er_manage_staff_page_id'),
+            get_option('er_manage_registrations_page_id'),
+            get_option('er_register_training_page_id'),
+        ];
+
+        if (is_page($plugin_pages)) {
+            wp_safe_redirect(wp_login_url(get_permalink()));
+            exit;
+        }
+    }
 
     public function uiDashboard() {
         ob_start();
-
-        if ($this->is_not_logged_in('You must be logged in to view the dashboard.')) {
-            return ob_get_clean();
-        }
 
         $username = wp_get_current_user()->user_login;
 
@@ -80,10 +83,6 @@ class TrainingRegistrationUI {
 
     public function staffFormCreation() {
         ob_start();
-
-        if ($this->is_not_logged_in('You must be logged in to create a staff profile.')) {
-            return ob_get_clean();
-        }
 
         $username = wp_get_current_user()->user_login;
         $mode_strategy = RegistrationModeFactory::get_current_mode();
@@ -107,10 +106,6 @@ class TrainingRegistrationUI {
 
     public function eventRegistration() {
         ob_start();
-
-        if ($this->is_not_logged_in('You must be logged in to register for trainings.')) {
-            return ob_get_clean();
-        }
 
         $time_now = current_time('mysql');
 
@@ -158,10 +153,6 @@ class TrainingRegistrationUI {
     public function manageRegistrations() {
         ob_start();
 
-        if ($this->is_not_logged_in('You must be logged in to manage registrations.')) {
-            return ob_get_clean();
-        }
-
         $username = wp_get_current_user()->user_login;
         $time_now = current_time('mysql');
         $event_id = isset($_GET['event_id']) ? intval($_GET['event_id']) : 0;
@@ -205,10 +196,6 @@ class TrainingRegistrationUI {
 
     public function viewEditStaff() {
         ob_start();
-
-        if ($this->is_not_logged_in('You must be logged in to manage staff.')) {
-            return ob_get_clean();
-        }
 
         $username = wp_get_current_user()->user_login;
         $time_now = current_time('mysql');
